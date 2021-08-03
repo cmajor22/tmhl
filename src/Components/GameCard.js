@@ -1,10 +1,17 @@
-import { Grid, Card } from '@material-ui/core';
 import React from 'react';
+import { Grid, Card, makeStyles, Box } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => ({
+    gameCard: {
+        width: '120px'
+    }
+}));
 
 function GameCard(props) {
-    console.log(props)
+    const classes = useStyles();
+
     return (
-        <Card>
+        <Box square elevation={1} className={classes.gameCard}>
             <Grid container>
                 <Grid item xs={7}>
                     {props.homeTeam}
@@ -19,7 +26,7 @@ function GameCard(props) {
                     {props.awayScore}
                 </Grid>
             </Grid>
-        </Card>
+        </Box>
     )
 }
 

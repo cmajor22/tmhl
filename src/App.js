@@ -8,21 +8,44 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import Home from './Components/Home';
-import About from './Components/About';
+import Home from './Pages/Home';
+import LeagueInfo from './Pages/LeagueInfo';
+import PresidentsMessage from './Pages/PresidentsMessage';
+import Executive from './Pages/Executive';
 import Navigation from './Components/Navigation';
 import { Fragment } from 'react';
 import Navigation2 from './Components/Navigation2';
+import Stats19 from './Pages/19Stats';
+import Rosters19 from './Pages/19Rosters';
+import Standings19 from './Pages/19Standings';
+import Schedule19 from './Pages/19Schedule';
+import Rosters40 from './Pages/40Rosters';
+import Standings40 from './Pages/40Standings';
+import Schedule40 from './Pages/40Schedule';
+import Rules from './Pages/Rules';
+import SignUp from './Pages/SignUp';
 
 function App() {
   return (
       <Router>
-        <Box style={{width: '80%', margin: 'auto'}}>
+        <Box style={{maxWidth: '850px', margin: 'auto'}}>
           <HeaderBar></HeaderBar>
           <Navigation2></Navigation2>
           <Switch>
-            <Route exact path="/"><Home /></Route>
-            <Route exact path="/about"><About/></Route>
+            <Route exact path="/home"><Home /></Route>
+            <Route exact path="/leagueInfo"><LeagueInfo/></Route>
+            <Route exact path="/presidentsMessage"><PresidentsMessage/></Route>
+            <Route exact path="/executive"><Executive/></Route>
+            <Route exact path="/19Rosters"><Rosters19/></Route>
+            <Route exact path="/19Stats"><Stats19/></Route>
+            <Route exact path="/19Standings"><Standings19/></Route>
+            <Route exact path="/19Schedule"><Schedule19/></Route>
+            <Route exact path="/40Rosters"><Rosters40/></Route>
+            <Route exact path="/40Standings"><Standings40/></Route>
+            <Route exact path="/40Schedule"><Schedule40/></Route>
+            <Route exact path="/Rules"><Rules/></Route>
+            <Route exact path="/SignUp"><SignUp/></Route>
+            <Route path="/"><Home /></Route>
           </Switch>
         </Box>
       </Router>
