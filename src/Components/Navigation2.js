@@ -3,7 +3,9 @@ import { Grid, Button, Drawer, ListItem, ListItemText,
 import React, { Fragment } from 'react';
 import { useHistory, withRouter } from 'react-router-dom';
 import CloseIcon from '@material-ui/icons/Close';
-import { makeStyles } from '@material-ui/styles'
+import { makeStyles } from '@material-ui/styles';
+import { toggleMenu } from '../redux/menuSlice';
+import { useSelector, useDispatch } from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
     menuSingleItem: {
@@ -19,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
 
 function Navigation(props) {
     const classes = useStyles();
-    const [isOpen, setIsOpen] = React.useState(false);
+    const isOpen = useSelector(state => state.menu.isOpen);
+    const dispatch = useDispatch();
     let history = useHistory();
 
     const menuItems = [
@@ -41,29 +44,25 @@ function Navigation(props) {
         ]},
         {label: "Rules", target: "/rules", children: []},
         {label: "Sign Up", target: "signUp", children: []},
-    ]
-
-    const toggleMenu = (status) => {
-        setIsOpen(status);
-    }
+    ];
 
     function goPage(page) {
         let route = `${page}`;
         history.push(route);
-        toggleMenu(false);
+        dispatch(toggleMenu());
     }
 
     return (
         <Fragment>
-            <Button onClick={() => toggleMenu(true)}>Menu</Button>
-            <Drawer anchor="left" open={isOpen} onClose={() => toggleMenu(false)} className={classes.drawer}>
+            <Button onClick={() => dispatch(toggleMenu())}>Menu</Button>
+            <Drawer anchor="left" open={isOpen} onClose={() => dispatch(toggleMenu())} className={classes.drawer}>
                 <Paper elevation={0} square className={classes.menuSingleItem}>
                     <Grid container>
                         <Grid item xs={11}>
                             <Typography onClick={() => {goPage('/home')}}>Home</Typography>
                         </Grid>
                         <Grid item xs={1}>
-                            <CloseIcon onClick={() => {toggleMenu(false)}}/>
+                            <CloseIcon onClick={() => {dispatch(toggleMenu())}}/>
                         </Grid>
                     </Grid>
                 </Paper>
