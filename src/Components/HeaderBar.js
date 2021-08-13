@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import GameCard from './GameCard';
-import { Grid, List, ListItem } from '@material-ui/core';
+import { List, ListItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core';
+import { useSelector, useDispatch } from 'react-redux';
+import { getGames, upcomingGamesValue } from '../redux/upcomingGamesSlice'
 
 const useStyles = makeStyles((theme) => ({
     gameBar: {
@@ -19,17 +21,18 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+
 function HeaderBar(props) {
     const classes = useStyles();
-    const games = [
-        {homeTeam: 'Team 1', homeScore: '4', awayTeam: 'Team 2', awayScore: '2'},
-        {homeTeam: 'Team 3', homeScore: '4', awayTeam: 'Team 4', awayScore: '2'},
-        {homeTeam: 'Team 5', homeScore: '4', awayTeam: 'Team 6', awayScore: '2'},
-        {homeTeam: 'Team 5', homeScore: '4', awayTeam: 'Team 6', awayScore: '2'},
-    ]
+    const upcomingGames = useSelector(upcomingGamesValue);
+    const dispatch = useDispatch();
+    
+    useEffect(() => {
+        dispatch(getGames());
+    }, [])
 
     return <List disableGutters={true} className={classes.gameBar}>
-            {games.map((game) => {
+            {upcomingGames.map((game) => {
                 return <ListItem className={classes.listItem}><GameCard homeTeam={game.homeTeam} homeScore={game.homeScore} awayTeam={game.awayTeam} awayScore={game.awayScore} /></ListItem>
             })}
         </List>
