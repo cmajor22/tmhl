@@ -3,6 +3,7 @@ import menuReducer from './menuSlice';
 import upcomingGamesReducer from './upcomingGamesSlice';
 import rostersReducer from './rostersSlice';
 import seasonsReducer from './seasonsSlice';
+import standingsReducer from './standingsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     upcomingGames: upcomingGamesReducer,
     rosters: rostersReducer,
     seasons: seasonsReducer,
+    standings: standingsReducer,
   },
 });

@@ -34,10 +34,10 @@ function Rosters19(props) {
 
     return <div>
         <FormControl fullWidth>
-            <InputLabel id="rosters-19-season-select-label">Season</InputLabel>
+            <InputLabel id="season-select-label">Season</InputLabel>
             <Select
-                labelId="rosters-19-season-select-label"
-                id="rosters-19-season-select"
+                labelId="season-select-label"
+                id="season-select"
                 value={season}
                 label="Season"
                 onChange={handleChange}
