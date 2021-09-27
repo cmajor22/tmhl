@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect } from 'react';
-import { Card, FormControl, InputLabel, makeStyles, MenuItem, Select, Typography } from '@material-ui/core';
+import { FormControl, InputLabel, makeStyles, MenuItem, Select } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { seasons19, seasonsValue } from '../redux/seasonsSlice';
 import { standingsValue, standingsGames, standingsTeams, standingsVs } from '../redux/standingsSlice';
@@ -176,19 +176,19 @@ function Standings19(props) {
     const [season, setSeason] = React.useState('1');
     const [type, setType] = React.useState(0);
     const columns = [
-        { field: 'team', headerName: 'Team' },
-        { field: 'gamesPlayed', headerName: 'GP', type: 'number' },
-        { field: 'wins',  headerName: 'W', type: 'number' },
-        { field: 'losses',  headerName: 'L', type: 'number' },
-        { field: 'ties',  headerName: 'T', type: 'number' },
-        { field: 'points',  headerName: 'PTS', type: 'number' },
-        { field: 'goalsFor',  headerName: 'GF', type: 'number' },
-        { field: 'goalsAgainst',  headerName: 'GA', type: 'number' },
-        { field: 'plusMinus',  headerName: '+/-', type: 'number' },
-        { field: 'penalties',  headerName: 'PIM', type: 'number' },
-        { field: 'streak',  headerName: 'Streak', type: 'number' },
+        { field: 'name', headerName: 'Team', sortable: false, flex: 1 },
+        { field: 'gamesPlayed', headerName: 'GP', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+        { field: 'wins',  headerName: 'W', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+        { field: 'losses',  headerName: 'L', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+        { field: 'ties',  headerName: 'T', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+        { field: 'points',  headerName: 'PTS', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+        { field: 'goalsFor',  headerName: 'GF', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+        { field: 'goalsAgainst',  headerName: 'GA', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+        { field: 'plusMinus',  headerName: '+/-', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+        { field: 'penalties',  headerName: 'PIM', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+        { field: 'streak',  headerName: 'Streak', type: 'number', sortable: false, width: 80, headerAlign: 'center', align: 'center' },
       ];
-    var teams = [];
+    const [teams, setTeams] = React.useState([]);
   
     const handleSeasonChange = (event) => {
         setSeason(event.target.value);
@@ -212,9 +212,10 @@ function Standings19(props) {
     }, [seasons]);
     
     useEffect(() => {
-        teams = [];
+        let ts = [];
         for(let team of standings.standingsTeams) {
-            teams.push({
+            ts.push({
+                id: 0,
                 name: team.name,
                 gamesPlayed: 0,
                 wins: 0,
@@ -224,15 +225,17 @@ function Standings19(props) {
                 goalsFor: 0,
                 goalsAgainst: 0,
                 penalties: 0,
+                streak: 0,
                 winStreak: 0,
                 lossStreak: 0,
-                tieStreak: 0
+                tieStreak: 0,
+                plusMinus: 0
             });
         }
         
         for(let game of standings.standingsGames) {
             // for($i=0;$i<$tCount;$i++) {
-            for(let team of teams) {
+            for(let team of ts) {
                 team.gamesPlayed += addGP(game,team.name);
                 team.wins+=addWin(game,team.name);
                 team.losses+=addLoss(game,team.name);
@@ -277,7 +280,7 @@ function Standings19(props) {
             }
         }
 
-        teams.sort((a, b) => {
+        ts.sort((a, b) => {
             if(a.points>b.points) {
                 return -1;
             }else if(a.points<b.points) {
@@ -304,6 +307,21 @@ function Standings19(props) {
                 return 1;
             }
         });
+
+        let i = 0;
+        ts.forEach((team) => {
+            team.id = i;
+            if(team.winStreak>0) {
+                team.streak = `WON ${team.winStreak}`;
+            }else if(team.lossStreak>0){
+                team.streak = `LOST ${team.lossStreak}`;
+            }else if(team.tieStreak>0){
+                team.streak = `TIED ${team.tieStreak}`;
+            }
+            i++;
+        })
+
+        setTeams(ts)
     }, [standings]);
 
     const getData = (s, t) => {
@@ -348,22 +366,28 @@ function Standings19(props) {
             </Select>
         </FormControl>
         <br /><br />
+        {(teams.length!==0) ?
+                <DataGrid
+                    autoHeight
+                    rows={teams}
+                    columns={columns}
+                    density='compact'
+                    disableColumnFilter={true}
+                    disableColumnMenu={true}
+                    hideFooter={true}
+                    onCellClick={null}
+                />
+            :
+            null
+        }
 
-{console.log(teams)}
-        <DataGrid
-            rows={teams}
-            columns={columns}
-            pageSize={teams.length}
-            rowsPerPageOptions={teams.length}
-        />
-
-        {standings.standingsGames.map((item) => {
+        {/* {standings.standingsGames.map((item) => {
             return <Card>
             <Typography>{item.date.substr(0,10)}</Typography>
                 <Typography>{item.homeTeam} - {item.homeGoals}</Typography>
                 <Typography>{item.awayTeam} - {item.awayGoals}</Typography>
             </Card>
-        })}
+        })} */}
     </Fragment>
 }
 
