@@ -1,171 +1,18 @@
-import React, { Fragment, useEffect } from 'react';
-import { FormControl, InputLabel, makeStyles, MenuItem, Select } from '@material-ui/core';
+import React, { Fragment, useEffect, useConstant, useCallback } from 'react';
+import { FormControl, InputLabel, makeStyles, MenuItem, Select, TextField } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { seasons19, seasonsValue } from '../redux/seasonsSlice';
 import { standingsValue, standingsGames, standingsTeams, standingsVs } from '../redux/standingsSlice';
-import { Sort } from '@material-ui/icons';
 import { DataGrid } from '@mui/x-data-grid';
+import { addGA, addGF, addGP, addLoss, addPIM, addTie, addWin } from '../utils/games';
+import TmhlTable from '../Components/TmhlTable';
 
 const useStyles = makeStyles((theme) => ({
     
 }));
 
-
-					
-					
-function addGP(r,team) {
-    return (r.homeTeam === team || r.awayTeam === team) ? 1 : 0;
-}
-
-
-function addWin(r,team) {
-    if(r.homeTeam===team && r.homeGoals>r.awayGoals) {
-        return 1;
-    }else if(r.awayTeam===team && r.homeGoals<r.awayGoals) {
-        return 1;
-    }else{
-        return 0;
-    }
-}
-
-function addLoss(r,team) {
-    if(r.homeTeam===team && r.homeGoals<r.awayGoals) {
-        return 1;
-    }else if(r.awayTeam===team && r.homeGoals>r.awayGoals) {
-        return 1;
-    }else{
-        return 0;
-    }
-}
-
-function addTie(r,team) {
-    if(r.homeTeam===team && r.homeGoals===r.awayGoals) {
-        return 1;
-    }else if(r.awayTeam===team && r.homeGoals===r.awayGoals) {
-        return 1;
-    }else{
-        return 0;
-    }
-}
-
-function addGF(r,team) {
-    if(r.homeTeam===team) {
-        return r.homeGoals;
-    }else if(r.awayTeam===team) {
-        return r.awayGoals;
-    }else{
-        return 0;
-    }
-}
-
-function addGA(r,team) {
-    if(r.homeTeam===team) {
-        return r.awayGoals;
-    }else if(r.awayTeam===team) {
-        return r.homeGoals;
-    }else{
-        return 0;
-    }
-}
-
-function addPIM(r,team) {
-    if(r.homeTeam===team) {
-        return r.homePIM;
-    }else if(r.awayTeam===team) {
-        return r.awayPIM;
-    }else{
-        return 0;
-    }
-}
-
-function addStreak(r,team) {
-    if(r.homeTeam===team) {
-        return r.homeStreak;
-    }else if(r.awayTeam===team) {
-        return r.awayStreak;
-    }else{
-        return "";
-    }
-}
-
-function addGPPlayoffs(r,team) {
-    if(r.homeTeam===team || r.awayTeam===team) {
-        return 1;
-    }else{
-        return 0;
-    }
-}
-
-
-function addWinPlayoffs(r,team) {
-    if(r.homeTeam===team && r.homeGoals>r.awayGoals && r.isOvertime===0) {
-        return 1;
-    }else if(r.awayTeam===team && r.homeGoals<r.awayGoals && r.isOvertime===0) {
-        return 1;
-    }else{
-        return 0;
-    }
-}
-
-
-function addOTWinPlayoffs(r,team) {
-    if(r.homeTeam===team && r.homeGoals>r.awayGoals && r.isOvertime===1) {
-        return 1;
-    }else if(r.awayTeam===team && r.homeGoals<r.awayGoals && r.isOvertime===1) {
-        return 1;
-    }else{
-        return 0;
-    }
-}
-
-function addLossPlayoffs(r,team) {
-    if(r.homeTeam===team && r.homeGoals<r.awayGoals && r.isOvertime==0) {
-        return 1;
-    }else if(r.awayTeam===team && r.homeGoals>r.awayGoals && r.isOvertime===0) {
-        return 1;
-    }else{
-        return 0;
-    }
-}
-
-function addOTLossPlayoffs(r,team) {
-    if(r.homeTeam===team && r.homeGoals<r.awayGoals && r.isOvertime===1) {
-        return 1;
-    }else if(r.awayTeam===team && r.homeGoals>r.awayGoals && r.isOvertime===1) {
-        return 1;
-    }else{
-        return 0;
-    }
-}
-
-function addGFPlayoffs(r,team) {
-    if(r.homeTeam===team) {
-        return r.homeGoals;
-    }else if(r.awayTeam===team) {
-        return r.awayGoals;
-    }else{
-        return 0;
-    }
-}
-
-function addGAPlayoffs(r,team) {
-    if(r.homeTeam===team) {
-        return r.awayGoals;
-    }else if(r.awayTeam===team) {
-        return r.homeGoals;
-    }else{
-        return 0;
-    }
-}
-
-function addPIMPlayoffs(r,team) {
-    if(r.homeTeam===team) {
-        return r.homePIM;
-    }else if(r.awayTeam===team) {
-        return r.awayPIM;
-    }else{
-        return 0;
-    }
+function getFormattedDate(params) {
+    return params.value.substr(0,10);
 }
 
 function Standings19(props) {
@@ -175,7 +22,8 @@ function Standings19(props) {
     const standings = useSelector(standingsValue);
     const [season, setSeason] = React.useState('1');
     const [type, setType] = React.useState(0);
-    const columns = [
+    const [filteredGames, setFilteredGames] = React.useState([]);
+    const teamsColumns = [
         { field: 'name', headerName: 'Team', sortable: false, flex: 1 },
         { field: 'gamesPlayed', headerName: 'GP', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
         { field: 'wins',  headerName: 'W', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
@@ -188,6 +36,14 @@ function Standings19(props) {
         { field: 'penalties',  headerName: 'PIM', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
         { field: 'streak',  headerName: 'Streak', type: 'number', sortable: false, width: 80, headerAlign: 'center', align: 'center' },
       ];
+      const gamesColumns = [
+          { field: 'date', headerName: 'DATE', sortable: false, width: 120, valueGetter: getFormattedDate },
+          { field: 'time', headerName: 'TIME', sortable: false, width: 120, headerAlign: 'center', align: 'center' },
+          { field: 'homeTeam',  headerName: 'HOME', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
+          { field: 'homeGoals',  headerName: 'GOALS', type: 'number', sortable: false, width: 120, headerAlign: 'center', align: 'center' },
+          { field: 'awayTeam',  headerName: 'AWAY', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
+          { field: 'awayGoals',  headerName: 'GOALS', type: 'number', sortable: false, width: 120, headerAlign: 'center', align: 'center' },
+        ];
     const [teams, setTeams] = React.useState([]);
   
     const handleSeasonChange = (event) => {
@@ -234,7 +90,6 @@ function Standings19(props) {
         }
         
         for(let game of standings.standingsGames) {
-            // for($i=0;$i<$tCount;$i++) {
             for(let team of ts) {
                 team.gamesPlayed += addGP(game,team.name);
                 team.wins+=addWin(game,team.name);
@@ -320,8 +175,9 @@ function Standings19(props) {
             }
             i++;
         })
-
+        
         setTeams(ts)
+        setFilteredGames(standings.standingsGames);
     }, [standings]);
 
     const getData = (s, t) => {
@@ -367,27 +223,26 @@ function Standings19(props) {
         </FormControl>
         <br /><br />
         {(teams.length!==0) ?
-                <DataGrid
-                    autoHeight
-                    rows={teams}
-                    columns={columns}
-                    density='compact'
-                    disableColumnFilter={true}
-                    disableColumnMenu={true}
-                    hideFooter={true}
-                    onCellClick={null}
-                />
+            <DataGrid
+                autoHeight
+                rows={teams}
+                columns={teamsColumns}
+                density='compact'
+                disableColumnFilter={true}
+                disableColumnMenu={true}
+                hideFooter={true}
+            />
             :
             null
         }
-
-        {/* {standings.standingsGames.map((item) => {
-            return <Card>
-            <Typography>{item.date.substr(0,10)}</Typography>
-                <Typography>{item.homeTeam} - {item.homeGoals}</Typography>
-                <Typography>{item.awayTeam} - {item.awayGoals}</Typography>
-            </Card>
-        })} */}
+        {(filteredGames.length!==0) ?
+            <TmhlTable
+                rows={filteredGames}
+                columns={gamesColumns}
+            />
+            :
+            null
+        }
     </Fragment>
 }
 
