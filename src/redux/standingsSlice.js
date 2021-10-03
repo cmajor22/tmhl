@@ -8,12 +8,6 @@ const initialState = {
     standingsTeamsLoading: false,
     standingsVs: [],
     standingsVsLoading: false,
-    standingsGames40: [],
-    standingsGames40Loading: false,
-    standingsTeams40: [],
-    standingsTeams40Loading: false,
-    standingsVs40: [],
-    standingsVs40Loading: false,
 };
 
 export const standingsGames = createAsyncThunk(
@@ -36,30 +30,6 @@ export const standingsTeams = createAsyncThunk(
     'standings/teams',
     async(params) => {
         const response = await getStandingsTeams(params.league, params.season);
-        return response;
-    }
-);
-
-export const standingsGames40 = createAsyncThunk(
-    'standings/games/40',
-    async(season, isPlayoffs, isFinals) => {
-        const response = await getStandingsGames(2, season, isPlayoffs, isFinals);
-        return response;
-    }
-);
-
-export const standingsVs40 = createAsyncThunk(
-    'standings/vs/40',
-    async(season, isPlayoffs, isFinals) => {
-        const response = await getStandingsVs(2, season, isPlayoffs, isFinals);
-        return response;
-    }
-);
-
-export const standingsTeams40 = createAsyncThunk(
-    'standings/teams/40',
-    async(season) => {
-        const response = await getStandingsTeams(2, season);
         return response;
     }
 );
@@ -91,27 +61,6 @@ export const standings = createSlice({
             .addCase(standingsTeams.fulfilled, (state, action) => {
                 state.standingsTeamsLoading = false;
                 state.standingsTeams = [...action.payload];
-            })
-            .addCase(standingsGames40.pending, (state) => {
-                state.standingsGames40Loading = true;
-            })
-            .addCase(standingsGames40.fulfilled, (state, action) => {
-                state.standingsGames40Loading = false;
-                state.standingsGames40 = [...action.payload];
-            })
-            .addCase(standingsVs40.pending, (state) => {
-                state.standingsVs40Loading = true;
-            })
-            .addCase(standingsVs40.fulfilled, (state, action) => {
-                state.standingsVs40Loading = false;
-                state.standingsVs40 = [...action.payload];
-            })
-            .addCase(standingsTeams40.pending, (state) => {
-                state.standingsTeams40Loading = true;
-            })
-            .addCase(standingsTeams40.fulfilled, (state, action) => {
-                state.standingsTeams40Loading = false;
-                state.standingsTeams40 = [...action.payload];
             })
     }
 })

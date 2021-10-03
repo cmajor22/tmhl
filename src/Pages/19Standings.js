@@ -1,7 +1,7 @@
-import React, { Fragment, useEffect, useConstant, useCallback } from 'react';
-import { FormControl, InputLabel, makeStyles, MenuItem, Select, TextField } from '@material-ui/core';
+import React, { Fragment, useEffect } from 'react';
+import { FormControl, InputLabel, makeStyles, MenuItem, Select } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
-import { seasons19, seasonsValue } from '../redux/seasonsSlice';
+import { seasonsList, seasonsValue } from '../redux/seasonsSlice';
 import { standingsValue, standingsGames, standingsTeams, standingsVs } from '../redux/standingsSlice';
 import { DataGrid } from '@mui/x-data-grid';
 import { addGA, addGF, addGP, addLoss, addPIM, addTie, addWin } from '../utils/games';
@@ -57,13 +57,13 @@ function Standings19(props) {
     };
     
     useEffect(() => {
-        dispatch(seasons19(1));     
+        dispatch(seasonsList({league: 1}));     
     }, []);
     
     useEffect(() => {
-        if(seasons.seasons19.length>0) {
-            setSeason(seasons.seasons19[0]);
-            handleSeasonChange({target: {value: seasons.seasons19[0].seasonsid}});
+        if(seasons.seasons.length>0) {
+            setSeason(seasons.seasons[0]);
+            handleSeasonChange({target: {value: seasons.seasons[0].seasonsid}});
         }
     }, [seasons]);
     
@@ -202,7 +202,7 @@ function Standings19(props) {
                 label="Season"
                 onChange={handleSeasonChange}
             >
-                {seasons.seasons19.map((season) => {
+                {seasons.seasons.map((season) => {
                     return <MenuItem value={season.seasonsid}>{season.name}</MenuItem>;
                 })}
             </Select>

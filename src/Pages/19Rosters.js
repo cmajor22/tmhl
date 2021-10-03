@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { makeStyles, Typography, FormControl, InputLabel, Select, MenuItem } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
 import { get19, get40, rostersValue } from '../redux/rostersSlice';
-import { seasons19, seasonsValue } from '../redux/seasonsSlice';
+import { seasonsList, seasonsValue } from '../redux/seasonsSlice';
 
 const useStyles = makeStyles((theme) => ({
     
@@ -21,14 +21,14 @@ function Rosters19(props) {
     };
     
     useEffect(() => {
-        dispatch(seasons19(1));        
+        dispatch(seasonsList({league: 1}));        
         dispatch(get19(season));
     }, []);
     
     useEffect(() => {
-        if(seasons.seasons19.length>0) {
-            setSeason(seasons.seasons19[0]);
-            handleChange({target: {value: seasons.seasons19[0].name}});
+        if(seasons.seasons.length>0) {
+            setSeason(seasons.seasons[0]);
+            handleChange({target: {value: seasons.seasons[0].name}});
         }
     }, [seasons]);
 
@@ -42,7 +42,7 @@ function Rosters19(props) {
                 label="Season"
                 onChange={handleChange}
             >
-                {seasons.seasons19.map((seasons) => {
+                {seasons.seasons.map((seasons) => {
                     return <MenuItem value={seasons.name}>{seasons.name}</MenuItem>;
                 })}
             </Select>
