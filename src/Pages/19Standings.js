@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { seasonsList, seasonsValue } from '../redux/seasonsSlice';
 import { standingsValue, standingsGames, standingsTeams, standingsVs } from '../redux/standingsSlice';
 import { DataGrid } from '@mui/x-data-grid';
-import { addGA, addGF, addGP, addLoss, addPIM, addTie, addWin } from '../utils/games';
+import { addGA, addGF, addGP, addGPPlayoffs, addLoss, addLossPlayoffs, addOTLossPlayoffs, addOTWinPlayoffs, addPIM, addTie, addWin, addWinPlayoffs } from '../utils/games';
 import TmhlTable from '../Components/TmhlTable';
 
 const useStyles = makeStyles((theme) => ({
@@ -23,7 +23,7 @@ function Standings19(props) {
     const [season, setSeason] = React.useState('1');
     const [type, setType] = React.useState(0);
     const [filteredGames, setFilteredGames] = React.useState([]);
-    const teamsColumns = [
+    let teamsColumns = [
         { field: 'name', headerName: 'Team', sortable: false, flex: 1 },
         { field: 'gamesPlayed', headerName: 'GP', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
         { field: 'wins',  headerName: 'W', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
@@ -36,14 +36,14 @@ function Standings19(props) {
         { field: 'penalties',  headerName: 'PIM', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
         { field: 'streak',  headerName: 'Streak', type: 'number', sortable: false, width: 80, headerAlign: 'center', align: 'center' },
       ];
-      const gamesColumns = [
-          { field: 'date', headerName: 'DATE', sortable: false, width: 120, valueGetter: getFormattedDate },
-          { field: 'time', headerName: 'TIME', sortable: false, width: 120, headerAlign: 'center', align: 'center' },
-          { field: 'homeTeam',  headerName: 'HOME', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
-          { field: 'homeGoals',  headerName: 'GOALS', type: 'number', sortable: false, width: 120, headerAlign: 'center', align: 'center' },
-          { field: 'awayTeam',  headerName: 'AWAY', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
-          { field: 'awayGoals',  headerName: 'GOALS', type: 'number', sortable: false, width: 120, headerAlign: 'center', align: 'center' },
-        ];
+    const gamesColumns = [
+        { field: 'date', headerName: 'DATE', sortable: false, width: 120, valueGetter: getFormattedDate },
+        { field: 'time', headerName: 'TIME', sortable: false, width: 120, headerAlign: 'center', align: 'center' },
+        { field: 'homeTeam',  headerName: 'HOME', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'homeGoals',  headerName: 'GOALS', type: 'number', sortable: false, width: 120, headerAlign: 'center', align: 'center' },
+        { field: 'awayTeam',  headerName: 'AWAY', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'awayGoals',  headerName: 'GOALS', type: 'number', sortable: false, width: 120, headerAlign: 'center', align: 'center' },
+    ];
     const [teams, setTeams] = React.useState([]);
   
     const handleSeasonChange = (event) => {
@@ -53,6 +53,35 @@ function Standings19(props) {
     
     const handleTypeChange = (event) => {
         setType(event.target.value);
+        if(event.target.value==='Regular Season') {
+            teamsColumns = [
+                { field: 'name', headerName: 'Team', sortable: false, flex: 1 },
+                { field: 'gamesPlayed', headerName: 'GP', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+                { field: 'wins',  headerName: 'W', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+                { field: 'losses',  headerName: 'L', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+                { field: 'ties',  headerName: 'T', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+                { field: 'points',  headerName: 'PTS', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+                { field: 'goalsFor',  headerName: 'GF', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+                { field: 'goalsAgainst',  headerName: 'GA', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+                { field: 'plusMinus',  headerName: '+/-', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+                { field: 'penalties',  headerName: 'PIM', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+                { field: 'streak',  headerName: 'Streak', type: 'number', sortable: false, width: 80, headerAlign: 'center', align: 'center' },
+              ];
+        }else{
+            teamsColumns = [
+                { field: 'name', headerName: 'Team', sortable: false, flex: 1 },
+                { field: 'gamesPlayed', headerName: 'GP', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+                { field: 'wins',  headerName: 'RW', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+                { field: 'otWins',  headerName: 'OW', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+                { field: 'otLosses',  headerName: 'OL', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+                { field: 'losses',  headerName: 'L', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+                { field: 'points',  headerName: 'PTS', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+                { field: 'goalsFor',  headerName: 'GF', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+                { field: 'goalsAgainst',  headerName: 'GA', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+                { field: 'plusMinus',  headerName: '+/-', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+                { field: 'penalties',  headerName: 'PIM', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+              ];
+        }
         getData(season, event.target.value);
     };
     
@@ -91,47 +120,60 @@ function Standings19(props) {
         
         for(let game of standings.standingsGames) {
             for(let team of ts) {
-                team.gamesPlayed += addGP(game,team.name);
-                team.wins+=addWin(game,team.name);
-                team.losses+=addLoss(game,team.name);
-                team.ties+=addTie(game,team.name);
-                team.points+=addWin(game,team.name)*2+addTie(game,team.name);
-                team.goalsFor+=addGF(game,team.name);
-                team.goalsAgainst+=addGA(game,team.name);
-                team.penalties+=addPIM(game,team.name);
-                
-                if(game.homeTeam===team.name || game.awayTeam===team.name) {
-                    if(team.winStreak>0) {
-                        if(addWin(game,team.name)>0) {
-                            team.winStreak+=addWin(game,team.name);
+                if(type==='Regular Season') {
+                    team.gamesPlayed += addGP(game,team.name);
+                    team.wins+=addWin(game,team.name);
+                    team.losses+=addLoss(game,team.name);
+                    team.ties+=addTie(game,team.name);
+                    team.points+=addWin(game,team.name)*2+addTie(game,team.name);
+                    team.goalsFor+=addGF(game,team.name);
+                    team.goalsAgainst+=addGA(game,team.name);
+                    team.penalties+=addPIM(game,team.name);
+                    
+                    if(game.homeTeam===team.name || game.awayTeam===team.name) {
+                        if(team.winStreak>0) {
+                            if(addWin(game,team.name)>0) {
+                                team.winStreak+=addWin(game,team.name);
+                            }else{
+                                team.winStreak=0;
+                                team.lossStreak+=addLoss(game,team.name);
+                                team.tieStreak+=addTie(game,team.name);
+                            }
+                        }else if(team.lossStreak>0) {
+                            if(addLoss(game,team.name)>0) {
+                                team.lossStreak+=addLoss(game,team.name);
+                            }else{
+                                team.winStreak+=addWin(game,team.name);
+                                team.lossStreak=0;
+                                team.tieStreak+=addTie(game,team.name);
+                            }
+                        }else if(team.tieStreak>0){
+                            if(addTie(game,team.name)){
+                                team.tieStreak+=addTie(game,team.name);
+                            }else{
+                                team.winStreak+=addWin(game,team.name);
+                                team.lossStreak+=addLoss(game,team.name);
+                                team.tieStreak=0;
+                            }
                         }else{
-                            team.winStreak=0;
+                            team.winStreak+=addWin(game,team.name);
                             team.lossStreak+=addLoss(game,team.name);
                             team.tieStreak+=addTie(game,team.name);
                         }
-                    }else if(team.lossStreak>0) {
-                        if(addLoss(game,team.name)>0) {
-                            team.lossStreak+=addLoss(game,team.name);
-                        }else{
-                            team.winStreak+=addWin(game,team.name);
-                            team.lossStreak=0;
-                            team.tieStreak+=addTie(game,team.name);
-                        }
-                    }else if(team.tieStreak>0){
-                        if(addTie(game,team.name)){
-                            team.tieStreak+=addTie(game,team.name);
-                        }else{
-                            team.winStreak+=addWin(game,team.name);
-                            team.lossStreak+=addLoss(game,team.name);
-                            team.tieStreak=0;
-                        }
-                    }else{
-                        team.winStreak+=addWin(game,team.name);
-                        team.lossStreak+=addLoss(game,team.name);
-                        team.tieStreak+=addTie(game,team.name);
                     }
+                    team.plusMinus+=addGF(game,team.name)-addGA(game,team.name);
+                }else{
+                    team.gamesPlayed += addGP(game,team.name);
+                    team.wins+=addWinPlayoffs(game,team.name);
+                    team.otWins+=addOTWinPlayoffs(game,team.name);
+                    team.otLosses+=addOTLossPlayoffs(game,team.name);
+                    team.losses+=addLossPlayoffs(game,team.name);
+                    team.points+=addWinPlayoffs(game,team.name)*3+addOTWinPlayoffs(game,team.name)*2+addOTLossPlayoffs;
+                    team.goalsFor+=addGF(game,team.name);
+                    team.goalsAgainst+=addGA(game,team.name);
+                    team.penalties+=addPIM(game,team.name);
+                    team.plusMinus+=addGF(game,team.name)-addGA(game,team.name);
                 }
-                team.plusMinus+=addGF(game,team.name)-addGA(game,team.name);
             }
         }
 
@@ -174,9 +216,9 @@ function Standings19(props) {
                 team.streak = `TIED ${team.tieStreak}`;
             }
             i++;
-        })
+        });
         
-        setTeams(ts)
+        setTeams(ts);
         setFilteredGames(standings.standingsGames);
     }, [standings]);
 
