@@ -5,6 +5,7 @@ import rostersReducer from './rostersSlice';
 import seasonsReducer from './seasonsSlice';
 import standingsReducer from './standingsSlice';
 import scheduleReducer from './scheduleSlice';
+import statsReducer from './statsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
     seasons: seasonsReducer,
     standings: standingsReducer,
     schedule: scheduleReducer,
+    stats: statsReducer
   },
 });

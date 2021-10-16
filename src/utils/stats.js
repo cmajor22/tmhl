@@ -196,5 +196,4 @@ function addGoalieNumGoalie(r,team) {
     }
 }
 
-export { addGP, addWin, addLoss, addTie, addGF, addGA, addPIM, addStreak, 
-    addWinPlayoffs, addLossPlayoffs, addOTWinPlayoffs, addOTLossPlayoffs}
+export { addGP, addWin, addLoss, addTie, addGF, addGA, addPIM, addSO, addGoalie, addGoalieNum }
