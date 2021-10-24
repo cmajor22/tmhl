@@ -281,6 +281,7 @@ function Standings19(props) {
             <TmhlTable
                 rows={filteredGames}
                 columns={gamesColumns}
+                hasFilter={true}
             />
             :
             null

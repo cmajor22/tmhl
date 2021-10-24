@@ -11,16 +11,21 @@ function TmhlTable(props) {
     const classes = useStyles();
     const columns = props.columns;
     const rows = props.rows;
+    const hasFilter = props.hasFilter;
     const [gamesSearch, setGamesSearch] = React.useState('');
     const [filteredGames, setFilteredGames] = React.useState([]);
 
     useEffect(() => {
+        console.log(rows)
         setFilteredGames(rows);
     },[]);
 
     useEffect(() => {
         setGamesSearch('');
-        setFilteredGames(returnGames(gamesSearch));
+        console.log(hasFilter)
+        // if(hasFilter) {
+            setFilteredGames(returnGames(gamesSearch));
+        // }
     }, [rows])
 
     useEffect(()=> {
@@ -29,18 +34,21 @@ function TmhlTable(props) {
 
     function returnGames(searchText) {
         return rows.filter((item) => {
-            if(item.homeTeam.toLowerCase().includes(searchText.toLowerCase()) ||
-                item.awayTeam.toLowerCase().includes(searchText.toLowerCase())) {
+            if(searchText===""){
+                return true;
+            }else if(item.homeTeam?.toLowerCase().includes(searchText.toLowerCase()) ||
+                item.awayTeam?.toLowerCase().includes(searchText.toLowerCase())) {
                 return true;
             }
         });
     }
 
     return <Fragment>
-        <TextField label="Standard" variant="standard" 
-        value={gamesSearch} 
-            onChange={(e) => {setGamesSearch(e.target.value)}}
-            />
+        {hasFilter ?
+            <TextField label="Standard" variant="standard" value={gamesSearch} onChange={(e) => {setGamesSearch(e.target.value)}}/>
+            :
+            null
+        }
         <DataGrid
             autoHeight
             rows={filteredGames}
