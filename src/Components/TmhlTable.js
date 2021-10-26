@@ -11,47 +11,55 @@ function TmhlTable(props) {
     const classes = useStyles();
     const columns = props.columns;
     const rows = props.rows;
+    const filterType = props.filterType;
     const hasFilter = props.hasFilter;
-    const [gamesSearch, setGamesSearch] = React.useState('');
-    const [filteredGames, setFilteredGames] = React.useState([]);
+    const [rowsSearch, setRowsSearch] = React.useState('');
+    const [filteredRows, setFilteredRows] = React.useState([]);
 
     useEffect(() => {
-        console.log(rows)
-        setFilteredGames(rows);
+        setFilteredRows(rows);
     },[]);
 
     useEffect(() => {
-        setGamesSearch('');
-        console.log(hasFilter)
-        // if(hasFilter) {
-            setFilteredGames(returnGames(gamesSearch));
-        // }
+        setRowsSearch('');
+        setFilteredRows(returnRows(rowsSearch));
     }, [rows])
 
     useEffect(()=> {
-        setFilteredGames(returnGames(gamesSearch));
-    }, [gamesSearch]);
+        setFilteredRows(returnRows(rowsSearch));
+    }, [rowsSearch]);
 
-    function returnGames(searchText) {
-        return rows.filter((item) => {
-            if(searchText===""){
-                return true;
-            }else if(item.homeTeam?.toLowerCase().includes(searchText.toLowerCase()) ||
-                item.awayTeam?.toLowerCase().includes(searchText.toLowerCase())) {
-                return true;
-            }
-        });
+    function returnRows(searchText) {
+        if(filterType==='player') {
+            return rows.filter((item) => {
+                if(searchText===""){
+                    return true;
+                }else if(item.name?.toLowerCase().includes(searchText.toLowerCase()) ||
+                    item.team?.toLowerCase().includes(searchText.toLowerCase())) {
+                    return true;
+                }
+            });
+        }else{
+            return rows.filter((item) => {
+                if(searchText===""){
+                    return true;
+                }else if(item.homeTeam?.toLowerCase().includes(searchText.toLowerCase()) ||
+                    item.awayTeam?.toLowerCase().includes(searchText.toLowerCase())) {
+                    return true;
+                }
+            });
+        }
     }
 
     return <Fragment>
         {hasFilter ?
-            <TextField label="Standard" variant="standard" value={gamesSearch} onChange={(e) => {setGamesSearch(e.target.value)}}/>
+            <TextField label="Standard" variant="standard" value={rowsSearch} onChange={(e) => {setRowsSearch(e.target.value)}}/>
             :
             null
         }
         <DataGrid
             autoHeight
-            rows={filteredGames}
+            rows={filteredRows}
             columns={columns}
             density='compact'
             disableColumnFilter={true}

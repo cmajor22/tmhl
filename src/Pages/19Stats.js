@@ -20,6 +20,7 @@ function Stats19(props) {
     const [goaliesStats, setGoaliesStats] = React.useState([]);
     const [goalsStats, setGoalsStats] = React.useState([]);
     const [assistsStats, setAssistsStats] = React.useState([]);
+    const [allStats, setAllStats] = React.useState([]);
     let goaliesColumns = [
         { field: 'goalie', headerName: 'Name', sortable: false, flex: 1 },
         { field: 'gamesPlayed', headerName: 'GP', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
@@ -40,6 +41,15 @@ function Stats19(props) {
         { field: 'team', headerName: 'TEAM', sortable: false, width: 200, headerAlign: 'center', align: 'center' },
         { field: 'assists',  headerName: 'ASSISTS', type: 'number', sortable: false, width: 200, headerAlign: 'center', align: 'center' },
     ];
+    let allColumns = [
+        { field: 'id', headerName: ' ', sortable: true, width: 20 },
+        { field: 'name', headerName: 'NAME', sortable: false, flex: 1 },
+        { field: 'team', headerName: 'TEAM', type: 'number', sortable: false, width: 150, headerAlign: 'center', align: 'center' },
+        { field: 'goals',  headerName: 'GOALS', type: 'number', sortable: true, width: 120, headerAlign: 'center', align: 'center' },
+        { field: 'assists',  headerName: 'ASSISTS', type: 'number', sortable: true, width: 120, headerAlign: 'center', align: 'center' },
+        { field: 'points',  headerName: 'POINTS', type: 'number', sortable: true, width: 120, headerAlign: 'center', align: 'center' },
+        { field: 'pims',  headerName: 'PIMS', type: 'number', sortable: true, width: 100, headerAlign: 'center', align: 'center' },
+      ];
   
     const handleSeasonChange = (event) => {
         setSeason(event.target.value);
@@ -53,12 +63,15 @@ function Stats19(props) {
     useEffect(() => {
         dispatch(seasonsList({league: 1}));
     }, []);
+    
+    useEffect(() => {
+        if(seasons.seasons.length>0) {
+            setSeason(seasons.seasons[0]);
+            handleSeasonChange({target: {value: seasons.seasons[0].seasonsid}});
+        }
+    }, [seasons]);
 
     useEffect(() => {
-        // console.log(stats.statsTeams);
-        // console.log(stats.statsGoalies);
-        // console.log(stats.statsPlayers);
-
         let teams = stats.statsTeams.map((item, i) => {
             return {
                 id: i,
@@ -102,7 +115,6 @@ function Stats19(props) {
         
         setGoaliesStats(teams);
 
-        console.log(stats.statsPlayers)
         let players = stats.statsPlayers.map((item, i) => {
             return {
                 id: i,
@@ -111,7 +123,7 @@ function Stats19(props) {
                 goals: item.goals,
                 assists: item.assists,
                 points: item.points,
-                penalties: item.penalties,
+                pims: item.pims,
             }
         });
         let goals = players.sort((a, b) => {
@@ -121,8 +133,9 @@ function Stats19(props) {
                 return 1;
             }
             return 0;
-        }).splice(0,5);
+        }).slice(0,5);
         setGoalsStats(goals);
+
         let assists = players.sort((a, b) => {
             if(a.assists > b.assists) {
                 return -1;
@@ -130,8 +143,31 @@ function Stats19(props) {
                 return 1;
             }
             return 0;
-        }).splice(0,5);
+        }).slice(0,5);
         setAssistsStats(assists);
+
+        let all = players.sort((a, b) => {
+            if(a.points > b.points) {
+                return -1;
+            }else if(a.points < b.points) {
+                return 1;
+            }else if(a.goals > b.goals) {
+                return -1;
+            }else if(a.goals < b.goals) {
+                return 1;
+            }else if(a.assists > b.assists) {
+                return -1;
+            }else if(a.assists < b.assists) {
+                return 1;
+            }
+            return 0;
+        });
+        let i =1;
+        for(let player of all) {
+            player.id=i;
+            i++;
+        }
+        setAllStats(all);
     }, [stats])
 
     const getData = (s, t) => {
@@ -178,7 +214,6 @@ function Stats19(props) {
         <br />
         <br />
         
-        {/* {console.log(goaliesStats)} */}
         {(goaliesStats.length!==0) ?
             <TmhlTable
                 rows={goaliesStats}
@@ -204,6 +239,17 @@ function Stats19(props) {
                 rows={assistsStats}
                 columns={assistsColumns}
                 hasFilter={false}
+            />
+            :
+            null
+        }
+        <br />
+        {(allStats.length!==0) ?
+            <TmhlTable
+                rows={allStats}
+                columns={allColumns}
+                hasFilter={true}
+                filterType='player'
             />
             :
             null
