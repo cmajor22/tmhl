@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { seasonsList, seasonsValue } from '../redux/seasonsSlice';
 import { standingsValue, standingsGames, standingsTeams, standingsVs } from '../redux/standingsSlice';
 import { DataGrid } from '@mui/x-data-grid';
-import { addGA, addGF, addGP, addLoss, addPIM, addTie, addWin } from '../utils/games';
+import { addGA, addGF, addGP, addLoss, addLossPlayoffs, addOTLossPlayoffs, addOTWinPlayoffs, addPIM, addTie, addWin, addWinPlayoffs } from '../utils/games';
 import TmhlTable from '../Components/TmhlTable';
 
 const useStyles = makeStyles((theme) => ({
@@ -21,7 +21,7 @@ function Standings40(props) {
     const seasons = useSelector(seasonsValue);
     const standings = useSelector(standingsValue);
     const [season, setSeason] = React.useState('1');
-    const [type, setType] = React.useState(0);
+    const [type, setType] = React.useState('Regular Season');
     const [filteredGames, setFilteredGames] = React.useState([]);
     const teamsColumns = [
         { field: 'name', headerName: 'Team', sortable: false, flex: 1 },
@@ -91,47 +91,60 @@ function Standings40(props) {
         
         for(let game of standings.standingsGames) {
             for(let team of ts) {
-                team.gamesPlayed += addGP(game,team.name);
-                team.wins+=addWin(game,team.name);
-                team.losses+=addLoss(game,team.name);
-                team.ties+=addTie(game,team.name);
-                team.points+=addWin(game,team.name)*2+addTie(game,team.name);
-                team.goalsFor+=addGF(game,team.name);
-                team.goalsAgainst+=addGA(game,team.name);
-                team.penalties+=addPIM(game,team.name);
-                
-                if(game.homeTeam===team.name || game.awayTeam===team.name) {
-                    if(team.winStreak>0) {
-                        if(addWin(game,team.name)>0) {
-                            team.winStreak+=addWin(game,team.name);
+                if(type==='Regular Season') {
+                    team.gamesPlayed += addGP(game,team.name);
+                    team.wins+=addWin(game,team.name);
+                    team.losses+=addLoss(game,team.name);
+                    team.ties+=addTie(game,team.name);
+                    team.points+=addWin(game,team.name)*2+addTie(game,team.name);
+                    team.goalsFor+=addGF(game,team.name);
+                    team.goalsAgainst+=addGA(game,team.name);
+                    team.penalties+=addPIM(game,team.name);
+                    
+                    if(game.homeTeam===team.name || game.awayTeam===team.name) {
+                        if(team.winStreak>0) {
+                            if(addWin(game,team.name)>0) {
+                                team.winStreak+=addWin(game,team.name);
+                            }else{
+                                team.winStreak=0;
+                                team.lossStreak+=addLoss(game,team.name);
+                                team.tieStreak+=addTie(game,team.name);
+                            }
+                        }else if(team.lossStreak>0) {
+                            if(addLoss(game,team.name)>0) {
+                                team.lossStreak+=addLoss(game,team.name);
+                            }else{
+                                team.winStreak+=addWin(game,team.name);
+                                team.lossStreak=0;
+                                team.tieStreak+=addTie(game,team.name);
+                            }
+                        }else if(team.tieStreak>0){
+                            if(addTie(game,team.name)){
+                                team.tieStreak+=addTie(game,team.name);
+                            }else{
+                                team.winStreak+=addWin(game,team.name);
+                                team.lossStreak+=addLoss(game,team.name);
+                                team.tieStreak=0;
+                            }
                         }else{
-                            team.winStreak=0;
+                            team.winStreak+=addWin(game,team.name);
                             team.lossStreak+=addLoss(game,team.name);
                             team.tieStreak+=addTie(game,team.name);
                         }
-                    }else if(team.lossStreak>0) {
-                        if(addLoss(game,team.name)>0) {
-                            team.lossStreak+=addLoss(game,team.name);
-                        }else{
-                            team.winStreak+=addWin(game,team.name);
-                            team.lossStreak=0;
-                            team.tieStreak+=addTie(game,team.name);
-                        }
-                    }else if(team.tieStreak>0){
-                        if(addTie(game,team.name)){
-                            team.tieStreak+=addTie(game,team.name);
-                        }else{
-                            team.winStreak+=addWin(game,team.name);
-                            team.lossStreak+=addLoss(game,team.name);
-                            team.tieStreak=0;
-                        }
-                    }else{
-                        team.winStreak+=addWin(game,team.name);
-                        team.lossStreak+=addLoss(game,team.name);
-                        team.tieStreak+=addTie(game,team.name);
                     }
+                    team.plusMinus+=addGF(game,team.name)-addGA(game,team.name);
+                }else{
+                    team.gamesPlayed += addGP(game,team.name);
+                    team.wins+=addWinPlayoffs(game,team.name);
+                    team.otWins+=addOTWinPlayoffs(game,team.name);
+                    team.otLosses+=addOTLossPlayoffs(game,team.name);
+                    team.losses+=addLossPlayoffs(game,team.name);
+                    team.points+=addWinPlayoffs(game,team.name)*3+addOTWinPlayoffs(game,team.name)*2+addOTLossPlayoffs(game,team.name);
+                    team.goalsFor+=addGF(game,team.name);
+                    team.goalsAgainst+=addGA(game,team.name);
+                    team.penalties+=addPIM(game,team.name);
+                    team.plusMinus+=addGF(game,team.name)-addGA(game,team.name);
                 }
-                team.plusMinus+=addGF(game,team.name)-addGA(game,team.name);
             }
         }
 
@@ -182,9 +195,9 @@ function Standings40(props) {
 
     const getData = (s, t) => {
         let [isPlayoffs, isFinals] = [0, 0];
-        if(t==='2') {
+        if(t==='Finals') {
             isFinals = 1;
-        }else if(t==='1'){
+        }else if(t==='Playoffs'){
             isPlayoffs = 1;
         }
         dispatch(standingsGames({league: 2, season: s, isPlayoffs: isPlayoffs, isFinals: isFinals}));
@@ -216,32 +229,40 @@ function Standings40(props) {
                 label="Type"
                 onChange={handleTypeChange}
             >
-                <MenuItem value="0">Regular Season</MenuItem>
-                <MenuItem value="1">Playoffs</MenuItem>
-                <MenuItem value="2">Finals</MenuItem>
+                <MenuItem value="Regular Season">Regular Season</MenuItem>
+                <MenuItem value="Playoffs">Playoffs</MenuItem>
+                <MenuItem value="Finals">Finals</MenuItem>
             </Select>
         </FormControl>
         <br /><br />
-        {(teams.length!==0) ?
-            <DataGrid
-                autoHeight
-                rows={teams}
-                columns={teamsColumns}
-                density='compact'
-                disableColumnFilter={true}
-                disableColumnMenu={true}
-                hideFooter={true}
-            />
+        {(type!=='Finals') ?
+            <Fragment>
+                {(teams.length!==0) ?
+                    <DataGrid
+                        autoHeight
+                        rows={teams}
+                        columns={teamsColumns}
+                        density='compact'
+                        disableColumnFilter={true}
+                        disableColumnMenu={true}
+                        hideFooter={true}
+                    />
+                    :
+                    null
+                }
+                {(filteredGames.length!==0) ?
+                    <TmhlTable
+                        rows={filteredGames}
+                        columns={gamesColumns}
+                    />
+                    :
+                    null
+                }
+            </Fragment>
             :
-            null
-        }
-        {(filteredGames.length!==0) ?
-            <TmhlTable
-                rows={filteredGames}
-                columns={gamesColumns}
-            />
-            :
-            null
+            <Fragment>
+
+            </Fragment>
         }
     </Fragment>
 }
