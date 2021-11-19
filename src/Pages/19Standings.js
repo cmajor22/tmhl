@@ -1,11 +1,12 @@
 import React, { Fragment, useEffect } from 'react';
-import { FormControl, InputLabel, makeStyles, MenuItem, Select } from '@material-ui/core';
+import { FormControl, InputLabel, makeStyles, MenuItem, Select, Typography } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
 import { seasonsList, seasonsValue } from '../redux/seasonsSlice';
 import { standingsValue, standingsGames, standingsTeams, standingsVs } from '../redux/standingsSlice';
 import { DataGrid } from '@mui/x-data-grid';
 import { addGA, addGF, addGP, addGPPlayoffs, addLoss, addLossPlayoffs, addOTLossPlayoffs, addOTWinPlayoffs, addPIM, addTie, addWin, addWinPlayoffs } from '../utils/games';
 import TmhlTable from '../Components/TmhlTable';
+import GameCard from '../Components/GameCard';
 
 const useStyles = makeStyles((theme) => ({
     
@@ -291,7 +292,12 @@ function Standings19(props) {
             </Fragment>
             :
             <Fragment>
-                TODO:  Game list for finals
+                {console.log(filteredGames)}
+                {console.log(standings)}
+                <Typography>adfgadfv</Typography>
+                {filteredGames.map((game) => {
+                    return <GameCard gamesId={game.gamesId}></GameCard>
+                })}
             </Fragment>
         }
     </Fragment>
