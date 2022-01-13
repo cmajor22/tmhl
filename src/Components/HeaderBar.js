@@ -32,19 +32,12 @@ function HeaderBar(props) {
     }, [])
 
     return <List disableGutters={true} className={classes.gameBar}>
-            {upcomingGames.map((game) => {
-                return <ListItem className={classes.listItem}><GameCard homeTeam={game.homeTeam} homeScore={game.homeScore} awayTeam={game.awayTeam} awayScore={game.awayScore} /></ListItem>
-            })}
-        </List>
-        {/* <div>
-            <Grid container>
-            {games.map((game) => {
-                return <Grid item xs={6} m={4} lg={2}>
-                    <GameCard homeTeam={game.homeTeam} homeScore={game.homeScore} awayTeam={game.awayTeam} awayScore={game.awayScore} />
-                </Grid>;
-            })}
-            </Grid>
-        </div> */}
+        {upcomingGames.map((game) => {
+            return <ListItem className={classes.listItem}>
+                <GameCard homeTeam={game.homeTeam} homeScore={game.homeScore} awayTeam={game.awayTeam} awayScore={game.awayScore} />
+            </ListItem>
+        })}
+    </List>
     
 }
 

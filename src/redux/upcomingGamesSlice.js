@@ -7,7 +7,7 @@ const initialState = {
 };
 
 export const getGames = createAsyncThunk(
-    'upcomingGames/getUpcomingGames',
+    'upcomingGames',
     async() => {
         const response = await getUpcomingGames();
         return response;
@@ -26,7 +26,7 @@ export const upcomingGames = createSlice({
             })
             .addCase(getGames.fulfilled, (state, action) => {
                 state.isLoading = false;
-                state.value = [...state.value, ...action.payload];
+                state.value = [...action.payload];
             })
     }
 })

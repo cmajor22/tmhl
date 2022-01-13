@@ -2,8 +2,8 @@ import { createAsyncThunk, createSlice, combineReducers } from '@reduxjs/toolkit
 import { getGameData } from '../api/gamesApi';
 
 const initialState = {
-    games: [],
-    gamesLoading: false,
+    gamesData: [],
+    gamesDataLoading: false,
 };
 
 export const gamesData = createAsyncThunk(
@@ -22,11 +22,11 @@ export const games = createSlice({
     extraReducers: (builder) => {
         builder
             .addCase(gamesData.pending, (state) => {
-                state.gamesLoading = true;
+                state.gamesDataLoading = true;
             })
             .addCase(gamesData.fulfilled, (state, action) => {
-                state.gamesLoading = false;
-                state.games = [...action.payload];
+                state.gamesDataLoading = false;
+                state.gamesData = [...action.payload];
             })
     }
 })

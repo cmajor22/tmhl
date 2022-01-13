@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { makeStyles, Typography, FormControl, InputLabel, Select, MenuItem, Grid, Card } from '@material-ui/core';
 import { useSelector, useDispatch } from 'react-redux';
-import { get19, get40, rostersValue } from '../redux/rostersSlice';
+import { get19, rostersValue } from '../redux/rostersSlice';
 import { seasonsList, seasonsValue } from '../redux/seasonsSlice';
 
 const useStyles = makeStyles((theme) => ({

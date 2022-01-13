@@ -11,17 +11,6 @@ const useStyles = makeStyles((theme) => ({
 
 function GameCard(props) {
     const classes = useStyles();
-    const dispatch = useDispatch();
-    const gamesId = props.gamesId;
-    const games = useSelector(gamesValue);
-
-    useEffect(() => {
-        dispatch(gamesData({gamesId}));
-    }, [gamesId]);
-
-    useEffect(() => {
-        console.log(games);
-    }, [games])
 
     return (
         <Box square elevation={1} className={classes.gameCard}>
