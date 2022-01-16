@@ -24,6 +24,7 @@ import Standings40 from './Pages/40Standings';
 import Schedule40 from './Pages/40Schedule';
 import Rules from './Pages/Rules';
 import SignUp from './Pages/SignUp';
+import Game from './Pages/Game';
 
 function App() {
   return (
@@ -45,6 +46,7 @@ function App() {
             <Route exact path="/40Schedule"><Schedule40/></Route>
             <Route exact path="/Rules"><Rules/></Route>
             <Route exact path="/SignUp"><SignUp/></Route>
+            <Route exact path="/Game/:gameId"><Game/></Route>
             <Route path="/"><Home /></Route>
           </Switch>
         </Box>
