@@ -3,6 +3,8 @@ import { makeStyles, Typography, FormControl, InputLabel, Select, MenuItem, Grid
 import { useSelector, useDispatch } from 'react-redux';
 import { get19, rostersValue } from '../redux/rostersSlice';
 import { seasonsList, seasonsValue } from '../redux/seasonsSlice';
+import { useParams } from 'react-router';
+import { gameAway, gameGoals, gameHome, gamePenalties, gamesValue } from '../redux/gamesSlice';
 
 const useStyles = makeStyles((theme) => ({
     
@@ -10,28 +12,33 @@ const useStyles = makeStyles((theme) => ({
 
 function Game(props) {
     const classes = useStyles();
+    const { gameId } = useParams();
     const dispatch = useDispatch();
     const rosters = useSelector(rostersValue);
     const seasons = useSelector(seasonsValue);
+    const game = useSelector(gamesValue);
     const [season, setSeason] = React.useState('');
     const [teamsList, setTeamsList] = React.useState([]);
+    console.log(gameId)
   
     const handleChange = (event) => {
         setSeason(event.target.value);
         dispatch(get19(event.target.value));
+
     };
     
     useEffect(() => {
-        dispatch(seasonsList({league: 1}));        
-        dispatch(get19(season));
+        // dispatch(seasonsList({league: 1}));        
+        // dispatch(get19(season));
+        dispatch(gameGoals(gameId));
+        dispatch(gamePenalties(gameId));
+        dispatch(gameHome(gameId));
+        dispatch(gameAway(gameId));
     }, []);
     
     useEffect(() => {
-        if(seasons.seasons.length>0) {
-            setSeason(seasons.seasons[0]);
-            handleChange({target: {value: seasons.seasons[0].name}});
-        }
-    }, [seasons]);
+        console.log(game)
+    }, [game]);
 
     useEffect(() => {
         let re = rosters.rosters19.reduce((r, a) => {
