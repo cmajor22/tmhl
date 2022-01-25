@@ -21,7 +21,7 @@ export async function getGameData(gamesId) {
   });
 }
 
-export async function getGameGoals(gamesId) {
+export async function getGameGoals(gameId) {
   return new Promise((resolve) => {
     fetch(`${server}/game/goals`, {
       method: 'POST',
@@ -29,10 +29,9 @@ export async function getGameGoals(gamesId) {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({gamesId: gamesId})})
+      body: JSON.stringify({gameId: gameId})})
       .then(res => res.json())
-      .then(
-        (result) => {
+      .then((result) => {
           resolve(result);
         },
         (error) => {
@@ -42,7 +41,7 @@ export async function getGameGoals(gamesId) {
   });
 }
 
-export async function getGamePenalties(gamesId) {
+export async function getGamePenalties(gameId) {
   return new Promise((resolve) => {
     fetch(`${server}/game/penalties`, {
       method: 'POST',
@@ -50,7 +49,7 @@ export async function getGamePenalties(gamesId) {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({gamesId: gamesId})})
+      body: JSON.stringify({gameId: gameId})})
       .then(res => res.json())
       .then(
         (result) => {
@@ -63,7 +62,7 @@ export async function getGamePenalties(gamesId) {
   });
 }
 
-export async function getGameHome(gamesId) {
+export async function getGameHome(gameId) {
   return new Promise((resolve) => {
     fetch(`${server}/game/home`, {
       method: 'POST',
@@ -71,7 +70,7 @@ export async function getGameHome(gamesId) {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({gamesId: gamesId})})
+      body: JSON.stringify({gameId: gameId})})
       .then(res => res.json())
       .then(
         (result) => {
@@ -84,7 +83,7 @@ export async function getGameHome(gamesId) {
   });
 }
 
-export async function getGameAway(gamesId) {
+export async function getGameAway(gameId) {
   return new Promise((resolve) => {
     fetch(`${server}/game/away`, {
       method: 'POST',
@@ -92,7 +91,7 @@ export async function getGameAway(gamesId) {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({gamesId: gamesId})})
+      body: JSON.stringify({gameId: gameId})})
       .then(res => res.json())
       .then(
         (result) => {

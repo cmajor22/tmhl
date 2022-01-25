@@ -15,22 +15,22 @@ export const gamesData = createAsyncThunk('games', async(params) => {
 });
 
 export const gameGoals = createAsyncThunk('goals', async(params) => {
-    const response = await getGameGoals(params.gamesId);
+    const response = await getGameGoals(params.gameId);
     return response;
 });
 
 export const gamePenalties = createAsyncThunk('penalties', async(params) => {
-    const response = await getGamePenalties(params.gamesId);
+    const response = await getGamePenalties(params.gameId);
     return response;
 });
 
 export const gameHome = createAsyncThunk('home', async(params) => {
-    const response = await getGameHome(params.gamesId);
+    const response = await getGameHome(params.gameId);
     return response;
 });
 
 export const gameAway = createAsyncThunk('away', async(params) => {
-    const response = await getGameAway(params.gamesId);
+    const response = await getGameAway(params.gameId);
     return response;
 });
 
