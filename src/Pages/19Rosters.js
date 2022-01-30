@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { makeStyles, Typography, FormControl, InputLabel, Select, MenuItem, Grid, Card } from '@material-ui/core';
+import { Typography, FormControl, InputLabel, Select, MenuItem, Grid, Card } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useSelector, useDispatch } from 'react-redux';
 import { get19, rostersValue } from '../redux/rostersSlice';
 import { seasonsList, seasonsValue } from '../redux/seasonsSlice';

@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
-import { Box, Card, makeStyles, Typography } from '@material-ui/core';
-import PersonIcon from '@material-ui/icons/Person';
+import { Box, Card, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
+import PersonIcon from '@mui/icons-material/Person';
 
 const useStyles = makeStyles((theme) => ({
     personCard: {
