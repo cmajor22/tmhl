@@ -1,17 +1,31 @@
 import React, { Fragment } from 'react';
-import { Card, Grid, Typography } from '@mui/material';
+import { Box, Card, Grid, List, ListItem, Paper, Typography, ListItemIcon, ListItemText, Link, Container } from '@mui/material';
 
 import makeStyles from '@mui/styles/makeStyles';
+import { ArrowRight } from '@mui/icons-material';
 
 const useStyles = makeStyles((theme) => ({
-    
+    cardTitle: {
+        paddingTop: '10px',
+        marginLeft: '5px'
+    },
+    cardContent: {
+        marginLeft: '5px',
+        marginRight: '5px'
+    },
+    listItemIcon: {
+        width: theme.spacing(3),
+        minWidth: theme.spacing(3),
+        marginTop: '4px'
+    }
 }));
 
 function LeagueInfo(props) {
     const classes = useStyles();
 
-    return <Fragment>
-        <br /><br />
+    return <Container>
+        <Typography variant="h2">League Information</Typography>
+        <br />
         <Typography>
             The Tottenham Men’s Hockey League is celebrating 40 years of providing Men’s recreational hockey.  
             The league’s focus is to provide fun, recreational hockey for men over 19 years of age in Tottenham and surrounding area. 
@@ -22,35 +36,62 @@ function LeagueInfo(props) {
             The last night of our season includes our Championship games and our end of year banquet.
         </Typography>
 
-        <br /><br />
+        <br />
 
         <Grid container spacing={3}>
-            <Grid item xs={6}>
-                <Card>
-                    <Typography>19+ Division</Typography>
-                    <Typography>Open to men 19 years of age and older</Typography>
-                    <Typography>8 teams</Typography>
-                    <Typography>Games are Sunday nights at 6:30, 7:30, 8:30 and 9:30pm</Typography>
-                </Card>
+            <Grid item xs={12} lg={6}>
+                <Paper elevation={3}>
+                    <Typography variant="h4" className={classes.cardTitle}>19+ Division</Typography>
+                    <Box className={classes.cardContent}>
+                        <List>
+                            <ListItem disablePadding alignItems="flex-start">
+                                <ListItemIcon className={classes.listItemIcon}><ArrowRight /></ListItemIcon>
+                                <ListItemText primary="Open to men 19 years of age and older" />
+                            </ListItem>
+                            <ListItem disablePadding alignItems="flex-start">
+                                <ListItemIcon className={classes.listItemIcon}><ArrowRight /></ListItemIcon>
+                                <ListItemText primary="6 to 8 teams" />
+                            </ListItem>
+                            <ListItem disablePadding alignItems="flex-start">
+                                <ListItemIcon className={classes.listItemIcon}><ArrowRight /></ListItemIcon>
+                                <ListItemText primary="Games are Sunday nights at 7:00, 8:00, and 9:00pm" />
+                            </ListItem>
+                        </List>
+                    </Box>
+                </Paper>
             </Grid>
-            <Grid item xs={6}>
-                <Card>
-                    <Typography>40+ Division</Typography>
-                    <Typography>Open to men 40 years of age and older</Typography>
-                    <Typography>6 teams</Typography>
-                    <Typography>Games are Tuesday nights at 8:00, 9:00 and 10:00pm</Typography>
-                </Card>
+            <Grid item xs={12} lg={6}>
+                <Paper elevation={3}>
+                    <Typography variant="h4" className={classes.cardTitle}>40+ Division</Typography>
+                    <Box className={classes.cardContent}>
+                        <List>
+                            <ListItem disablePadding alignItems="flex-start">
+                                <ListItemIcon className={classes.listItemIcon}><ArrowRight /></ListItemIcon>
+                                <ListItemText primary="Open to men 40 years of age and older"/>
+                            </ListItem>
+                            <ListItem disablePadding alignItems="flex-start">
+                                <ListItemIcon className={classes.listItemIcon}><ArrowRight /></ListItemIcon>
+                                <ListItemText primary="6 teams" />
+                            </ListItem>
+                            <ListItem disablePadding alignItems="flex-start">
+                                <ListItemIcon className={classes.listItemIcon}><ArrowRight /></ListItemIcon>
+                                <ListItemText primary="Games are Tuesday nights at 8:00, 9:00 and 10:00" />
+                            </ListItem>
+                        </List>
+                    </Box>
+                </Paper>
             </Grid>
         </Grid>
 
-        <br /><br />
+        <br />
  
         <Typography>Registration is approximately $420</Typography>
 
-        <br /><br />
+        <br />
 
-        <Typography>If you are interested in joining our league please go to “sign up” and fill out your information and a league representative will contact you.</Typography>
-    </Fragment>
+        <Typography>If you are interested in joining our league please <Link href="/signUp">sign up</Link> and fill out your information and a league representative will contact you.</Typography>
+        <br /><br />
+    </Container>
 }
 
 export default LeagueInfo;
