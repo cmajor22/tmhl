@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
-import { TextField } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core';
+import { TextField } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { DataGrid } from '@mui/x-data-grid';
 
 const useStyles = makeStyles((theme) => ({

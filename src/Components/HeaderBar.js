@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import GameCard from './GameCard';
-import { List, ListItem } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core';
+import { List, ListItem } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useSelector, useDispatch } from 'react-redux';
 import { getGames, upcomingGamesValue } from '../redux/upcomingGamesSlice'
 

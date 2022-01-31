@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { Grid, Card, makeStyles, Box, Typography } from '@material-ui/core';
+import { Grid, Card, Box, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { gamesData, gamesValue } from '../redux/gamesSlice';
 

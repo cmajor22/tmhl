@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import './App.css';
 import HeaderBar from './Components/HeaderBar';
-import { Box, Container } from '@material-ui/core';
+import { Box, Container } from '@mui/material';
 import {
   BrowserRouter as Router,
   Switch,
@@ -25,32 +25,58 @@ import Schedule40 from './Pages/40Schedule';
 import Rules from './Pages/Rules';
 import SignUp from './Pages/SignUp';
 import Game from './Pages/Game';
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline';
+
+const theme = createTheme({
+  palette: {
+    mode: 'dark'
+  },
+  overrides: {
+  	root: {
+	  "& .MuiDataGrid-root": {
+	  },
+  }},
+  components: {
+	  MuiDataGrid: {
+		  styleOverrides: {
+			  root: {
+			  },
+		  }
+	  }
+  }
+});
 
 function App() {
   return (
-      <Router>
-        <Box style={{maxWidth: '850px', margin: 'auto'}}>
-          <HeaderBar></HeaderBar>
-          <Navigation2></Navigation2>
-          <Switch>
-            <Route exact path="/home"><Home /></Route>
-            <Route exact path="/leagueInfo"><LeagueInfo/></Route>
-            <Route exact path="/presidentsMessage"><PresidentsMessage/></Route>
-            <Route exact path="/executive"><Executive/></Route>
-            <Route exact path="/19Rosters"><Rosters19/></Route>
-            <Route exact path="/19Stats"><Stats19/></Route>
-            <Route exact path="/19Standings"><Standings19/></Route>
-            <Route exact path="/19Schedule"><Schedule19/></Route>
-            <Route exact path="/40Rosters"><Rosters40/></Route>
-            <Route exact path="/40Standings"><Standings40/></Route>
-            <Route exact path="/40Schedule"><Schedule40/></Route>
-            <Route exact path="/Rules"><Rules/></Route>
-            <Route exact path="/SignUp"><SignUp/></Route>
-            <Route exact path="/Game/:gameId"><Game/></Route>
-            <Route path="/"><Home /></Route>
-          </Switch>
-        </Box>
-      </Router>
+      <ThemeProvider theme={theme}>
+		<CssBaseline />
+        <Router>
+          <Box style={{backgroundColor: '#121212'}}>
+			<Box style={{maxWidth: '850px',height: '100%',minHeight: '100vh',margin: 'auto'}}>
+				<HeaderBar></HeaderBar>
+				<Navigation2></Navigation2>
+				<Switch>
+					<Route exact path="/home"><Home /></Route>
+					<Route exact path="/leagueInfo"><LeagueInfo/></Route>
+					<Route exact path="/presidentsMessage"><PresidentsMessage/></Route>
+					<Route exact path="/executive"><Executive/></Route>
+					<Route exact path="/19Rosters"><Rosters19/></Route>
+					<Route exact path="/19Stats"><Stats19/></Route>
+					<Route exact path="/19Standings"><Standings19/></Route>
+					<Route exact path="/19Schedule"><Schedule19/></Route>
+					<Route exact path="/40Rosters"><Rosters40/></Route>
+					<Route exact path="/40Standings"><Standings40/></Route>
+					<Route exact path="/40Schedule"><Schedule40/></Route>
+					<Route exact path="/Rules"><Rules/></Route>
+					<Route exact path="/SignUp"><SignUp/></Route>
+					<Route exact path="/Game/:gameId"><Game/></Route>
+					<Route path="/"><Home /></Route>
+				</Switch>
+				</Box>
+			</Box>
+        </Router>
+      </ThemeProvider>
   );
 }
 

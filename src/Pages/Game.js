@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles, Typography, FormControl, InputLabel, Select, MenuItem, Grid, Card, Box } from '@material-ui/core';
+import { Typography, FormControl, InputLabel, Select, MenuItem, Grid, Card, Box } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import { gameAway, gameGoals, gameHome, gamePenalties, gamesValue } from '../redux/gamesSlice';

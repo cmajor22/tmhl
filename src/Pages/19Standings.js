@@ -1,5 +1,6 @@
 import React, { Fragment, useEffect } from 'react';
-import { FormControl, InputLabel, makeStyles, MenuItem, Select, Typography } from '@material-ui/core';
+import { FormControl, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { seasonsList, seasonsValue } from '../redux/seasonsSlice';
 import { standingsValue, standingsGames, standingsTeams, standingsVs } from '../redux/standingsSlice';

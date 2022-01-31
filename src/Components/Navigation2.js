@@ -1,9 +1,9 @@
 import { Grid, Button, Drawer, ListItem, ListItemText,
-    Typography, Accordion, AccordionSummary, AccordionDetails, Paper } from '@material-ui/core';
+    Typography, Accordion, AccordionSummary, AccordionDetails, Paper } from '@mui/material';
 import React, { Fragment } from 'react';
 import { useHistory, withRouter } from 'react-router-dom';
-import CloseIcon from '@material-ui/icons/Close';
-import { makeStyles } from '@material-ui/styles';
+import CloseIcon from '@mui/icons-material/Close';
+import { makeStyles } from '@mui/styles';
 import { toggleMenu } from '../redux/menuSlice';
 import { useSelector, useDispatch } from 'react-redux';
 
