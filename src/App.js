@@ -32,25 +32,16 @@ const theme = createTheme({
   palette: {
     mode: 'dark'
   },
-  root: {
-  "& .MuiDataGrid-root": {
-	  color: `#fff !important`
-  }},
   overrides: {
   	root: {
 	  "& .MuiDataGrid-root": {
-		  color: `#fff !important`
 	  },
   }},
   components: {
 	  MuiDataGrid: {
 		  styleOverrides: {
 			  root: {
-				fontSize: '10rem',
 			  },
-			  autoHeight: {
-				fontSize: '10rem',
-			  }
 		  }
 	  }
   }
