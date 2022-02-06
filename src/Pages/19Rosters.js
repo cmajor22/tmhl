@@ -1,12 +1,21 @@
 import React, { useEffect } from 'react';
-import { Typography, FormControl, InputLabel, Select, MenuItem, Grid, Card } from '@mui/material';
+import { Typography, FormControl, InputLabel, Select, MenuItem, Grid, Card, Container, Box, Paper } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { useSelector, useDispatch } from 'react-redux';
 import { get19, rostersValue } from '../redux/rostersSlice';
 import { seasonsList, seasonsValue } from '../redux/seasonsSlice';
+import PageTitle from '../Components/PageTitle';
 
 const useStyles = makeStyles((theme) => ({
-    
+    playerItem: {
+        display: 'flex',
+        flexDirection: 'row'
+    },
+    playerNumber: {
+        opacity: '0.4',
+        width: '20px',
+        fontSize: '12px'
+    }
 }));
 
 function Rosters19(props) {
@@ -44,7 +53,7 @@ function Rosters19(props) {
         setTeamsList(tl);
     }, [rosters])
 
-    return <div>
+    return <Container>
         <FormControl fullWidth>
             <InputLabel id="season-select-label">Season</InputLabel>
             <Select
@@ -64,16 +73,22 @@ function Rosters19(props) {
         <Grid container spacing={3}>
             {teamsList.map((team) => {
                 return <Grid item xs={4}>
-                    <Card>
-                        <Typography>{team[0].teamName}</Typography>
+                    <Paper>
+                        <PageTitle title={team[0].teamName} variant="h4"/>
                         {team.map((player) => {
-                            return <Typography>{player.playerName}</Typography>
+                            {console.log(player)}
+                            return <Box className={classes.playerItem}>
+                                <Typography className={classes.playerNumber}>{player.number}</Typography>
+                                <Typography>{player.playerName}</Typography>
+                                {player.isCaptain === 1 && <Typography>(C)</Typography>}
+                                {player.isGoalie === 1 && <Typography>(C)</Typography>}
+                            </Box>
                         })}
-                    </Card>
+                    </Paper>
                 </Grid>
             })}
         </Grid>
-    </div>
+    </Container>
 }
 
 export default Rosters19;

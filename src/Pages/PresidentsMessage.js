@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
-import { Typography } from '@mui/material';
+import { Container, Typography } from '@mui/material';
 
 import makeStyles from '@mui/styles/makeStyles';
+import PageTitle from '../Components/PageTitle';
 
 const useStyles = makeStyles((theme) => ({
     
@@ -10,9 +11,10 @@ const useStyles = makeStyles((theme) => ({
 function PresidentsMessage(props) {
     const classes = useStyles();
 
-    return <Fragment>
-        <br /><br />
-        <Typography>Can’t wait ‘till Sunday night</Typography><br /><br />
+    return <Container>
+        <PageTitle title="President's Message" variant="h2"/>
+        <br />
+        <Typography>Can’t wait ‘till Sunday night</Typography><br />
 
 
         <Typography>After all these years (approximately 20 for me) I still find myself thinking just that.  
@@ -22,13 +24,13 @@ function PresidentsMessage(props) {
         It is organized and very affordably priced.  Besides the fun of playing hockey, there are some other things that make this league great.  
         For one thing a little exercise wouldn’t hurt most of us. Also, because it is a full draft league you meet and play with new people each year.  
         In my own experience I have found that when I started at 20 years old, I played with some of my friend’s fathers and even the odd grandfather.  
-        Now it is fun to watch as some of my friend’s sons or even a grandson starts out with us.</Typography><br /><br />
+        Now it is fun to watch as some of my friend’s sons or even a grandson starts out with us.</Typography><br />
 
         <Typography>The hockey has always been very good, fun and with just enough competitiveness to keep things interesting.  
         I would like to thank all the people who have helped out in the past, and kept this league running so well, especially our past presidents; 
-        Dan Rutledge, Steve Thompson, Steve Gartland, and Tom Perry.  (Please let me know if I missed any of the past presidents)</Typography><br /><br />
+        Dan Rutledge, Steve Thompson, Steve Gartland, and Tom Perry.  (Please let me know if I missed any of the past presidents)</Typography><br />
 
-        <Typography>So, if you’re looking for fun recreational men’s hockey, sign up, and I’ll see you Sunday night!</Typography><br /><br />
+        <Typography>So, if you’re looking for fun recreational men’s hockey, sign up, and I’ll see you Sunday night!</Typography><br />
 
         
 
@@ -36,7 +38,7 @@ function PresidentsMessage(props) {
         <Typography>Bo Niederhuber</Typography>
         <Typography>President</Typography>
         <Typography>TMHL</Typography>
-    </Fragment>
+    </Container>
 }
 
 export default PresidentsMessage;

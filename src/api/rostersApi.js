@@ -41,3 +41,24 @@ export async function getRosters40(league = 2, year = "2019-2020") {
       )
   });
 }
+
+export async function getRostersCaptains() {
+  return new Promise((resolve) => {
+    fetch(`${server}/rosters/captains`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({})})
+      .then(res => res.json())
+      .then(
+        (result) => {
+          resolve(result);
+        },
+        (error) => {
+          resolve([]);
+        }
+      )
+  });
+}

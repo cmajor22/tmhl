@@ -30,7 +30,11 @@ import CssBaseline from '@mui/material/CssBaseline';
 
 const theme = createTheme({
   palette: {
-    mode: 'dark'
+    mode: 'dark',
+	tmhl: {
+		accent: '#ff6900',
+		dark: '#060606'
+	}
   },
   overrides: {
   	root: {
@@ -52,8 +56,8 @@ function App() {
       <ThemeProvider theme={theme}>
 		<CssBaseline />
         <Router>
-          <Box style={{backgroundColor: '#121212'}}>
-			<Box style={{maxWidth: '850px',height: '100%',minHeight: '100vh',margin: 'auto'}}>
+          <Box style={{backgroundImage: 'url("/bg.jpg")', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundColor: '#FFFFFF'}}>
+			<Box style={{maxWidth: '960px',height: '100%',minHeight: '100vh',margin: 'auto', backgroundColor: '#1e1e1e'}}>
 				<HeaderBar></HeaderBar>
 				<Navigation2></Navigation2>
 				<Switch>

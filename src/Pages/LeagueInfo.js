@@ -1,8 +1,8 @@
 import React, { Fragment } from 'react';
 import { Box, Card, Grid, List, ListItem, Paper, Typography, ListItemIcon, ListItemText, Link, Container } from '@mui/material';
-
 import makeStyles from '@mui/styles/makeStyles';
 import { ArrowRight } from '@mui/icons-material';
+import PageTitle from '../Components/PageTitle';
 
 const useStyles = makeStyles((theme) => ({
     cardTitle: {
@@ -17,6 +17,9 @@ const useStyles = makeStyles((theme) => ({
         width: theme.spacing(3),
         minWidth: theme.spacing(3),
         marginTop: '4px'
+    },
+    leagueInfo: {
+        padding: '5px'
     }
 }));
 
@@ -24,7 +27,7 @@ function LeagueInfo(props) {
     const classes = useStyles();
 
     return <Container>
-        <Typography variant="h2">League Information</Typography>
+        <PageTitle title="League Information" variant="h2"/>
         <br />
         <Typography>
             The Tottenham Men’s Hockey League is celebrating 40 years of providing Men’s recreational hockey.  
@@ -40,8 +43,8 @@ function LeagueInfo(props) {
 
         <Grid container spacing={3}>
             <Grid item xs={12} lg={6}>
-                <Paper elevation={3}>
-                    <Typography variant="h4" className={classes.cardTitle}>19+ Division</Typography>
+                <Paper elevation={3} className={classes.leagueInfo}>
+                    <PageTitle title="19+ Division" variant="h4"/>
                     <Box className={classes.cardContent}>
                         <List>
                             <ListItem disablePadding alignItems="flex-start">
@@ -61,8 +64,8 @@ function LeagueInfo(props) {
                 </Paper>
             </Grid>
             <Grid item xs={12} lg={6}>
-                <Paper elevation={3}>
-                    <Typography variant="h4" className={classes.cardTitle}>40+ Division</Typography>
+                <Paper elevation={3} className={classes.leagueInfo}>
+                    <PageTitle title="40+ Division" variant="h4"/>
                     <Box className={classes.cardContent}>
                         <List>
                             <ListItem disablePadding alignItems="flex-start">
