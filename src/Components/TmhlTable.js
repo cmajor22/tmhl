@@ -4,6 +4,9 @@ import makeStyles from '@mui/styles/makeStyles';
 import { DataGrid } from '@mui/x-data-grid';
 
 const useStyles = makeStyles((theme) => ({
+    filterBox: {
+        width: '100%'
+    }
 }));
 
 
@@ -53,7 +56,8 @@ function TmhlTable(props) {
 
     return <Fragment>
         {hasFilter ?
-            <TextField label="Standard" variant="standard" value={rowsSearch} onChange={(e) => {setRowsSearch(e.target.value)}}/>
+            <TextField label="Filter" variant="standard" value={rowsSearch} className={classes.filterBox}
+                onChange={(e) => {setRowsSearch(e.target.value)}}/>
             :
             null
         }

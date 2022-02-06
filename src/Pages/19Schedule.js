@@ -1,10 +1,11 @@
 import React, { Fragment, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Container, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import TmhlTable from '../Components/TmhlTable';
 import { scheduleGames, scheduleValue } from '../redux/scheduleSlice';
 import { seasonsValue, seasonsList } from '../redux/seasonsSlice';
+import PageTitle from '../Components/PageTitle';
 
 const useStyles = makeStyles((theme) => ({
     
@@ -64,7 +65,9 @@ function Schedule19(props) {
         dispatch(scheduleGames({league: 1, season: s}));
     }
 
-    return <Fragment>
+    return <Container>
+        <PageTitle title="19+ Schedule" variant="h2"/>
+        <br />
         <FormControl fullWidth>
             <InputLabel id="season-select-label">Season</InputLabel>
             <Select
@@ -79,15 +82,19 @@ function Schedule19(props) {
                 })}
             </Select>
         </FormControl>
+        <br />
+        <br />
         {(filteredGames.length!==0) ?
             <TmhlTable
                 rows={filteredGames}
                 columns={gamesColumns}
+                hasFilter={true}
             />
             :
             null
         }
-    </Fragment>
+        <br />
+    </Container>
 }
 
 export default Schedule19;

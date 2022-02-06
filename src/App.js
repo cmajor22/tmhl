@@ -27,6 +27,7 @@ import SignUp from './Pages/SignUp';
 import Game from './Pages/Game';
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline';
+import bg from './assets/bg.jpg';
 
 const theme = createTheme({
   palette: {
@@ -56,7 +57,7 @@ function App() {
       <ThemeProvider theme={theme}>
 		<CssBaseline />
         <Router>
-          <Box style={{backgroundImage: 'url("/bg.jpg")', backgroundPosition: 'center', backgroundRepeat: 'no-repeat', backgroundColor: '#FFFFFF'}}>
+          <Box style={{backgroundImage: `url(${bg})`, backgroundPosition: 'center top', backgroundRepeat: 'no-repeat', backgroundColor: '#FFFFFF'}}>
 			<Box style={{maxWidth: '960px',height: '100%',minHeight: '100vh',margin: 'auto', backgroundColor: '#1e1e1e'}}>
 				<HeaderBar></HeaderBar>
 				<Navigation2></Navigation2>

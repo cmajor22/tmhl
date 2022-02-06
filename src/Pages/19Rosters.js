@@ -7,14 +7,28 @@ import { seasonsList, seasonsValue } from '../redux/seasonsSlice';
 import PageTitle from '../Components/PageTitle';
 
 const useStyles = makeStyles((theme) => ({
+    teamItem: {
+        padding: '5px'
+    },
     playerItem: {
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        alignItems: 'flex-end',
     },
     playerNumber: {
         opacity: '0.4',
-        width: '20px',
-        fontSize: '12px'
+        width: '26px',
+        marginRight: '3px',
+        fontSize: '14px',
+        display: 'flex',
+        justifyContent: 'flex-end'
+    },
+    playerExtra: {
+        opacity: '0.4',
+        marginLeft: '2px',
+        fontSize: '14px',
+        display: 'flex',
+        justifyContent: 'flex-end'
     }
 }));
 
@@ -54,6 +68,8 @@ function Rosters19(props) {
     }, [rosters])
 
     return <Container>
+        <PageTitle title="19+ Rosters" variant="h2"/>
+        <br />
         <FormControl fullWidth>
             <InputLabel id="season-select-label">Season</InputLabel>
             <Select
@@ -73,21 +89,22 @@ function Rosters19(props) {
         <Grid container spacing={3}>
             {teamsList.map((team) => {
                 return <Grid item xs={4}>
-                    <Paper>
+                    <Paper elevation={3} className={classes.teamItem}>
                         <PageTitle title={team[0].teamName} variant="h4"/>
                         {team.map((player) => {
                             {console.log(player)}
                             return <Box className={classes.playerItem}>
                                 <Typography className={classes.playerNumber}>{player.number}</Typography>
                                 <Typography>{player.playerName}</Typography>
-                                {player.isCaptain === 1 && <Typography>(C)</Typography>}
-                                {player.isGoalie === 1 && <Typography>(C)</Typography>}
+                                {player.isCaptain === 1 && <Typography className={classes.playerExtra}>(C)</Typography>}
+                                {player.isGoalie === 1 && <Typography className={classes.playerExtra}>(G)</Typography>}
                             </Box>
                         })}
                     </Paper>
                 </Grid>
             })}
         </Grid>
+        <br />
     </Container>
 }
 

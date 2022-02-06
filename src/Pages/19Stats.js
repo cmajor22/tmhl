@@ -1,11 +1,12 @@
 import React, { Fragment, useEffect } from 'react';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Container, FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { seasonsList, seasonsValue } from '../redux/seasonsSlice';
 import { statsTeams, statsGoalies, statsPlayers, statsValue } from '../redux/statsSlice';
 import { addGA, addGoalie, addGoalieNum, addGP, addLoss, addSO, addTie, addWin } from '../utils/stats';
 import TmhlTable from '../Components/TmhlTable';
+import PageTitle from '../Components/PageTitle';
 
 const useStyles = makeStyles((theme) => ({
     
@@ -34,13 +35,13 @@ function Stats19(props) {
       ];
     let goalsColumns = [
         { field: 'name', headerName: 'NAME', sortable: false, flex: 1 },
-        { field: 'team', headerName: 'TEAM', sortable: false, width: 200, headerAlign: 'center', align: 'center' },
-        { field: 'goals',  headerName: 'GOALS', type: 'number', sortable: false, width: 200, headerAlign: 'center', align: 'center' },
+        { field: 'team', headerName: 'TEAM', sortable: false, headerAlign: 'center', align: 'center' },
+        { field: 'goals',  headerName: 'GOALS', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
     ];
     let assistsColumns = [
         { field: 'name', headerName: 'NAME', sortable: false, flex: 1 },
-        { field: 'team', headerName: 'TEAM', sortable: false, width: 200, headerAlign: 'center', align: 'center' },
-        { field: 'assists',  headerName: 'ASSISTS', type: 'number', sortable: false, width: 200, headerAlign: 'center', align: 'center' },
+        { field: 'team', headerName: 'TEAM', sortable: false, headerAlign: 'center', align: 'center' },
+        { field: 'assists',  headerName: 'ASSISTS', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
     ];
     let allColumns = [
         { field: 'id', headerName: ' ', sortable: true, width: 20 },
@@ -183,79 +184,95 @@ function Stats19(props) {
         dispatch(statsPlayers({isPlayoffs: isPlayoffs, season: s, isFinals: isFinals}));
     }
 
-    return <Fragment>
-        <FormControl fullWidth>
-            <InputLabel id="season-select-label">Season</InputLabel>
-            <Select
-                labelId="season-select-label"
-                id="season-select"
-                value={season}
-                label="Season"
-                onChange={handleSeasonChange}
-            >
-                {seasons.seasons.map((season) => {
-                    return <MenuItem value={season.seasonsid}>{season.name}</MenuItem>;
-                })}
-            </Select>
-        </FormControl>
-        <FormControl fullWidth>
-            <InputLabel id="type-select-label">Season</InputLabel>
-            <Select
-                labelId="type-select-label"
-                id="type-select"
-                value={type}
-                label="Type"
-                onChange={handleTypeChange}
-            >
-                <MenuItem value="0">Regular Season</MenuItem>
-                <MenuItem value="1">Playoffs</MenuItem>
-                <MenuItem value="2">Finals</MenuItem>
-            </Select>
-        </FormControl>
+    return <Container>
+        <PageTitle title="19+ Stats" variant="h2"/>
         <br />
+        <Grid container spacing={3}>
+            <Grid item xs={6}>
+                <FormControl fullWidth>
+                    <InputLabel id="season-select-label">Season</InputLabel>
+                    <Select
+                        labelId="season-select-label"
+                        id="season-select"
+                        value={season}
+                        label="Season"
+                        onChange={handleSeasonChange}
+                    >
+                        {seasons.seasons.map((season) => {
+                            return <MenuItem value={season.seasonsid}>{season.name}</MenuItem>;
+                        })}
+                    </Select>
+                </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+                <FormControl fullWidth>
+                    <InputLabel id="type-select-label">Mode</InputLabel>
+                    <Select
+                        labelId="type-select-label"
+                        id="type-select"
+                        value={type}
+                        label="Type"
+                        onChange={handleTypeChange}
+                    >
+                        <MenuItem value="0">Regular Season</MenuItem>
+                        <MenuItem value="1">Playoffs</MenuItem>
+                        <MenuItem value="2">Finals</MenuItem>
+                    </Select>
+                </FormControl>
+            </Grid>
+            <br />
+            
+            {(goaliesStats.length!==0) ?
+                <Grid item xs={12}>
+                    <TmhlTable
+                        rows={goaliesStats}
+                        columns={goaliesColumns}
+                        hasFilter={false}
+                    />
+                </Grid>
+                :
+                null
+            }
+            <br />
+            {(goalsStats.length!==0) ?
+                <Grid item xs={6}>
+                    <TmhlTable
+                        rows={goalsStats}
+                        columns={goalsColumns}
+                        hasFilter={false}
+                    />
+                </Grid>
+                :
+                null
+            }
+            <br />
+            {(assistsStats.length!==0) ?
+                <Grid item xs={6}>
+                    <TmhlTable
+                        rows={assistsStats}
+                        columns={assistsColumns}
+                        hasFilter={false}
+                    />
+                </Grid>
+                :
+                null
+            }
+            <br />
+            {(allStats.length!==0) ?
+                <Grid item xs={12}>
+                    <TmhlTable
+                        rows={allStats}
+                        columns={allColumns}
+                        hasFilter={true}
+                        filterType='player'
+                    />
+                </Grid>
+                :
+                null
+            }
+        </Grid>
         <br />
-        
-        {(goaliesStats.length!==0) ?
-            <TmhlTable
-                rows={goaliesStats}
-                columns={goaliesColumns}
-                hasFilter={false}
-            />
-            :
-            null
-        }
-        <br />
-        {(goalsStats.length!==0) ?
-            <TmhlTable
-                rows={goalsStats}
-                columns={goalsColumns}
-                hasFilter={false}
-            />
-            :
-            null
-        }
-        <br />
-        {(assistsStats.length!==0) ?
-            <TmhlTable
-                rows={assistsStats}
-                columns={assistsColumns}
-                hasFilter={false}
-            />
-            :
-            null
-        }
-        <br />
-        {(allStats.length!==0) ?
-            <TmhlTable
-                rows={allStats}
-                columns={allColumns}
-                hasFilter={true}
-                filterType='player'
-            />
-            :
-            null
-        }
-    </Fragment>
+    </Container>
 }
 
 export default Stats19;
