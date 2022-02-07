@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect } from 'react';
-import { Container, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from '@mui/material';
+import { Box, Container, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Typography } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { seasonsList, seasonsValue } from '../redux/seasonsSlice';
@@ -7,11 +7,23 @@ import { standingsValue, standingsGames, standingsTeams, standingsVs } from '../
 import { DataGrid } from '@mui/x-data-grid';
 import { addGA, addGF, addGP, addGPPlayoffs, addLoss, addLossPlayoffs, addOTLossPlayoffs, addOTWinPlayoffs, addPIM, addTie, addWin, addWinPlayoffs } from '../utils/games';
 import TmhlTable from '../Components/TmhlTable';
-import GameCard from '../Components/GameCard';
+import Game from '../Pages/Game';
 import PageTitle from '../Components/PageTitle';
 
 const useStyles = makeStyles((theme) => ({
-    
+    finalGameBox: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: '5px',
+        marginTop: '10px',
+        width: '100%'
+    },
+    finalGameHeader: {
+        width: '50%'
+    },
+    finalGameContent: {
+    }
 }));
 
 function getFormattedDate(params) {
@@ -237,6 +249,16 @@ function Standings19(props) {
         dispatch(standingsVs({league: 1, season: s, isPlayoffs: isPlayoffs, isFinals: isFinals}));
     }
 
+    function finalGameOrder(a,b) {
+        let aTime = a.time.toString().split(':')[0];
+        let bTime = b.time.toString().split(':')[0];
+        if(aTime < bTime) {
+            return 1;
+        }else{
+            return -1;
+        }
+    }
+
     return <Container>
         <PageTitle title="19+ Standings" variant="h2"/>
         <br />
@@ -274,36 +296,45 @@ function Standings19(props) {
                 </FormControl>
             </Grid>
             <br /><br />
-            {(type!=='Finals') ?
+            {type!=='Finals' && teams.length!==0 &&
                 <Grid item xs={12}>
-                    {(teams.length!==0) ?
-                        <DataGrid
-                            autoHeight
-                            rows={teams}
-                            columns={teamsColumns}
-                            density='compact'
-                            disableColumnFilter={true}
-                            disableColumnMenu={true}
-                            hideFooter={true}
-                        />
-                        :
-                        null
-                    }
-                    {(filteredGames.length!==0) ?
-                        <TmhlTable
-                            rows={filteredGames}
-                            columns={gamesColumns}
-                            hasFilter={true}
-                        />
-                        :
-                        null
-                    }
+                    <DataGrid
+                        autoHeight
+                        rows={teams}
+                        columns={teamsColumns}
+                        density='compact'
+                        disableColumnFilter={true}
+                        disableColumnMenu={true}
+                        hideFooter={true}
+                    />
                 </Grid>
-                :
+            }
+            {type!=='Finals' && filteredGames.length!==0 &&
                 <Grid item xs={12}>
-                    <Typography>adfgadfv</Typography>
-                    {filteredGames.map((game) => {
-                        return <GameCard gamesId={game.gamesId}></GameCard>
+                    <TmhlTable
+                        rows={filteredGames}
+                        columns={gamesColumns}
+                        hasFilter={true}
+                    />
+                </Grid>
+            }
+            {type==='Finals' &&
+                <Grid item xs={12}>
+                    {[...filteredGames].sort(finalGameOrder).map((game, index) => {
+                        return <Paper elevation={3} className={classes.finalGameBox}>
+                            <Box className={classes.finalGameHeader}>
+                                {index===0 && <PageTitle title="Championship" variant="h3"/>}
+                                {index===1 && <PageTitle title="3RD Place" variant="h3"/>}
+                                {index===2 && <PageTitle title="5TH Place" variant="h3"/>}
+                                {index===3 && <PageTitle title="7TH Place" variant="h3"/>}
+                            </Box>
+                            <Box className={classes.finalGameContent}>
+                                <Typography variant="h6">
+                                    {game.homeGoals > game.awayGoals && `${game.homeTeam} (${game.homeGoals}) over ${game.awayTeam} (${game.awayGoals})`}
+                                    {game.homeGoals < game.awayGoals && `${game.awayTeam} (${game.awayGoals}) over ${game.homeTeam} (${game.homeGoals})`}
+                                </Typography>
+                            </Box>
+                        </Paper>
                     })}
                 </Grid>
             }

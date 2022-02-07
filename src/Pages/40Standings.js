@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect } from 'react';
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Box, Container, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Typography } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { seasonsList, seasonsValue } from '../redux/seasonsSlice';
@@ -7,9 +7,22 @@ import { standingsValue, standingsGames, standingsTeams, standingsVs } from '../
 import { DataGrid } from '@mui/x-data-grid';
 import { addGA, addGF, addGP, addLoss, addLossPlayoffs, addOTLossPlayoffs, addOTWinPlayoffs, addPIM, addTie, addWin, addWinPlayoffs } from '../utils/games';
 import TmhlTable from '../Components/TmhlTable';
+import PageTitle from '../Components/PageTitle';
 
 const useStyles = makeStyles((theme) => ({
-    
+    finalGameBox: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: '5px',
+        marginTop: '10px',
+        width: '100%'
+    },
+    finalGameHeader: {
+        width: '50%'
+    },
+    finalGameContent: {
+    }
 }));
 
 function getFormattedDate(params) {
@@ -206,39 +219,53 @@ function Standings40(props) {
         dispatch(standingsVs({league: 2, season: s, isPlayoffs: isPlayoffs, isFinals: isFinals}));
     }
 
-    return <Fragment>
-        <FormControl fullWidth>
-            <InputLabel id="season-select-label">Season</InputLabel>
-            <Select
-                labelId="season-select-label"
-                id="season-select"
-                value={season}
-                label="Season"
-                onChange={handleSeasonChange}
-            >
-                {seasons.seasons.map((season) => {
-                    return <MenuItem value={season.seasonsid}>{season.name}</MenuItem>;
-                })}
-            </Select>
-        </FormControl>
-        <FormControl fullWidth>
-            <InputLabel id="type-select-label">Season</InputLabel>
-            <Select
-                labelId="type-select-label"
-                id="type-select"
-                value={type}
-                label="Type"
-                onChange={handleTypeChange}
-            >
-                <MenuItem value="Regular Season">Regular Season</MenuItem>
-                <MenuItem value="Playoffs">Playoffs</MenuItem>
-                <MenuItem value="Finals">Finals</MenuItem>
-            </Select>
-        </FormControl>
-        <br /><br />
-        {(type!=='Finals') ?
-            <Fragment>
-                {(teams.length!==0) ?
+    function finalGameOrder(a,b) {
+        let aTime = a.time.toString().split(':')[0];
+        let bTime = b.time.toString().split(':')[0];
+        if(aTime < bTime) {
+            return 1;
+        }else{
+            return -1;
+        }
+    }
+
+    return <Container>
+        <Grid container spacing={3}>
+            <Grid item xs={6}>
+                <FormControl fullWidth>
+                    <InputLabel id="season-select-label">Season</InputLabel>
+                    <Select
+                        labelId="season-select-label"
+                        id="season-select"
+                        value={season}
+                        label="Season"
+                        onChange={handleSeasonChange}
+                    >
+                        {seasons.seasons.map((season) => {
+                            return <MenuItem value={season.seasonsid}>{season.name}</MenuItem>;
+                        })}
+                    </Select>
+                </FormControl>
+            </Grid>
+            <Grid item xs={6}>
+                <FormControl fullWidth>
+                    <InputLabel id="type-select-label">Mode</InputLabel>
+                    <Select
+                        labelId="type-select-label"
+                        id="type-select"
+                        value={type}
+                        label="Type"
+                        onChange={handleTypeChange}
+                    >
+                        <MenuItem value="Regular Season">Regular Season</MenuItem>
+                        <MenuItem value="Playoffs">Playoffs</MenuItem>
+                        <MenuItem value="Finals">Finals</MenuItem>
+                    </Select>
+                </FormControl>
+            </Grid>
+            <br /><br />
+            {type!=='Finals' && teams.length!==0 &&
+                <Grid item xs={12}>
                     <DataGrid
                         autoHeight
                         rows={teams}
@@ -248,24 +275,40 @@ function Standings40(props) {
                         disableColumnMenu={true}
                         hideFooter={true}
                     />
-                    :
-                    null
-                }
-                {(filteredGames.length!==0) ?
+                </Grid>
+            }
+            {type!=='Finals' && filteredGames.length!==0 &&
+                <Grid item xs={12}>
                     <TmhlTable
                         rows={filteredGames}
                         columns={gamesColumns}
+                        hasFilter={true}
                     />
-                    :
-                    null
-                }
-            </Fragment>
-            :
-            <Fragment>
-
-            </Fragment>
-        }
-    </Fragment>
+                </Grid>
+            }
+            {type==='Finals' &&
+                <Grid item xs={12}>
+                    {[...filteredGames].sort(finalGameOrder).map((game, index) => {
+                        return <Paper elevation={3} className={classes.finalGameBox}>
+                            <Box className={classes.finalGameHeader}>
+                                {index===0 && <PageTitle title="Championship" variant="h3"/>}
+                                {index===1 && <PageTitle title="3RD Place" variant="h3"/>}
+                                {index===2 && <PageTitle title="5TH Place" variant="h3"/>}
+                                {index===3 && <PageTitle title="7TH Place" variant="h3"/>}
+                            </Box>
+                            <Box className={classes.finalGameContent}>
+                                <Typography variant="h6">
+                                    {game.homeGoals > game.awayGoals && `${game.homeTeam} (${game.homeGoals}) over ${game.awayTeam} (${game.awayGoals})`}
+                                    {game.homeGoals < game.awayGoals && `${game.awayTeam} (${game.awayGoals}) over ${game.homeTeam} (${game.homeGoals})`}
+                                </Typography>
+                            </Box>
+                        </Paper>
+                    })}
+                </Grid>
+            }
+        </Grid>
+        <br />
+    </Container>
 }
 
 export default Standings40;

@@ -1,12 +1,35 @@
 import React, { useEffect } from 'react';
-import { Typography, FormControl, InputLabel, Select, MenuItem, Grid, Card } from '@mui/material';
+import { Typography, FormControl, InputLabel, Select, MenuItem, Grid, Card, Container, Paper, Box } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { useSelector, useDispatch } from 'react-redux';
 import { get40, rostersValue } from '../redux/rostersSlice';
 import { seasonsList, seasonsValue } from '../redux/seasonsSlice';
+import PageTitle from '../Components/PageTitle';
 
 const useStyles = makeStyles((theme) => ({
-    
+    teamItem: {
+        padding: '5px'
+    },
+    playerItem: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'flex-end',
+    },
+    playerNumber: {
+        opacity: '0.4',
+        width: '26px',
+        marginRight: '3px',
+        fontSize: '14px',
+        display: 'flex',
+        justifyContent: 'flex-end'
+    },
+    playerExtra: {
+        opacity: '0.4',
+        marginLeft: '2px',
+        fontSize: '14px',
+        display: 'flex',
+        justifyContent: 'flex-end'
+    }
 }));
 
 function Rosters40(props) {
@@ -46,7 +69,9 @@ function Rosters40(props) {
         setTeamsList(tl);
     }, [rosters])
 
-    return <div>
+    return <Container>
+        <PageTitle title="40+ Rosters" variant="h2"/>
+        <br />
         <FormControl fullWidth>
             <InputLabel id="season-select-label">Season</InputLabel>
             <Select
@@ -66,16 +91,23 @@ function Rosters40(props) {
         <Grid container spacing={3}>
             {teamsList.map((team) => {
                 return <Grid item xs={4}>
-                    <Card>
-                        <Typography>{team[0].teamName}</Typography>
+                    <Paper elevation={3} className={classes.teamItem}>
+                        <PageTitle title={team[0].teamName} variant="h4"/>
                         {team.map((player) => {
-                            return <Typography>{player.playerName}</Typography>
+                            {console.log(player)}
+                            return <Box className={classes.playerItem}>
+                                <Typography className={classes.playerNumber}>{player.number}</Typography>
+                                <Typography>{player.playerName}</Typography>
+                                {player.isCaptain === 1 && <Typography className={classes.playerExtra}>(C)</Typography>}
+                                {player.isGoalie === 1 && <Typography className={classes.playerExtra}>(G)</Typography>}
+                            </Box>
                         })}
-                    </Card>
+                    </Paper>
                 </Grid>
             })}
         </Grid>
-    </div>
+        <br />
+    </Container>
 }
 
 export default Rosters40;
