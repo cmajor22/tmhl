@@ -6,8 +6,15 @@ import CloseIcon from '@mui/icons-material/Close';
 import { makeStyles } from '@mui/styles';
 import { toggleMenu } from '../redux/menuSlice';
 import { useSelector, useDispatch } from 'react-redux';
+import { Box } from '@mui/system';
 
 const useStyles = makeStyles((theme) => ({
+    menuContainer: {
+        width: '800px'
+    },
+    drawer: {
+        width: '800px'
+    },
     menuSingleItem: {
         padding: '12px 0px 12px 15px',
         cursor: 'pointer',
@@ -53,9 +60,10 @@ function Navigation(props) {
     }
 
     return (
-        <Fragment>
+        <Fragment className={classes.menuContainer}>
             <Button onClick={() => dispatch(toggleMenu())}>Menu</Button>
             <Drawer anchor="left" open={isOpen} onClose={() => dispatch(toggleMenu())} className={classes.drawer}>
+                <Box style={{height:'100%', backgroundColor: 'red'}}>
                 <Paper elevation={0} square className={classes.menuSingleItem}>
                     <Grid container>
                         <Grid item xs={11}>
@@ -87,6 +95,7 @@ function Navigation(props) {
                     }
                 })}
                 <Paper elevation={0} square className={classes.menuSingleItem}></Paper>
+                </Box>
             </Drawer>
         </Fragment>
     )
