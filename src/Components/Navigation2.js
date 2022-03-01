@@ -10,7 +10,7 @@ import { Box } from '@mui/system';
 
 const useStyles = makeStyles((theme) => ({
     menuContainer: {
-        width: '800px'
+        // width: '800px'
     },
     drawer: {
         width: '800px'

@@ -60,7 +60,7 @@ function App() {
           <Box style={{backgroundImage: `url(${bg})`, backgroundPosition: 'center top', backgroundRepeat: 'no-repeat', backgroundColor: '#FFFFFF'}}>
 			<Box style={{maxWidth: '960px',height: '100%',minHeight: '100vh',margin: 'auto', backgroundColor: '#1e1e1e'}}>
 				<HeaderBar></HeaderBar>
-				<Navigation2></Navigation2>
+				{/* <Navigation2></Navigation2> */}
 				<Switch>
 					<Route exact path="/home"><Home /></Route>
 					<Route exact path="/leagueInfo"><LeagueInfo/></Route>
