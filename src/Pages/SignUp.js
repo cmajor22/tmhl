@@ -3,6 +3,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import { Box, Button, Container, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import PageTitle from '../Components/PageTitle';
 import SendIcon from '@mui/icons-material/Send';
+import InputMask from "react-input-mask";
 
 const useStyles = makeStyles((theme) => ({
     formContainer: {
@@ -16,10 +17,12 @@ const useStyles = makeStyles((theme) => ({
 function SignUp(props) {
     const classes = useStyles();
     const [fullName, setfullName] = useState('');
+    const [fullNameError, setfullNameError] = useState(false);
     const [address, setaddress] = useState('');
     const [city, setcity] = useState('');
     const [postalCode, setpostalCode] = useState('');
     const [email, setemail] = useState('');
+    const [emailError, setemailError] = useState('');
     const [phone, setphone] = useState('');
     const [mobile, setmobile] = useState('');
     const [age, setage] = useState('');
@@ -29,12 +32,37 @@ function SignUp(props) {
     const [lastYear, setlastYear] = useState('');
     const [people, setpeople] = useState('');
     const [comments, setcomments] = useState('');
+    
+    function checkEmail(email) {
+        return email.toLowerCase().match(/\S+@\S+\.\S+/);
+    }
+    
+    function onlyNumber(string) {
+        return string.replace(/\D/g, "");
+    }
+
+    function submitForm() {
+        let errorHit=false;
+        if(fullName==="") {
+            setfullNameError(true);
+            errorHit=true;
+        }
+        if(email==="" || !checkEmail(email)) {
+            setemailError(true);
+            errorHit=true;
+        }
+        if(errorHit) {
+            alert("Please fix the form errors to submit");
+            return;
+        }
+        console.log(phone)
+    }
 
     return <Container>
         <PageTitle title="Sign Up Here" variant="h2" />
         <br />
         <Box className={classes.formContainer}>
-            <TextField required fullWidth label="Full Name" value={fullName} onChange={(e) => setfullName(e.target.value)} />
+            <TextField required fullWidth label="Full Name" value={fullName} onChange={(e) => {setfullName(e.target.value); setfullNameError(false)}} error={fullNameError}/>
             <br /><br />
             <TextField fullWidth label="Address" value={address} onChange={(e) => setaddress(e.target.value)} />
             <br /><br />
@@ -42,13 +70,18 @@ function SignUp(props) {
             <br /><br />
             <TextField fullWidth label="Postal Code" value={postalCode} onChange={(e) => setpostalCode(e.target.value)} />
             <br /><br />
-            <TextField fullWidth required label="Email" value={email} onChange={(e) => setemail(e.target.value)} />
+            <TextField fullWidth required label="Email" value={email} onChange={(e) => {setemail(e.target.value); setemailError(false)}} 
+                error={emailError || (email!=="" && !checkEmail(email))}/>
             <br /><br />
-            <TextField fullWidth label="Phone" value={phone} onChange={(e) => setphone(e.target.value)} />
+            <InputMask mask="(999) 999-9999" value={phone} onChange={(e) => setphone(e.target.value)}>
+                {() => <TextField fullWidth label="Phone" />}
+            </InputMask>
             <br /><br />
-            <TextField fullWidth label="Mobile" value={mobile} onChange={(e) => setmobile(e.target.value)} />
+            <InputMask mask="(999) 999-9999" value={mobile} onChange={(e) => setmobile(e.target.value)}>
+                {() => <TextField fullWidth label="Mobile" />}
+            </InputMask>
             <br /><br />
-            <TextField fullWidth label="Age" value={age} onChange={(e) => setage(e.target.value)} type="number" />
+            <TextField fullWidth label="Age" value={age} onChange={(e) => setage(onlyNumber(e.target.value))}/>
             <br /><br />
             <FormControl fullWidth>
                 <InputLabel id="division">Division</InputLabel>
@@ -79,14 +112,14 @@ function SignUp(props) {
                 </Select>
             </FormControl>
             <br /><br />
-            <TextField fullWidth label="Last Year Played" value={lastYear} onChange={(e) => setlastYear(e.target.value)} type="number" />
+            <TextField fullWidth label="Last Year Played" value={lastYear} onChange={(e) => setlastYear(onlyNumber(e.target.value))} type="number" />
             <br /><br />
             <TextField fullWidth label="Do you know someone in our league?" value={people} onChange={(e) => setpeople(e.target.value)} />
             <br /><br />
             <TextField fullWidth multiline label="Comments" value={comments} onChange={(e) => setcomments(e.target.value)} />
             <br /><br />
             <Box className={classes.sendBox}>
-                <Button variant="contained" endIcon={<SendIcon />}>
+                <Button variant="contained" endIcon={<SendIcon />} onClick={() => {submitForm()}}>
                     Send
                 </Button>
             </Box>
