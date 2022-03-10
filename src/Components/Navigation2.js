@@ -60,8 +60,7 @@ function Navigation(props) {
     }
 
     return (
-        <Fragment className={classes.menuContainer}>
-            <Button onClick={() => dispatch(toggleMenu())}>Menu</Button>
+        <div className={classes.menuContainer}>
             <Drawer anchor="left" open={isOpen} onClose={() => dispatch(toggleMenu())} className={classes.drawer}>
                 <Box style={{height:'100%', backgroundColor: 'red'}}>
                 <Paper elevation={0} square className={classes.menuSingleItem}>
@@ -76,11 +75,11 @@ function Navigation(props) {
                 </Paper>
                 {menuItems.map((item) => {
                     if(item.children.length === 0) {
-                        return <Paper elevation={0} square className={classes.menuSingleItem}>
+                        return <Paper key={item.label} elevation={0} square className={classes.menuSingleItem}>
                             <Typography onClick={() => {goPage(item.target)}}>{item.label}</Typography>
                         </Paper>
                     }else{
-                        return <Accordion elevation={0} square className={classes.menuMultiItem}>
+                        return <Accordion key={item.label} elevation={0} square className={classes.menuMultiItem}>
                             <AccordionSummary>
                                 <Typography>{item.label}</Typography>
                             </AccordionSummary>
@@ -97,7 +96,7 @@ function Navigation(props) {
                 <Paper elevation={0} square className={classes.menuSingleItem}></Paper>
                 </Box>
             </Drawer>
-        </Fragment>
+        </div>
     )
 }
 

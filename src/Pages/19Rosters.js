@@ -80,7 +80,7 @@ function Rosters19(props) {
                 onChange={handleChange}
             >
                 {seasons.seasons.map((seasons) => {
-                    return <MenuItem value={seasons.name}>{seasons.name}</MenuItem>;
+                    return <MenuItem key={seasons.seasonsId} value={seasons.name}>{seasons.name}</MenuItem>;
                 })}
             </Select>
         </FormControl>
@@ -88,12 +88,11 @@ function Rosters19(props) {
         <br />
         <Grid container spacing={3}>
             {teamsList.map((team) => {
-                return <Grid item xs={4}>
+                return <Grid key={team.teamsId} item xs={4}>
                     <Paper elevation={3} className={classes.teamItem}>
                         <PageTitle title={team[0].teamName} variant="h4"/>
                         {team.map((player) => {
-                            {console.log(player)}
-                            return <Box className={classes.playerItem}>
+                            return <Box key={player.playersId} className={classes.playerItem}>
                                 <Typography className={classes.playerNumber}>{player.number}</Typography>
                                 <Typography>{player.playerName}</Typography>
                                 {player.isCaptain === 1 && <Typography className={classes.playerExtra}>(C)</Typography>}

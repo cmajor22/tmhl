@@ -1,12 +1,10 @@
-import React, { useEffect } from 'react';
-import { Grid, Card, Box, Typography } from '@mui/material';
+import React from 'react';
+import { Grid, Box, Typography } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
-import { useDispatch, useSelector } from 'react-redux';
-import { gamesData, gamesValue } from '../redux/gamesSlice';
 
 const useStyles = makeStyles((theme) => ({
     gameCard: {
-        width: '120px'
+        width: '120px',
     }
 }));
 
@@ -15,20 +13,22 @@ function GameCard(props) {
 
     return (
         <Box square elevation={1} className={classes.gameCard}>
-            <Typography>{props.gamesId}</Typography>
-            <Grid container>
+            <Grid container alignItems="center">
                 <Grid item xs={7}>
-                    {props.homeTeam}
+                    <Typography className={classes.teamName}>{props.homeTeam}</Typography>
+                    <Typography className={classes.teamName}>{props.awayTeam}</Typography>
                 </Grid>
-                <Grid item xs={5}>
-                    {props.homeScore}
-                </Grid>
-                <Grid item xs={7}>
-                    {props.awayTeam}
-                </Grid>
-                <Grid item xs={5}>
-                    {props.awayScore}
-                </Grid>
+                {props.homeScore !== 0 || props.awayScore !== 0 &&
+                    <Grid item xs={5}>
+                        <Typography>{props.homeScore}</Typography>
+                        <Typography>{props.awayScore}</Typography>
+                    </Grid>
+                }
+                {props.homeScore === 0 && props.awayScore === 0 &&
+                    <Grid item xs={5}>
+                        <Typography>{props.time}</Typography>
+                    </Grid>
+                }
             </Grid>
         </Box>
     )
