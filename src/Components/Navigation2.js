@@ -1,6 +1,6 @@
-import { Grid, Button, Drawer, ListItem, ListItemText,
+import { Grid, Drawer, ListItem, ListItemText,
     Typography, Accordion, AccordionSummary, AccordionDetails, Paper } from '@mui/material';
-import React, { Fragment } from 'react';
+import React from 'react';
 import { useHistory, withRouter } from 'react-router-dom';
 import CloseIcon from '@mui/icons-material/Close';
 import { makeStyles } from '@mui/styles';
@@ -9,20 +9,21 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Box } from '@mui/system';
 
 const useStyles = makeStyles((theme) => ({
-    menuContainer: {
-        // width: '800px'
-    },
     drawer: {
         width: '800px'
+    },
+    drawerContent: {
+        height:'100%',
+        minWidth: '400px',
+        backgroundColor: theme.palette.tmhl.medium
     },
     menuSingleItem: {
         padding: '12px 0px 12px 15px',
         cursor: 'pointer',
-        borderTop: 'solid 1px rgb(222, 222, 222);',
     },
     menuMultiItem: {
         cursor: 'pointer',
-        outlined: 'false'
+        outlined: 'false',
     },
 }));
 
@@ -60,43 +61,46 @@ function Navigation(props) {
     }
 
     return (
-        <div className={classes.menuContainer}>
             <Drawer anchor="left" open={isOpen} onClose={() => dispatch(toggleMenu())} className={classes.drawer}>
-                <Box style={{height:'100%', backgroundColor: 'red'}}>
-                <Paper elevation={0} square className={classes.menuSingleItem}>
-                    <Grid container>
-                        <Grid item xs={11}>
-                            <Typography onClick={() => {goPage('/home')}}>Home</Typography>
+                <Box className={classes.drawerContent}>
+                    <Paper elevation={0} square className={classes.menuSingleItem}>
+                        <Grid container>
+                            <Grid item xs={11}>
+                                <Typography onClick={() => {goPage('/home')}}>Home</Typography>
+                            </Grid>
+                            <Grid item xs={1}>
+                                <CloseIcon onClick={() => {dispatch(toggleMenu())}}/>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={1}>
-                            <CloseIcon onClick={() => {dispatch(toggleMenu())}}/>
-                        </Grid>
-                    </Grid>
-                </Paper>
-                {menuItems.map((item) => {
-                    if(item.children.length === 0) {
-                        return <Paper key={item.label} elevation={0} square className={classes.menuSingleItem}>
-                            <Typography onClick={() => {goPage(item.target)}}>{item.label}</Typography>
-                        </Paper>
-                    }else{
-                        return <Accordion key={item.label} elevation={0} square className={classes.menuMultiItem}>
-                            <AccordionSummary>
-                                <Typography>{item.label}</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                {item.children.map((subItem) => {
-                                    return <ListItem button key={subItem.label} onClick={() => {goPage(subItem.target)}}>
-                                        <ListItemText primary={subItem.label}/>
-                                    </ListItem>;
-                                })}
-                            </AccordionDetails>
-                        </Accordion>
-                    }
-                })}
-                <Paper elevation={0} square className={classes.menuSingleItem}></Paper>
+                    </Paper>
+                    {menuItems.map((item) => {
+                        if(item.children.length === 0) {
+                            return <Paper key={item.label} elevation={0} square className={classes.menuSingleItem}>
+                                <Typography onClick={() => {goPage(item.target)}}>{item.label}</Typography>
+                            </Paper>
+                        }else{
+                            return <Accordion key={item.label} elevation={0} square className={classes.menuMultiItem}
+                            sx={{
+                                '&:before': {
+                                    display: 'none',
+                                }
+                            }}>
+                                <AccordionSummary>
+                                    <Typography>{item.label}</Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    {item.children.map((subItem) => {
+                                        return <ListItem button key={subItem.label} onClick={() => {goPage(subItem.target)}}>
+                                            <ListItemText primary={subItem.label}/>
+                                        </ListItem>;
+                                    })}
+                                </AccordionDetails>
+                            </Accordion>
+                        }
+                    })}
+                    <Paper elevation={0} square className={classes.menuSingleItem}></Paper>
                 </Box>
             </Drawer>
-        </div>
     )
 }
 

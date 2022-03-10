@@ -29,6 +29,7 @@ const theme = createTheme({
     mode: 'dark',
 	tmhl: {
 		accent: '#ff6900',
+		medium: '#121212',
 		dark: '#060606'
 	}
   },
