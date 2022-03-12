@@ -41,7 +41,6 @@ function Rosters40(props) {
     const [teamsList, setTeamsList] = React.useState([]);
   
     const handleChange = (event) => {
-        console.log('hit')
         setSeason(event.target.value);
         dispatch(get40(event.target.value));
     };
