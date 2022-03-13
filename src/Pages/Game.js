@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, FormControl, InputLabel, Select, MenuItem, Grid, Card, Box } from '@mui/material';
+import { Typography, FormControl, InputLabel, Select, MenuItem, Grid, Card, Box, Container } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import { gameAway, gameGoals, gameHome, gamePenalties, gamesValue } from '../redux/gamesSlice';
+import TmhlTable from '../Components/TmhlTable';
 
 const useStyles = makeStyles((theme) => ({
     
@@ -14,9 +15,23 @@ function Game(props) {
     const { gameId } = useParams();
     const dispatch = useDispatch();
     const game = useSelector(gamesValue);
-    var [goalsArray, setgoalsArray] = useState(
-        [{home: '', away: ''},{home: 0, away: 0},{home: 0, away: 0},{home: 0, away: 0},{home: 0, away: 0}]
-    );
+    const [ summaryRows, setSummaryRows] = useState([]);
+    const [ homeRows, setHomeRows] = useState([]);
+    const [ awayRows, setAwayRows] = useState([]);
+    let summaryColumns = [
+        { field: 'team', headerName: 'TEAM', sortable: false, flex: 1 },
+        { field: 'first', headerName: '1', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
+        { field: 'second', headerName: '2', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
+        { field: 'third', headerName: '3', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
+        { field: 'final',  headerName: 'FINAL', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
+    ];
+    let playerColumns = [
+        { field: 'playerName', headerName: 'PLAYER', sortable: false, flex: 1 },
+        { field: 'points', headerName: 'P', type: 'number', sortable: false, headerAlign: 'center', align: 'center', width: 10 },
+        { field: 'goals', headerName: 'G', type: 'number', sortable: false, headerAlign: 'center', align: 'center', width: 10 },
+        { field: 'assists', headerName: 'A', type: 'number', sortable: false, headerAlign: 'center', align: 'center', width: 10 },
+        { field: 'penalties',  headerName: 'PIM', type: 'number', sortable: false, headerAlign: 'center', align: 'center', width: 20 },
+    ];
     
     useEffect(() => {
         dispatch(gameGoals({gameId}));
@@ -38,87 +53,68 @@ function Game(props) {
         tempGoalsArray[0].home=game.gameHome[0]?.teamName;
         tempGoalsArray[0].away=game.gameAway[0]?.teamName;
 
-        setgoalsArray(tempGoalsArray);
+        setSummaryRows([
+            {
+                id: tempGoalsArray[0].home, 
+                team: tempGoalsArray[0].home,
+                first: tempGoalsArray[1].home,
+                second: tempGoalsArray[2].home,
+                third: tempGoalsArray[3].home,
+                final: tempGoalsArray[1].home + tempGoalsArray[2].home + tempGoalsArray[3].home
+            },
+            {
+                id: tempGoalsArray[0].away, 
+                team: tempGoalsArray[0].away,
+                first: tempGoalsArray[1].away,
+                second: tempGoalsArray[2].away,
+                third: tempGoalsArray[3].away,
+                final: tempGoalsArray[1].away + tempGoalsArray[2].away + tempGoalsArray[3].away
+            }
+        ]);
+        setHomeRows(game.gameHome.map((statLine) => {
+            return {id: statLine.playerName, ...statLine};
+        }).sort(playerSort));
+        setAwayRows(game.gameAway.map((statLine) => {
+            return {id: statLine.playerName, ...statLine};
+        }).sort(playerSort));
     }, [game]);
 
-    return <Box>
-        <Grid container>
-            <Grid item xs={3}>
-                <Grid container>
-                    <Grid item xs={12}>{goalsArray[0].home}</Grid>
-                    <Grid item xs={12}>&nbsp;</Grid>
-                    <Grid item xs={12}>{goalsArray[1].home + goalsArray[2].home + goalsArray[3].home}</Grid>
-                </Grid>
+    function playerSort(a, b) {
+        if(a.points > b.points) {
+            return -1;
+        }else if(a.points < b.points) {
+            return 1;
+        }else if(a.goals > b.goals) {
+            return -1;
+        }else if(a.goals < b.goals) {
+            return 1;
+        }else if(a.assists > b.assists) {
+            return -1;
+        }else if(a.assists < b.assists) {
+            return 1;
+        }else if(a.playerName > b.playerName) {
+            return 1;
+        }
+        return -1;
+    }
+
+    return <Container>
+        <br />
+        <Box style={{maxWidth: '500px', margin: 'auto'}}>
+            <TmhlTable rows={summaryRows} columns={summaryColumns}></TmhlTable>
+        </Box>
+        <br />
+        <Grid container spacing={1}>
+            <Grid item xs={6}>
+                <TmhlTable rows={homeRows} columns={playerColumns}></TmhlTable>
             </Grid>
             <Grid item xs={6}>
-                <Grid container>
-                    <Grid item xs={3}>{goalsArray[1].home}</Grid>
-                    <Grid item xs={3}>{goalsArray[2].home}</Grid>
-                    <Grid item xs={3}>{goalsArray[3].home}</Grid>
-                    <Grid item xs={3}>{goalsArray[1].home + goalsArray[2].home + goalsArray[3].home}</Grid>
-                    <Grid item xs={3}>{goalsArray[1].away}</Grid>
-                    <Grid item xs={3}>{goalsArray[2].away}</Grid>
-                    <Grid item xs={3}>{goalsArray[3].away}</Grid>
-                    <Grid item xs={3}>{goalsArray[1].away + goalsArray[2].away + goalsArray[3].away}</Grid>
-                    <Grid item xs={3}>1</Grid>
-                    <Grid item xs={3}>2</Grid>
-                    <Grid item xs={3}>3</Grid>
-                    <Grid item xs={3}>F</Grid>
-                </Grid>
-            </Grid>
-            <Grid item xs={3}>
-                <Grid container>
-                    <Grid item xs={12}>&nbsp;</Grid>
-                    <Grid item xs={12}>{goalsArray[0].away}</Grid>
-                    <Grid item xs={12}>{goalsArray[1].away + goalsArray[2].away + goalsArray[3].away}</Grid>
-                </Grid>
-
+                <TmhlTable rows={awayRows} columns={playerColumns}></TmhlTable>
             </Grid>
         </Grid>
-        <Grid container>
-            <Grid item xs={4}>
-                <Grid container>
-                    <Grid item xs={8}>Player</Grid>
-                    <Grid item xs={1}>P</Grid>
-                    <Grid item xs={1}>G</Grid>
-                    <Grid item xs={1}>A</Grid>
-                    <Grid item xs={1}>PIM</Grid>
-                    {game.gameHome.map((statLine) => {
-                        return [
-                            <Grid item xs={8}>{statLine.playerName}</Grid>,
-                            <Grid item xs={1}>{statLine.points}</Grid>,
-                            <Grid item xs={1}>{statLine.goals}</Grid>,
-                            <Grid item xs={1}>{statLine.assists+statLine.assists1}</Grid>,
-                            <Grid item xs={1}>{statLine.penalties}</Grid>
-                        ];
-                        
-                    })}
-                </Grid>
-            </Grid>
-            <Grid item xs={4}>
-                
-            </Grid>
-            <Grid item xs={4}>
-                <Grid container>
-                    <Grid item xs={8}>Player</Grid>
-                    <Grid item xs={1}>P</Grid>
-                    <Grid item xs={1}>G</Grid>
-                    <Grid item xs={1}>A</Grid>
-                    <Grid item xs={1}>PIM</Grid>
-                    {game.gameAway.map((statLine) => {
-                        return [
-                            <Grid item xs={8}>{statLine.playerName}</Grid>,
-                            <Grid item xs={1}>{statLine.points}</Grid>,
-                            <Grid item xs={1}>{statLine.goals}</Grid>,
-                            <Grid item xs={1}>{statLine.assists+statLine.assists1}</Grid>,
-                            <Grid item xs={1}>{statLine.penalties}</Grid>
-                        ];
-                        
-                    })}
-                </Grid>
-            </Grid>
-        </Grid>
-    </Box>
+        <br />
+        <br />
+    </Container>
 }
 
 export default Game;

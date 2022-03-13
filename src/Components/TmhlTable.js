@@ -2,6 +2,7 @@ import React, { Fragment, useEffect } from 'react';
 import { TextField } from '@mui/material';
 import makeStyles from '@mui/styles/makeStyles';
 import { DataGrid } from '@mui/x-data-grid';
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     filterBox: {
@@ -18,6 +19,7 @@ function TmhlTable(props) {
     const hasFilter = props.hasFilter;
     const [rowsSearch, setRowsSearch] = React.useState('');
     const [filteredRows, setFilteredRows] = React.useState([]);
+    const history = useHistory();
 
     useEffect(() => {
         setFilteredRows(rows);
@@ -31,6 +33,10 @@ function TmhlTable(props) {
     useEffect(()=> {
         setFilteredRows(returnRows(rowsSearch));
     }, [rowsSearch]);
+
+    function rowClicked(event) {
+        event.row.gamesId && history.push(`/game/${event.row.gamesId}`);
+    }
 
     function returnRows(searchText) {
         if(filterType==='player') {
@@ -69,6 +75,7 @@ function TmhlTable(props) {
             disableColumnFilter={true}
             disableColumnMenu={true}
             hideFooter={true}
+            onRowClick={(event) => {rowClicked(event)}}
         />
     </Fragment>
     
