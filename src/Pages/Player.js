@@ -5,6 +5,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import { gameAway, gameGoals, gameHome, gamePenalties, gamesValue } from '../redux/gamesSlice';
 import TmhlTable from '../Components/TmhlTable';
+import { playerGamesData, playerSeasonsData, playersValue } from '../redux/playersSlice';
+import PageTitle from '../Components/PageTitle';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
     
@@ -12,106 +15,55 @@ const useStyles = makeStyles((theme) => ({
 
 function Player(props) {
     const classes = useStyles();
-    const { gameId } = useParams();
+    const { playerId } = useParams();
     const dispatch = useDispatch();
-    const game = useSelector(gamesValue);
-    const [ summaryRows, setSummaryRows] = useState([]);
-    const [ homeRows, setHomeRows] = useState([]);
-    const [ awayRows, setAwayRows] = useState([]);
-    let summaryColumns = [
-        { field: 'team', headerName: 'TEAM', sortable: false, flex: 1 },
-        { field: 'first', headerName: '1', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
-        { field: 'second', headerName: '2', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
-        { field: 'third', headerName: '3', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
-        { field: 'final',  headerName: 'FINAL', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
+    const players = useSelector(playersValue);
+    const [ seasonRows, setSeasonRows ] = useState([]);
+    const [ gameRows, setGameRows ] = useState([]);
+    const [ playerName, setPlayerName ] = useState([]);
+    let seasonsColumns = [
+        { field: 'seasonsName', headerName: 'SEASON', sortable: false, flex: 1 },
+        { field: 'teamName', headerName: 'TEAM', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'goals', headerName: 'GOALS', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
+        { field: 'assists', headerName: 'ASSISTS', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
+        { field: 'points',  headerName: 'POINTS', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
+        { field: 'pims',  headerName: 'PIMS', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
     ];
-    let playerColumns = [
-        { field: 'playerName', headerName: 'PLAYER', sortable: false, flex: 1 },
-        { field: 'points', headerName: 'P', type: 'number', sortable: false, headerAlign: 'center', align: 'center', width: 10 },
-        { field: 'goals', headerName: 'G', type: 'number', sortable: false, headerAlign: 'center', align: 'center', width: 10 },
-        { field: 'assists', headerName: 'A', type: 'number', sortable: false, headerAlign: 'center', align: 'center', width: 10 },
-        { field: 'penalties',  headerName: 'PIM', type: 'number', sortable: false, headerAlign: 'center', align: 'center', width: 20 },
+    let gamesColumns = [
+        { field: 'seasonsName', headerName: 'SEASON', sortable: false, flex: 1 },
+        { field: 'date', headerName: 'DATE', type: 'number', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'teamName', headerName: 'TEAM', type: 'number', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'vs', headerName: 'VS', type: 'number', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'goals',  headerName: 'GOALS', type: 'number', sortable: false, headerAlign: 'center', align: 'center', width: 40 },
+        { field: 'assists',  headerName: 'ASSISTS', type: 'number', sortable: false, headerAlign: 'center', align: 'center', width: 40 },
+        { field: 'points',  headerName: 'POINTS', type: 'number', sortable: false, headerAlign: 'center', align: 'center', width: 40 },
+        { field: 'pims',  headerName: 'PIMS', type: 'number', sortable: false, headerAlign: 'center', align: 'center', width: 40 },
     ];
     
     useEffect(() => {
-        dispatch(gameGoals({gameId}));
-        dispatch(gamePenalties({gameId}));
-        dispatch(gameHome({gameId}));
-        dispatch(gameAway({gameId}));
+        dispatch(playerSeasonsData({playerId}));
+        dispatch(playerGamesData({playerId}));
     }, []);
     
     useEffect(() => {
-        let tempGoalsArray = [{home: '', away: ''},{home: 0, away: 0},{home: 0, away: 0},{home: 0, away: 0},{home: 0, away: 0}];
-        for(let goal of game.gameGoals) {
-            if(goal.homeId===goal.goalTeam) {
-                tempGoalsArray[goal.period].home++;
-            }else if(goal.awayId===goal.goalTeam) {
-                tempGoalsArray[goal.period].away++;
-            }
-        }
+        setSeasonRows(players.playerSeasons.map((season) => {
+            return { id: season.seasonsName, ...season};
+        }));
+        setGameRows(players.playerGames.map((game) => {
+            return { id: game.gamesId, ...game, date: moment(game.date).format('YYYY-MM-DD')};
+        }).reverse());
+        setPlayerName(players.playerSeasons[0].playerName);
+    }, [players]);
 
-        tempGoalsArray[0].home=game.gameHome[0]?.teamName;
-        tempGoalsArray[0].away=game.gameAway[0]?.teamName;
-
-        setSummaryRows([
-            {
-                id: tempGoalsArray[0].home, 
-                team: tempGoalsArray[0].home,
-                first: tempGoalsArray[1].home,
-                second: tempGoalsArray[2].home,
-                third: tempGoalsArray[3].home,
-                final: tempGoalsArray[1].home + tempGoalsArray[2].home + tempGoalsArray[3].home
-            },
-            {
-                id: tempGoalsArray[0].away, 
-                team: tempGoalsArray[0].away,
-                first: tempGoalsArray[1].away,
-                second: tempGoalsArray[2].away,
-                third: tempGoalsArray[3].away,
-                final: tempGoalsArray[1].away + tempGoalsArray[2].away + tempGoalsArray[3].away
-            }
-        ]);
-        setHomeRows(game.gameHome.map((statLine) => {
-            return {id: statLine.playerName, ...statLine};
-        }).sort(playerSort));
-        setAwayRows(game.gameAway.map((statLine) => {
-            return {id: statLine.playerName, ...statLine};
-        }).sort(playerSort));
-    }, [game]);
-
-    function playerSort(a, b) {
-        if(a.points > b.points) {
-            return -1;
-        }else if(a.points < b.points) {
-            return 1;
-        }else if(a.goals > b.goals) {
-            return -1;
-        }else if(a.goals < b.goals) {
-            return 1;
-        }else if(a.assists > b.assists) {
-            return -1;
-        }else if(a.assists < b.assists) {
-            return 1;
-        }else if(a.playerName > b.playerName) {
-            return 1;
-        }
-        return -1;
-    }
 
     return <Container>
         <br />
-        <Box style={{maxWidth: '500px', margin: 'auto'}}>
-            <TmhlTable rows={summaryRows} columns={summaryColumns}></TmhlTable>
-        </Box>
         <br />
-        <Grid container spacing={1}>
-            <Grid item xs={6}>
-                <TmhlTable rows={homeRows} columns={playerColumns}></TmhlTable>
-            </Grid>
-            <Grid item xs={6}>
-                <TmhlTable rows={awayRows} columns={playerColumns}></TmhlTable>
-            </Grid>
-        </Grid>
+        <PageTitle title={playerName} variant="h3" />
+        <br />
+        <TmhlTable rows={seasonRows} columns={seasonsColumns}></TmhlTable>
+        <br />
+        <TmhlTable rows={gameRows} columns={gamesColumns}></TmhlTable>
         <br />
         <br />
     </Container>

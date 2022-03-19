@@ -4,18 +4,20 @@ import makeStyles from '@mui/styles/makeStyles';
 
 const useStyles = makeStyles((theme) => ({
     gameCard: {
-        width: '120px',
+        width: '100%'
     },
     teamName: {
         fontSize: '14px'
     },
     score: {
         fontSize: '14px',
-        color: `#FFFFFF80`
+        color: `#FFFFFF80`,
+        textAlign: 'right'
     },
     time: {
         fontSize: '14px',
-        color: `#FFFFFF80`
+        color: `#FFFFFF80`,
+        textAlign: 'right'
     }
 }));
 
@@ -37,6 +39,7 @@ function GameCard(props) {
                 }
                 {props.homeScore === 0 && props.awayScore === 0 &&
                     <Grid item xs={5}>
+                        <Typography className={classes.time}>{props.date}</Typography>
                         <Typography className={classes.time}>{props.time}</Typography>
                     </Grid>
                 }

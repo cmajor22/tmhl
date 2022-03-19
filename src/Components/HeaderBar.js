@@ -9,6 +9,7 @@ import { Box } from '@mui/system';
 import Logo from '../assets/tmhl_logo.png';
 import { toggleMenu } from '../redux/menuSlice';
 import { Menu } from '@mui/icons-material';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -50,10 +51,15 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: '10px',
         marginTop: '15px'
     },
-    listItem: {
+    listItemLeft: {
         width: '120px',
         padding: '0px',
-        margin: '0px'
+        marginLeft: '20px'
+    },
+    listItemRight: {
+        width: '120px',
+        padding: '0px',
+        marginRight: '20px'
     },
     logoImage: {
         width: '120px',
@@ -63,6 +69,13 @@ const useStyles = makeStyles((theme) => ({
         width: '50px',
         marginTop: '15px',
         zIndex: 10050
+    },
+    gameCardLeft: {
+        marginLeft: '100px',
+        paddingLeft: '100px'
+    },
+    gameCardRight: {
+        marginRight: '10px'
     }
 }));
 
@@ -105,16 +118,22 @@ function HeaderBar(props) {
             <IconButton onClick={() => {dispatch(toggleMenu())}} className={classes.menuButton}><Menu /></IconButton>
             <List className={classes.gameBarLeft}>
                 {upcomingGames.filter(game => game.league===2)?.reverse().map((game) => {
-                    return <ListItem key={game.gamesId} className={classes.listItem}>
-                        <GameCard homeTeam={game.homeTeam} homeScore={game.homeScore??0} awayTeam={game.awayTeam} awayScore={game.awayScore??0} time={game.time}/>
+                    return <ListItem key={game.gamesId} className={classes.listItemLeft}>
+                        <GameCard
+                            homeTeam={game.homeTeam} homeScore={game.homeScore??0}
+                            awayTeam={game.awayTeam} awayScore={game.awayScore??0} 
+                            date={moment(game.date).format('MMM DD')} time={game.time}/>
                     </ListItem>
                 })}
             </List>
             <img src={Logo} className={classes.logoImage} style={logoStyle}/>
             <List className={classes.gameBarRight}>
                 {upcomingGames.filter(game => game.league===1).map((game) => {
-                    return <ListItem key={game.gamesId} className={classes.listItem}>
-                        <GameCard homeTeam={game.homeTeam} homeScore={game.homeScore??0} awayTeam={game.awayTeam} awayScore={game.awayScore??0} time={game.time}/>
+                    return <ListItem key={game.gamesId} className={classes.listItemRight}>
+                        <GameCard className={classes.gameCardRight}
+                            homeTeam={game.homeTeam} homeScore={game.homeScore??0} 
+                            awayTeam={game.awayTeam} awayScore={game.awayScore??0}
+                            date={moment(game.date).format('MMM DD')} time={game.time}/>
                     </ListItem>
                 })}
             </List>

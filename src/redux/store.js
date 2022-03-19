@@ -8,6 +8,7 @@ import scheduleReducer from './scheduleSlice';
 import statsReducer from './statsSlice';
 import gamesSlice from './gamesSlice';
 import postsSlice from './postsSlice';
+import playersSlice from './playersSlice';
 
 export const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ export const store = configureStore({
     schedule: scheduleReducer,
     stats: statsReducer,
     games: gamesSlice,
-    posts: postsSlice
+    posts: postsSlice,
+    players: playersSlice
   },
 });

@@ -23,6 +23,7 @@ import Game from './Pages/Game';
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline';
 import bg from './assets/bg.jpg';
+import Player from './Pages/Player';
 
 const theme = createTheme({
   palette: {
@@ -72,6 +73,7 @@ function App() {
 					<Route exact path="/Rules"><Rules/></Route>
 					<Route exact path="/SignUp"><SignUp/></Route>
 					<Route exact path="/Game/:gameId"><Game/></Route>
+					<Route exact path="/Player/:playerId"><Player/></Route>
 					<Route path="/"><Home /></Route>
 				</Switch>
 				</Box>
