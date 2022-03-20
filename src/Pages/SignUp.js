@@ -4,6 +4,7 @@ import { Box, Button, Container, FormControl, InputLabel, MenuItem, Select, Text
 import PageTitle from '../Components/PageTitle';
 import SendIcon from '@mui/icons-material/Send';
 import InputMask from "react-input-mask";
+import { signUp } from '../api/signupApi';
 
 const useStyles = makeStyles((theme) => ({
     formContainer: {
@@ -16,8 +17,8 @@ const useStyles = makeStyles((theme) => ({
 
 function SignUp(props) {
     const classes = useStyles();
-    const [fullName, setfullName] = useState('');
-    const [fullNameError, setfullNameError] = useState(false);
+    const [name, setname] = useState('');
+    const [nameError, setnameError] = useState(false);
     const [address, setaddress] = useState('');
     const [city, setcity] = useState('');
     const [postalCode, setpostalCode] = useState('');
@@ -43,8 +44,8 @@ function SignUp(props) {
 
     function submitForm() {
         let errorHit=false;
-        if(fullName==="") {
-            setfullNameError(true);
+        if(name==="") {
+            setnameError(true);
             errorHit=true;
         }
         if(email==="" || !checkEmail(email)) {
@@ -55,14 +56,29 @@ function SignUp(props) {
             alert("Please fix the form errors to submit");
             return;
         }
-        console.log(phone)
+        signUp({
+            name,
+            address,
+            city,
+            postalCode,
+            email,
+            phone,
+            mobile,
+            age,
+            division,
+            position,
+            levelPlayed,
+            lastYear,
+            people,
+            comments
+        })
     }
 
     return <Container>
         <PageTitle title="Sign Up Here" variant="h2" />
         <br />
         <Box className={classes.formContainer}>
-            <TextField required fullWidth label="Full Name" value={fullName} onChange={(e) => {setfullName(e.target.value); setfullNameError(false)}} error={fullNameError}/>
+            <TextField required fullWidth label="Full Name" value={name} onChange={(e) => {setname(e.target.value); setnameError(false)}} error={nameError}/>
             <br /><br />
             <TextField fullWidth label="Address" value={address} onChange={(e) => setaddress(e.target.value)} />
             <br /><br />
