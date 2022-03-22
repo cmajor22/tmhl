@@ -1,7 +1,7 @@
 module.exports = (express, connection) => {
   var router = express.Router();
 
-  router.post('/teams/all', function(req, res, next) {
+  router.put('/teams/all', function(req, res, next) {
     const league = req.body.league;
 
     const sql = `select teams.name from seasons,teams where seasons.seasonsId=teams.seasonsId and leaguesid=?`;
@@ -12,7 +12,7 @@ module.exports = (express, connection) => {
     });
   });
 
-  router.post('/goalies/all', function(req, res, next) {
+  router.put('/goalies/all', function(req, res, next) {
     const league = req.body.league;
 
     const sql = `select players.name from playersforteams,teams,players,seasons 
@@ -25,7 +25,7 @@ module.exports = (express, connection) => {
     });
   });
 
-  router.post('/goalieStats/all', function(req, res, next) {
+  router.put('/goalieStats/all', function(req, res, next) {
     const league = req.body.league;
 
     const sql = `select games.gamesId,date,games.time,teamsforgames.homeId as 'home',teamsforgames.awayId as 'away', 
@@ -54,7 +54,7 @@ module.exports = (express, connection) => {
     });
   });
 
-  router.post('/playerStats/all', function(req, res, next) {
+  router.put('/playerStats/all', function(req, res, next) {
     const league = req.body.league;
 
     const sql = `select players.name as 'playerName',players.playersId as 'playerId',teams.name as 'teamName',
@@ -80,7 +80,7 @@ module.exports = (express, connection) => {
     });
   });
 
-  router.post('/teams', function(req, res, next) {
+  router.put('/teams', function(req, res, next) {
     const season = req.body.season;
     console.log(season)
 
@@ -93,7 +93,7 @@ module.exports = (express, connection) => {
     });
   });
 
-  router.post('/goalieStats', function(req, res, next) {
+  router.put('/goalieStats', function(req, res, next) {
     const isPlayoffs = req.body.isPlayoffs;
     const season = req.body.season;
     const isFinals = req.body.isFinals;
@@ -124,7 +124,7 @@ module.exports = (express, connection) => {
     });
   });
 
-  router.post('/playerStats', function(req, res, next) {
+  router.put('/playerStats', function(req, res, next) {
     const isPlayoffs = req.body.isPlayoffs;
     const season = req.body.season;
     const isFinals = req.body.isFinals;

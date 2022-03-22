@@ -2,7 +2,7 @@ module.exports = (express, connection) => {
   var router = express.Router();
 
   /* Season Rosters */
-  router.post('/getUpcomingGames', function(req, res, next) {
+  router.put('/getUpcomingGames', function(req, res, next) {
     const league = req.body.league;
     const year = req.body.year;
     const sql = `select games.*,home.name as 'homeTeam',away.name as 'awayTeam',seasons.leaguesId as 'league' 

@@ -3,7 +3,7 @@ import { server } from "../endpoint";
 export async function getRosters19(league = 1, year = "2019-2020") {
   return new Promise((resolve) => {
     fetch(`${server}/rosters`, {
-      method: 'GET',
+      method: 'PUT',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -24,7 +24,7 @@ export async function getRosters19(league = 1, year = "2019-2020") {
 export async function getRosters40(league = 2, year = "2019-2020") {
   return new Promise((resolve) => {
     fetch(`${server}/rosters`, {
-      method: 'GET',
+      method: 'PUT',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -45,7 +45,7 @@ export async function getRosters40(league = 2, year = "2019-2020") {
 export async function getRostersCaptains() {
   return new Promise((resolve) => {
     fetch(`${server}/rosters/captains`, {
-      method: 'GET',
+      method: 'PUT',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

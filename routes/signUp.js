@@ -13,7 +13,7 @@ module.exports = (express, connection) => {
     },
   });
 
-  router.post('/', function(req, res, next) {
+  router.put('/', function(req, res, next) {
     const {name,address,city,postalCode,email,phone,mobile,age,division,position,levelPlayed,lastYear,people,comments} = req.body;
     
     console.log(req.body)

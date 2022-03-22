@@ -3,7 +3,7 @@ import { server } from "../endpoint";
 export async function getScheduleGames(league, season) {
   return new Promise((resolve) => {
     fetch(`${server}/schedule/games`, {
-      method: 'GET',
+      method: 'PUT',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

@@ -3,7 +3,7 @@ import { server } from "../endpoint";
 export async function getSeasons(league = 1) {
   return new Promise((resolve) => {
     fetch(`${server}/seasons`, {
-      method: 'GET',
+      method: 'PUT',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

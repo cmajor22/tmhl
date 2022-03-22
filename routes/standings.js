@@ -1,7 +1,7 @@
 module.exports = (express, connection) => {
   var router = express.Router();
 
-  router.post('/games', function(req, res, next) {
+  router.put('/games', function(req, res, next) {
     const league = req.body.league;
     const isPlayoffs = req.body.isPlayoffs;
     const isFinals = req.body.isFinals;
@@ -28,7 +28,7 @@ module.exports = (express, connection) => {
     });
   });
   
-  router.post('/teams', function(req, res, next) {
+  router.put('/teams', function(req, res, next) {
     const league = req.body.league;
     const season = req.body.season;
 
@@ -43,7 +43,7 @@ module.exports = (express, connection) => {
     });
   });
 
-  router.post('/vs', function(req, res, next) {
+  router.put('/vs', function(req, res, next) {
     const league = req.body.league;
     const isPlayoffs = req.body.isPlayoffs;
     const isFinals = req.body.isFinals;

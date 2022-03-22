@@ -2,7 +2,7 @@ module.exports = (express, connection) => {
   var router = express.Router();
 
   /* Game goals */
-  router.post('/seasons', function(req, res, next) {
+  router.put('/seasons', function(req, res, next) {
     const playersId = req.body.playersId;
     const sql = `select playerName,t1.playersId as 'playerId',teamName,seasonsName,leaguesid,hasStats,hasStatsV2,
       ifNull(goals.goals,0) as 'goals',  (ifNull(assist1.assists1,0) + ifNull(assist2.assists2,0)) as 'assists',
@@ -32,7 +32,7 @@ module.exports = (express, connection) => {
   });
 
   /* Game home list */
-  router.post('/games', function(req, res, next) {
+  router.put('/games', function(req, res, next) {
     const playersId = req.body.playersId;
     const sql = `select playerName,t1.playersId as 'playerId',teamName,seasonsName,leaguesid,hasStats,hasStatsV2,
     ifNull(goals.goals,0) as 'goals',  (ifNull(assist1.assists1,0) + ifNull(assist2.assists2,0)) as 'assists',
