@@ -3,7 +3,7 @@ import { server } from "../endpoint";
 export async function getPosts() {
   return new Promise((resolve) => {
     fetch(`${server}/posts`, {
-      method: 'POST',
+      method: 'GET',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
