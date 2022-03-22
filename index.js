@@ -4,8 +4,9 @@ const port = 3000;
 const cors=require("cors");
 var bodyParser = require('body-parser')
 var mysql = require('mysql');
-const { db } = require('./constants');
 const path = require("path");
+require('dotenv').config()
+const { db } = require('./constants');
 var connection = mysql.createPool(db);
 
 const corsOptions ={
@@ -47,6 +48,6 @@ app.get("/*", (req, res) => {
   );
 })
 
-app.listen(port, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log(`Example app listening at http://localhost:${port}`)
 })
