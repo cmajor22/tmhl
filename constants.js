@@ -1,15 +1,15 @@
 module.exports = {
     db: {
-        host: '',
-        user: '',
-        password: '',
-        database: ''
+        host: process.env.REACT_APP_HOST,
+        user: process.env.REACT_APP_USER,
+        password: process.env.REACT_APP_PASSWORD,
+        database: process.env.REACT_APP_DATABASE
     },
     email: {
-        host: '',
+        host: process.env.REACT_APP_HOST,
         port: 465,
         secure: true,
-        user: '',
-        pass: ''
+        user: process.env.REACT_APP_EMAILUSER,
+        pass: process.env.REACT_APP_EMAILPASSWORD
     }
 }; 
