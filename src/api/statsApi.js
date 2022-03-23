@@ -1,14 +1,14 @@
 import { server } from "../endpoint";
 
-export async function getRosters19(league = 1, year = "2019-2020") {
+export async function getStatsTeams(season) {
   return new Promise((resolve) => {
-    fetch(`${server}/rosters`, {
-      method: 'PUT',
+    fetch(`${server}/stats/teams`, {
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({league: league, year: year})})
+      body: JSON.stringify({season: season})})
       .then(res => res.json())
       .then(
         (result) => {
@@ -21,15 +21,15 @@ export async function getRosters19(league = 1, year = "2019-2020") {
   });
 }
 
-export async function getRosters40(league = 2, year = "2019-2020") {
+export async function getStatsGoalies(isPlayoffs, season, isFinals) {
   return new Promise((resolve) => {
-    fetch(`${server}/rosters`, {
-      method: 'PUT',
+    fetch(`${server}/stats/goalieStats`, {
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({league: league, year: year})})
+      body: JSON.stringify({isPlayoffs: isPlayoffs, season: season, isFinals: isFinals})})
       .then(res => res.json())
       .then(
         (result) => {
@@ -42,15 +42,15 @@ export async function getRosters40(league = 2, year = "2019-2020") {
   });
 }
 
-export async function getRostersCaptains() {
+export async function getStatsPlayers(isPlayoffs, season, isFinals) {
   return new Promise((resolve) => {
-    fetch(`${server}/rosters/captains`, {
-      method: 'PUT',
+    fetch(`${server}/stats/playerStats`, {
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({})})
+      body: JSON.stringify({isPlayoffs: isPlayoffs, season: season, isFinals: isFinals})})
       .then(res => res.json())
       .then(
         (result) => {

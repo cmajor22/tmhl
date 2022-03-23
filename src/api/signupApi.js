@@ -1,14 +1,14 @@
 import { server } from "../endpoint";
 
-export async function getScheduleGames(league, season) {
+export async function signUp(userInfo) {
   return new Promise((resolve) => {
-    fetch(`${server}/schedule/games`, {
-      method: 'PUT',
+    fetch(`${server}/signup`, {
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({league: league, season: season})})
+      body: JSON.stringify(userInfo)})
       .then(res => res.json())
       .then(
         (result) => {
@@ -20,3 +20,4 @@ export async function getScheduleGames(league, season) {
       )
   });
 }
+

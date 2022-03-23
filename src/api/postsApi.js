@@ -1,14 +1,14 @@
 import { server } from "../endpoint";
 
-export async function signUp(userInfo) {
+export async function getPosts() {
   return new Promise((resolve) => {
-    fetch(`${server}/signup`, {
-      method: 'PUT',
+    fetch(`${server}/posts`, {
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(userInfo)})
+      body: JSON.stringify({})})
       .then(res => res.json())
       .then(
         (result) => {
@@ -20,4 +20,3 @@ export async function signUp(userInfo) {
       )
   });
 }
-

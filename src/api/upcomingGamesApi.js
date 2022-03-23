@@ -10,7 +10,7 @@ let dummy = [
 export async function getUpcomingGames() {
   return new Promise((resolve) => {
     fetch(`${server}/upcomingGames/getUpcomingGames`, {
-      method: 'PUT',
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

@@ -1,14 +1,14 @@
 import { server } from "../endpoint";
 
-export async function getStatsTeams(season) {
+export async function getStandingsGames(league, season, isPlayoffs, isFinals) {
   return new Promise((resolve) => {
-    fetch(`${server}/stats/teams`, {
-      method: 'PUT',
+    fetch(`${server}/standings/games`, {
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({season: season})})
+      body: JSON.stringify({league: league, season: season, isPlayoffs: isPlayoffs, isFinals: isFinals})})
       .then(res => res.json())
       .then(
         (result) => {
@@ -21,15 +21,15 @@ export async function getStatsTeams(season) {
   });
 }
 
-export async function getStatsGoalies(isPlayoffs, season, isFinals) {
+export async function getStandingsVs(league, season, isPlayoffs, isFinals) {
   return new Promise((resolve) => {
-    fetch(`${server}/stats/goalieStats`, {
-      method: 'PUT',
+    fetch(`${server}/standings/vs`, {
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({isPlayoffs: isPlayoffs, season: season, isFinals: isFinals})})
+      body: JSON.stringify({league: league, season: season, isPlayoffs: isPlayoffs, isFinals: isFinals})})
       .then(res => res.json())
       .then(
         (result) => {
@@ -42,15 +42,15 @@ export async function getStatsGoalies(isPlayoffs, season, isFinals) {
   });
 }
 
-export async function getStatsPlayers(isPlayoffs, season, isFinals) {
+export async function getStandingsTeams(league, season) {
   return new Promise((resolve) => {
-    fetch(`${server}/stats/playerStats`, {
-      method: 'PUT',
+    fetch(`${server}/standings/teams`, {
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({isPlayoffs: isPlayoffs, season: season, isFinals: isFinals})})
+      body: JSON.stringify({league: league, season: season})})
       .then(res => res.json())
       .then(
         (result) => {

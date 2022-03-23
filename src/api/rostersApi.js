@@ -1,14 +1,14 @@
 import { server } from "../endpoint";
 
-export async function getStandingsGames(league, season, isPlayoffs, isFinals) {
+export async function getRosters19(league = 1, year = "2019-2020") {
   return new Promise((resolve) => {
-    fetch(`${server}/standings/games`, {
-      method: 'PUT',
+    fetch(`${server}/rosters`, {
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({league: league, season: season, isPlayoffs: isPlayoffs, isFinals: isFinals})})
+      body: JSON.stringify({league: league, year: year})})
       .then(res => res.json())
       .then(
         (result) => {
@@ -21,15 +21,15 @@ export async function getStandingsGames(league, season, isPlayoffs, isFinals) {
   });
 }
 
-export async function getStandingsVs(league, season, isPlayoffs, isFinals) {
+export async function getRosters40(league = 2, year = "2019-2020") {
   return new Promise((resolve) => {
-    fetch(`${server}/standings/vs`, {
-      method: 'PUT',
+    fetch(`${server}/rosters`, {
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({league: league, season: season, isPlayoffs: isPlayoffs, isFinals: isFinals})})
+      body: JSON.stringify({league: league, year: year})})
       .then(res => res.json())
       .then(
         (result) => {
@@ -42,15 +42,15 @@ export async function getStandingsVs(league, season, isPlayoffs, isFinals) {
   });
 }
 
-export async function getStandingsTeams(league, season) {
+export async function getRostersCaptains() {
   return new Promise((resolve) => {
-    fetch(`${server}/standings/teams`, {
-      method: 'PUT',
+    fetch(`${server}/rosters/captains`, {
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({league: league, season: season})})
+      body: JSON.stringify({})})
       .then(res => res.json())
       .then(
         (result) => {
