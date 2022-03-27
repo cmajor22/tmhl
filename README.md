@@ -22,14 +22,14 @@ To build the front end:
 ### `npm run build`
 
 # You will need to create a .env file to store secure credentials:
-REACT_APP_HOST=
-REACT_APP_USER=
-REACT_APP_PASSWORD=
-REACT_APP_DATABASE=
-REACT_APP_EMAILUSER=
-REACT_APP_EMAILPASSWORD=
-PORT=3001
-BACKENDPORT=3000
+#### REACT_APP_HOST=
+#### REACT_APP_USER=
+#### REACT_APP_PASSWORD=
+#### REACT_APP_DATABASE=
+#### REACT_APP_EMAILUSER=
+#### REACT_APP_EMAILPASSWORD=
+#### PORT=3001
+#### BACKENDPORT=3000
 
 # Database structure
 The database structure is in schema.sql
