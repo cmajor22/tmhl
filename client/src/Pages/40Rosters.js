@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { Typography, FormControl, InputLabel, Select, MenuItem, Grid, Card, Container, Paper, Box } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { Typography, FormControl, InputLabel, Select, MenuItem, Grid, Container, Paper, Box } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { get40, rostersValue } from '../redux/rostersSlice';
 import { seasonsList, seasonsValue } from '../redux/seasonsSlice';
@@ -48,17 +47,16 @@ function Rosters40(props) {
     useEffect(() => {
         dispatch(seasonsList({league: 1}));   
         dispatch(get40(season));
-    }, []);
+    }, []);// eslint-disable-line react-hooks/exhaustive-deps
     
     useEffect(() => {
         if(seasons.seasons.length>0) {
             setSeason(seasons.seasons[0]);
             handleChange({target: {value: seasons.seasons[0].name}});
         }
-    }, [seasons]);
+    }, [seasons]);// eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
-        console.log('rostersReturned')
         let re = rosters.rosters40.reduce((r, a) => {
             r[a.teamName] = r[a.teamName] || [];
             r[a.teamName].push(a);
@@ -66,7 +64,7 @@ function Rosters40(props) {
         }, Object.create(null));
         let tl = Object.keys(re).map((e) => {return re[e]})
         setTeamsList(tl);
-    }, [rosters])
+    }, [rosters]);// eslint-disable-line react-hooks/exhaustive-deps
 
     return <Container>
         <PageTitle title="40+ Rosters" variant="h2"/>
@@ -93,7 +91,6 @@ function Rosters40(props) {
                     <Paper elevation={3} sx={classes.teamItem}>
                         <PageTitle title={team[0].teamName} variant="h4"/>
                         {team.map((player) => {
-                            {console.log(player)}
                             return <Box sx={classes.playerItem}>
                                 <Typography sx={classes.playerNumber}>{player.number}</Typography>
                                 <Typography>{player.playerName}</Typography>

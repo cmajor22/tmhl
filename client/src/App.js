@@ -28,6 +28,9 @@ import Player from './Pages/Player';
 const theme = createTheme({
   palette: {
     mode: 'dark',
+	primary: {
+		main: '#ff6900'
+	},
 	tmhl: {
 		accent: '#ff6900',
 		medium: '#121212',

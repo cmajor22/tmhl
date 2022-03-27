@@ -16,7 +16,6 @@ module.exports = (express, connection) => {
   router.put('/', function(req, res, next) {
     const {name,address,city,postalCode,email,phone,mobile,age,division,position,levelPlayed,lastYear,people,comments} = req.body;
     
-    console.log(req.body)
     transporter.sendMail({
       from: 'emails@tottenhammensleague.com',
       to: "c.major88@live.com",

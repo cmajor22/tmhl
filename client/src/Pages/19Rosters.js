@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { Typography, FormControl, InputLabel, Select, MenuItem, Grid, Card, Container, Box, Paper } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { Typography, FormControl, InputLabel, Select, MenuItem, Grid, Container, Box, Paper } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { get19, rostersValue } from '../redux/rostersSlice';
 import { seasonsList, seasonsValue } from '../redux/seasonsSlice';
@@ -48,14 +47,14 @@ function Rosters19(props) {
     useEffect(() => {
         dispatch(seasonsList({league: 1}));        
         dispatch(get19(season));
-    }, []);
+    }, []);// eslint-disable-line react-hooks/exhaustive-deps
     
     useEffect(() => {
         if(seasons.seasons.length>0) {
             setSeason(seasons.seasons[0]);
             handleChange({target: {value: seasons.seasons[0].name}});
         }
-    }, [seasons]);
+    }, [seasons]);// eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         let re = rosters.rosters19.reduce((r, a) => {
@@ -65,7 +64,7 @@ function Rosters19(props) {
         }, Object.create(null));
         let tl = Object.keys(re).map((e) => {return re[e]})
         setTeamsList(tl);
-    }, [rosters])
+    }, [rosters]);// eslint-disable-line react-hooks/exhaustive-deps
 
     return <Container>
         <PageTitle title="19+ Rosters" variant="h2"/>

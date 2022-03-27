@@ -82,13 +82,11 @@ module.exports = (express, connection) => {
 
   router.put('/teams', function(req, res, next) {
     const season = req.body.season;
-    console.log(season)
 
     const sql = `select teams.name from seasons,teams where seasons.seasonsId=teams.seasonsId and seasons.seasonsId=?`;
 
     connection.query(sql, [season], function (err, rows) {
       if (err) throw {err};
-      console.log(rows)
       res.send(rows);
     });
   });

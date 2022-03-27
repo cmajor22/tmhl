@@ -30,13 +30,13 @@ function GameCard(props) {
                     <Typography sx={classes.teamName}>{props.homeTeam}</Typography>
                     <Typography sx={classes.teamName}>{props.awayTeam}</Typography>
                 </Grid>
-                {props.homeScore !== 0 || props.awayScore !== 0 &&
+                {(props.homeScore !== 0 || props.awayScore !== 0) &&
                     <Grid item xs={5}>
                         <Typography sx={classes.score}>{props.homeScore}</Typography>
                         <Typography sx={classes.score}>{props.awayScore}</Typography>
                     </Grid>
                 }
-                {props.homeScore === 0 && props.awayScore === 0 &&
+                {(props.homeScore === 0 && props.awayScore === 0) &&
                     <Grid item xs={5}>
                         <Typography sx={classes.time}>{props.date}</Typography>
                         <Typography sx={classes.time}>{props.time}</Typography>

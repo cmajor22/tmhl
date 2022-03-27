@@ -1,11 +1,11 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Box, Container, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { seasonsList, seasonsValue } from '../redux/seasonsSlice';
 import { standingsValue, standingsGames, standingsTeams, standingsVs } from '../redux/standingsSlice';
 import { DataGrid } from '@mui/x-data-grid';
-import { addGA, addGF, addGP, addLoss, addLossPlayoffs, addOTLossPlayoffs, addOTWinPlayoffs, addPIM, addTie, addWin, addWinPlayoffs } from '../utils/games';
+import { addGA, addGF, addGP, addLoss, addLossPlayoffs, addOTLossPlayoffs, addOTWinPlayoffs, addPIM, 
+    addTie, addWin, addWinPlayoffs } from '../utils/games';
 import TmhlTable from '../Components/TmhlTable';
 import PageTitle from '../Components/PageTitle';
 
@@ -72,14 +72,14 @@ function Standings40(props) {
     
     useEffect(() => {
         dispatch(seasonsList({league: 2}));     
-    }, []);
+    }, []);// eslint-disable-line react-hooks/exhaustive-deps
     
     useEffect(() => {
         if(seasons.seasons.length>0) {
             setSeason(seasons.seasons[0]);
             handleSeasonChange({target: {value: seasons.seasons[0].seasonsid}});
         }
-    }, [seasons]);
+    }, [seasons]);// eslint-disable-line react-hooks/exhaustive-deps
     
     useEffect(() => {
         let ts = [];
@@ -205,7 +205,7 @@ function Standings40(props) {
         
         setTeams(ts)
         setFilteredGames(standings.standingsGames);
-    }, [standings]);
+    }, [standings]);// eslint-disable-line react-hooks/exhaustive-deps
 
     const getData = (s, t) => {
         let [isPlayoffs, isFinals] = [0, 0];

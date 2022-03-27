@@ -10,3 +10,6 @@ html {
 ::-webkit-scrollbar-thumb {
     background: #FF0000;
 }
+a {
+    color: #ff6900
+}

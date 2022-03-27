@@ -14,6 +14,7 @@ COPY package-lock.json ./
 RUN npm install
 
 # install client dependencies and build
+COPY . ./
 RUN npm run build
 
 EXPOSE 80

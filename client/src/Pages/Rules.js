@@ -1,5 +1,4 @@
 import React from 'react';
-import makeStyles from '@mui/styles/makeStyles';
 import { Box, Container, Paper, Typography } from '@mui/material';
 import PageTitle from '../Components/PageTitle';
 import SportsHockeyIcon from '@mui/icons-material/SportsHockey';

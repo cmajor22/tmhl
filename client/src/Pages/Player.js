@@ -1,20 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, FormControl, InputLabel, Select, MenuItem, Grid, Card, Box, Container } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { Container } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
-import { gameAway, gameGoals, gameHome, gamePenalties, gamesValue } from '../redux/gamesSlice';
 import TmhlTable from '../Components/TmhlTable';
 import { playerGamesData, playerSeasonsData, playersValue } from '../redux/playersSlice';
 import PageTitle from '../Components/PageTitle';
 import moment from 'moment';
 
-const styles = {
-    
-};
-
 function Player(props) {
-    const classes = styles;
     const { playerId } = useParams();
     const dispatch = useDispatch();
     const players = useSelector(playersValue);
@@ -43,7 +36,7 @@ function Player(props) {
     useEffect(() => {
         dispatch(playerSeasonsData({playerId}));
         dispatch(playerGamesData({playerId}));
-    }, []);
+    }, []);// eslint-disable-line react-hooks/exhaustive-deps
     
     useEffect(() => {
         setSeasonRows(players.playerSeasons.map((season) => {
@@ -53,7 +46,7 @@ function Player(props) {
             return { id: game.gamesId, ...game, date: moment(game.date).format('YYYY-MM-DD')};
         }).reverse());
         setPlayerName(players.playerSeasons[0].playerName);
-    }, [players]);
+    }, [players]);// eslint-disable-line react-hooks/exhaustive-deps
 
 
     return <Container>

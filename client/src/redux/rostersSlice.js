@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, combineReducers } from '@reduxjs/toolkit';
 import { getRosters19, getRosters40, getRostersCaptains } from '../api/rostersApi';
-import moment from 'moment';
 
 const initialState = {
     rosters19: [],
@@ -10,12 +9,6 @@ const initialState = {
     captains: [],
     captainsLoading: false,
 };
-
-function getYear(year) {
-    return moment(year).format('YYYY');
-}
-
-const defaultSeason = `${parseInt(getYear(new Date()))-1}-${getYear(new Date())}`;
 
 export const get19 = createAsyncThunk(
     'rosters/19',

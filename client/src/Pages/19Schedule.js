@@ -1,22 +1,16 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Container, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import TmhlTable from '../Components/TmhlTable';
 import { scheduleGames, scheduleValue } from '../redux/scheduleSlice';
 import { seasonsValue, seasonsList } from '../redux/seasonsSlice';
 import PageTitle from '../Components/PageTitle';
-
-const styles = {
-    
-};
 
 function getFormattedDate(params) {
     return params.value.substr(0,10);
 }
 
 function Schedule19(props) {
-    const classes = styles;
     const dispatch = useDispatch();
     const seasons = useSelector(seasonsValue);
     const schedule = useSelector(scheduleValue);
@@ -38,17 +32,16 @@ function Schedule19(props) {
     
     useEffect(() => {
         dispatch(seasonsList({league: 1}));     
-    }, []);
+    }, []);// eslint-disable-line react-hooks/exhaustive-deps
     
     useEffect(() => {
         if(seasons.seasons.length>0) {
             setSeason(seasons.seasons[0]);
             handleSeasonChange({target: {value: seasons.seasons[0].seasonsid}});
         }
-    }, [seasons]);
+    }, [seasons]);// eslint-disable-line react-hooks/exhaustive-deps
     
     useEffect(() => {
-        console.log('schedChanged')
         let sched = [];
         let i = 0;
         schedule.scheduleGames.forEach((game) => {
@@ -59,7 +52,7 @@ function Schedule19(props) {
             i++;
         });
         setFilteredGames(sched);
-    }, [schedule]);
+    }, [schedule]);// eslint-disable-line react-hooks/exhaustive-deps
 
     const getData = (s, t) => {
         dispatch(scheduleGames({league: 1, season: s}));

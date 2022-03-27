@@ -1,6 +1,5 @@
 import React, { Fragment, useEffect } from 'react';
 import { TextField } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { DataGrid } from '@mui/x-data-grid';
 import { useHistory } from "react-router-dom";
 
@@ -23,16 +22,16 @@ function TmhlTable(props) {
 
     useEffect(() => {
         setFilteredRows(rows);
-    },[]);
+    },[]);// eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         setRowsSearch('');
         setFilteredRows(returnRows(rowsSearch));
-    }, [rows])
+    }, [rows]);// eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(()=> {
         setFilteredRows(returnRows(rowsSearch));
-    }, [rowsSearch]);
+    }, [rowsSearch]);// eslint-disable-line react-hooks/exhaustive-deps
 
     function rowClicked(event) {
         event.row.gamesId && history.push(`/game/${event.row.gamesId}`);
@@ -47,6 +46,7 @@ function TmhlTable(props) {
                     item.team?.toLowerCase().includes(searchText.toLowerCase())) {
                     return true;
                 }
+                return false;
             });
         }else{
             return rows.filter((item) => {
@@ -56,6 +56,7 @@ function TmhlTable(props) {
                     item.awayTeam?.toLowerCase().includes(searchText.toLowerCase())) {
                     return true;
                 }
+                return false;
             });
         }
     }

@@ -1,6 +1,5 @@
-import React, { Fragment, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Container, FormControl, Grid, InputLabel, MenuItem, Select } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import { useDispatch, useSelector } from 'react-redux';
 import { seasonsList, seasonsValue } from '../redux/seasonsSlice';
 import { statsTeams, statsGoalies, statsPlayers, statsValue } from '../redux/statsSlice';
@@ -8,12 +7,7 @@ import { addGA, addGoalie, addGoalieNum, addGP, addLoss, addSO, addTie, addWin }
 import TmhlTable from '../Components/TmhlTable';
 import PageTitle from '../Components/PageTitle';
 
-const styles = {
-    
-};
-
 function Stats19(props) {
-    const classes = styles;
     const dispatch = useDispatch();
     const seasons = useSelector(seasonsValue);
     const stats = useSelector(statsValue);
@@ -64,14 +58,14 @@ function Stats19(props) {
     
     useEffect(() => {
         dispatch(seasonsList({league: 1}));
-    }, []);
+    }, []);// eslint-disable-line react-hooks/exhaustive-deps
     
     useEffect(() => {
         if(seasons.seasons.length>0) {
             setSeason(seasons.seasons[0]);
             handleSeasonChange({target: {value: seasons.seasons[0].seasonsid}});
         }
-    }, [seasons]);
+    }, [seasons]);// eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         let teams = stats.statsTeams.map((item, i) => {
@@ -170,7 +164,7 @@ function Stats19(props) {
             i++;
         }
         setAllStats(all);
-    }, [stats])
+    }, [stats]);// eslint-disable-line react-hooks/exhaustive-deps
 
     const getData = (s, t) => {
         let [isPlayoffs, isFinals] = [0, 0];

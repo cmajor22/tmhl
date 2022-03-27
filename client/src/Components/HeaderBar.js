@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import GameCard from './GameCard';
-import { AppBar, Button, IconButton, List, ListItem, Toolbar } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { AppBar, IconButton, List, ListItem } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { getGames, upcomingGamesValue } from '../redux/upcomingGamesSlice';
-import Navigation2 from './Navigation2';
+import Navigation from './Navigation';
 import { Box } from '@mui/system';
 import Logo from '../assets/tmhl_logo.png';
 import { toggleMenu } from '../redux/menuSlice';
@@ -78,7 +77,6 @@ const styles = {
 
 
 function HeaderBar(props) {
-    // const classes = useStyles();
     const classes = styles;
     const upcomingGames = useSelector(upcomingGamesValue);
     const dispatch = useDispatch();
@@ -91,7 +89,7 @@ function HeaderBar(props) {
     
     useEffect(() => {
         dispatch(getGames());
-    }, []);
+    }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
     window.onscroll = function() {scrollFunction()};
 
@@ -114,7 +112,7 @@ function HeaderBar(props) {
     }
 
     return <AppBar sx={classes.appBar} position="fixed">
-        <Navigation2 style={{zIndex: 1000}}/>
+        <Navigation style={{zIndex: 1000}}/>
         <Box sx={classes.headerContainer}>
             <IconButton onClick={() => {dispatch(toggleMenu())}} sx={classes.menuButton}><Menu /></IconButton>
             <List sx={classes.gameBarLeft}>
@@ -127,7 +125,7 @@ function HeaderBar(props) {
                     </ListItem>
                 })}
             </List>
-            <img src={Logo} style={logoStyle}/>
+            <img src={Logo} style={logoStyle} alt="TMHL logo"/>
             <List sx={classes.gameBarRight}>
                 {upcomingGames.filter(game => game.league===1).map((game) => {
                     return <ListItem key={game.gamesId} sx={classes.listItemRight}>

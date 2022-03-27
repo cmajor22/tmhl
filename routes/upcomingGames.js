@@ -8,7 +8,7 @@ module.exports = (express, connection) => {
     const sql = `select games.*,home.name as 'homeTeam',away.name as 'awayTeam',seasons.leaguesId as 'league' 
       from games,teamsforgames,teams home,teams away,seasons where games.gamesId=teamsforgames.gamesId 
       and home.teamsId=teamsforgames.homeId and away.teamsId=teamsforgames.awayId and games.seasonsId=seasons.seasonsId 
-      and games.date>=now() order by games.date,games.time limit 6`;
+      and games.date>=date(now()) order by games.date,games.time limit 6`;
 
     connection.query(sql, [year, league], function (err, rows) {
       if (err) throw {err};

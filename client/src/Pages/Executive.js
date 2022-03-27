@@ -1,9 +1,7 @@
-import React, { Fragment, useEffect } from 'react';
-import { Box, Card, Container, Grid, Paper, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import React, { useEffect } from 'react';
+import { Box, Container, Grid, Paper, Typography } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import PageTitle from '../Components/PageTitle';
-import { Title } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCaptains, rostersValue } from '../redux/rostersSlice';
 
@@ -42,7 +40,7 @@ function Executive(props) {
     
     useEffect(() => {
         dispatch(getCaptains());
-    }, []);
+    }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
     return <Container>
         <PageTitle title="Executive" variant="h2"/>
@@ -78,6 +76,7 @@ function Executive(props) {
                                 </Box>
                             </Paper>
                         }
+                        return null
                     })}
                 </Paper>
             </Grid>
@@ -96,6 +95,7 @@ function Executive(props) {
                                 </Box>
                             </Paper>
                         }
+                        return null
                     })}
                 </Paper>
             </Grid>

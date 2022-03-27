@@ -2,12 +2,7 @@ import React from 'react';
 import { Container, Typography } from '@mui/material';
 import PageTitle from '../Components/PageTitle';
 
-const styles = {
-    
-};
-
 function PresidentsMessage(props) {
-    const classes = styles;
 
     return <Container>
         <PageTitle title="President's Message" variant="h2"/>

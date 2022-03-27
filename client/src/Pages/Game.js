@@ -1,17 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Typography, FormControl, InputLabel, Select, MenuItem, Grid, Card, Box, Container } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { Grid, Box, Container } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import { gameAway, gameGoals, gameHome, gamePenalties, gamesValue } from '../redux/gamesSlice';
 import TmhlTable from '../Components/TmhlTable';
 
-const styles = {
-    
-};
-
 function Game(props) {
-    const classes = styles;
     const { gameId } = useParams();
     const dispatch = useDispatch();
     const game = useSelector(gamesValue);
@@ -38,7 +32,7 @@ function Game(props) {
         dispatch(gamePenalties({gameId}));
         dispatch(gameHome({gameId}));
         dispatch(gameAway({gameId}));
-    }, []);
+    }, []);// eslint-disable-line react-hooks/exhaustive-deps
     
     useEffect(() => {
         let tempGoalsArray = [{home: '', away: ''},{home: 0, away: 0},{home: 0, away: 0},{home: 0, away: 0},{home: 0, away: 0}];
@@ -77,7 +71,7 @@ function Game(props) {
         setAwayRows(game.gameAway.map((statLine) => {
             return {id: statLine.playerName, ...statLine};
         }).sort(playerSort));
-    }, [game]);
+    }, [game]);// eslint-disable-line react-hooks/exhaustive-deps
 
     function playerSort(a, b) {
         if(a.points > b.points) {

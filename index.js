@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const port = 3000;
 const cors=require("cors");
 var bodyParser = require('body-parser')
 var mysql = require('mysql');
@@ -8,6 +7,7 @@ const path = require("path");
 require('dotenv').config()
 const { db } = require('./constants');
 var connection = mysql.createPool(db);
+const port = process.env.BACKENDPORT;
 
 const corsOptions ={
    origin:'*',
@@ -48,6 +48,6 @@ app.get("/*", (req, res) => {
   );
 })
 
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
+app.listen(port, () => {
+  console.log(`TMHL Backend listening at http://localhost:${port}`)
 })
