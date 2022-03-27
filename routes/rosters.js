@@ -1,0 +1,37 @@
+module.exports = (express, connection) => {
+  var router = express.Router();
+
+  /* Season Rosters */
+  router.put('/', function(req, res, next) {
+    const league = req.body.league;
+    const year = req.body.year;
+    const sql = `select playerNumber as 'number',players.name as 'playerName', teams.name as 'teamName',isGoalie,isCaptain
+      from playersforteams,teams,seasons,players
+      where playersforteams.teamsId=teams.teamsId and teams.seasonsId=seasons.seasonsid 
+      and players.playersId=playersforteams.playersId and seasons.name  like ? and leaguesId=? 
+      order by teams.teamsId,isCaptain desc,isGoalie desc,players.name`;
+
+    connection.query(sql, [year, league], function (err, rows) {
+      if (err) throw {err};
+    
+      res.send(rows);
+    });
+  });
+
+  /* Team Captains */
+  router.put('/captains', function(req, res, next) {
+    const sql = `select playerNumber as 'number',players.name as 'playerName', teams.name as 'teamName',isGoalie,isCaptain,leaguesId
+      from playersforteams,teams,seasons,players
+      where playersforteams.teamsId=teams.teamsId and teams.seasonsId=seasons.seasonsid 
+      and players.playersId=playersforteams.playersId and seasons.isActive=1 and isCaptain=1
+      order by teams.teamsId,isCaptain desc,isGoalie desc,players.name`;
+
+    connection.query(sql, [], function (err, rows) {
+      if (err) throw {err};
+    
+      res.send(rows);
+    });
+  });
+
+  return router;
+}

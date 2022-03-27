@@ -6,19 +6,20 @@ WORKDIR /app
 
 # add `/app/node_modules/.bin` to $PATH
 ENV PATH /app/node_modules/.bin:$PATH
-EXPOSE 3001
+ENV PATH /app/client/node_modules/.bin:$PATH
 
-# install app dependencies
+# install server dependencies
 COPY package.json ./
 COPY package-lock.json ./
 RUN npm install
 
-# add app
+# install client dependencies and build
 COPY . ./
+RUN npm run build
 
 EXPOSE 80
 EXPOSE 3000
 EXPOSE 3001
 
 # start app
-CMD ["npm", "start"]
+CMD ["npm", "run", "server"]
