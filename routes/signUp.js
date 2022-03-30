@@ -23,7 +23,7 @@ module.exports = (express, connection) => {
       html: `${emailContent(req.body)}`,
     });
 
-    const sql = `INSERT INTO totte873_tmhlwp.waitinglist 
+    const sql = `INSERT INTO waitinglist 
       (name,address,city,postalCode,email,phone,mobile,age,division,position,level,lastYear,people,comments,createdTime)
       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,now());`;
 

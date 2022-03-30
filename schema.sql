@@ -202,6 +202,36 @@ CREATE TABLE `teamsforgames` (
   `awayId` int(11) DEFAULT NULL,
   PRIMARY KEY (`teamsforgamesid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=982 DEFAULT CHARSET=latin1;
+
+--
+-- Table structure for table `waitingList`
+--
+
+DROP TABLE IF EXISTS `waitingList`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+
+CREATE TABLE `waitinglist` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) DEFAULT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `city` varchar(45) DEFAULT NULL,
+  `postalCode` varchar(10) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `phone` varchar(15) DEFAULT NULL,
+  `mobile` varchar(15) DEFAULT NULL,
+  `age` varchar(4) DEFAULT NULL,
+  `division` varchar(45) DEFAULT NULL,
+  `position` varchar(45) DEFAULT NULL,
+  `level` varchar(45) DEFAULT NULL,
+  `lastYear` varchar(45) DEFAULT NULL,
+  `people` varchar(100) DEFAULT NULL,
+  `comments` varchar(500) DEFAULT NULL,
+  `createdTime` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=629 DEFAULT CHARSET=utf8;
+
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 

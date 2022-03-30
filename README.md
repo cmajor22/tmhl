@@ -33,3 +33,4 @@ To build the front end:
 
 # Database structure
 The database structure is in schema.sql
+There is sample data in sampleData.sql
