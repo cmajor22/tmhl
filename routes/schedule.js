@@ -11,7 +11,8 @@ module.exports = (express, connection) => {
       homeGoals.gamesId=teamsforgames.gamesId left join goals awayGoals on awayGoals.teamsId=teamsforgames.awayId and 
       awayGoals.gamesId=teamsforgames.gamesId where games.seasonsId=seasons.seasonsid and games.gamesId=teamsforgames.gamesId and 
       home.teamsId=teamsforgames.homeId and away.teamsId=teamsforgames.awayId and leaguesid=? and seasons.seasonsId=?
-      group by games.gamesId order by date,games.time`;
+      group by games.gamesId
+      order by games.date,convert(SUBSTRING_INDEX(games.time, ':', 1), unsigned integer)`;
 
     connection.query(sql, [league, season], function (err, rows) {
       if (err) throw {err};

@@ -14,7 +14,7 @@ module.exports = (express, connection) => {
           and home.teamsId=teamsforgames.homeId and away.teamsId=teamsforgames.awayId and games.seasonsId=seasons.seasonsId 
           and games.date>=date(now())
           group by games.gamesId
-          order by games.date,games.time 
+          order by games.date,convert(SUBSTRING_INDEX(games.time, ':', 1), unsigned integer)
           limit 6`;
 
     connection.query(sql, [year, league], function (err, rows) {
