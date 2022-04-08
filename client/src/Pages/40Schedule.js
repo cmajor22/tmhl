@@ -16,14 +16,24 @@ function Schedule40(props) {
     const schedule = useSelector(scheduleValue);
     const [season, setSeason] = React.useState('1');
     const [filteredGames, setFilteredGames] = React.useState([]);
+    const isMobile = window.screen.width < 600;
+    let hiddenColumns = {};
+    let fixedWidthDate = isMobile ? 100 : 120;
+    let fixedWidthGoal = isMobile ? 10 : 120;
+    let goalTitle = isMobile ? "G" : "GOALS";
     const gamesColumns = [
-        { field: 'date', headerName: 'DATE', sortable: false, width: 120, valueGetter: getFormattedDate },
-        { field: 'time', headerName: 'TIME', sortable: false, width: 120, headerAlign: 'center', align: 'center' },
+        { field: 'date', headerName: 'DATE', sortable: false, width: fixedWidthDate, valueGetter: getFormattedDate },
+        { field: 'time', headerName: 'TIME', sortable: false, width: fixedWidthDate, headerAlign: 'center', align: 'center' },
         { field: 'homeTeam',  headerName: 'HOME', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
-        { field: 'homeGoals',  headerName: 'GOALS', type: 'number', sortable: false, width: 120, headerAlign: 'center', align: 'center' },
+        { field: 'homeGoals',  headerName: goalTitle, type: 'number', sortable: false, width: fixedWidthGoal, headerAlign: 'center', align: 'center' },
         { field: 'awayTeam',  headerName: 'AWAY', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
-        { field: 'awayGoals',  headerName: 'GOALS', type: 'number', sortable: false, width: 120, headerAlign: 'center', align: 'center' },
+        { field: 'awayGoals',  headerName: goalTitle, type: 'number', sortable: false, width: fixedWidthGoal, headerAlign: 'center', align: 'center' },
     ];
+    if(isMobile) {
+        hiddenColumns = {
+            time: false
+        };
+    }
   
     const handleSeasonChange = (event) => {
         setSeason(event.target.value);
@@ -81,6 +91,7 @@ function Schedule40(props) {
                 rows={filteredGames}
                 columns={gamesColumns}
                 hasFilter={true}
+                hiddenColumns={hiddenColumns}
             />
             :
             null

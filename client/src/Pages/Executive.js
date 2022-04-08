@@ -48,7 +48,7 @@ function Executive(props) {
         <Grid container spacing={3}>
             {
                 personList.map((person) => {
-                    return <Grid item xs={3}>
+                    return <Grid item xs={12}>
                         <Paper sx={classes.personCard} elevation={3}>
                             <Box>
                                 <PersonIcon sx={classes.personCardIcon}></PersonIcon>
@@ -61,7 +61,7 @@ function Executive(props) {
                     </Grid>
                 })
             }
-            <Grid item xs={6}>
+            <Grid item xs={12}>
                 <Paper elevation={3} sx={classes.leagueLeaders}>
                     <PageTitle title="40+ Captains" variant="h4"/>
                     {rosters.captains.map((person) => {
@@ -80,7 +80,7 @@ function Executive(props) {
                     })}
                 </Paper>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
                 <Paper elevation={3} sx={classes.leagueLeaders}>
                     <PageTitle title="19+ Captains" variant="h4"/>
                     {rosters.captains.map((person) => {
@@ -100,6 +100,7 @@ function Executive(props) {
                 </Paper>
             </Grid>
         </Grid>
+        <br />
     </Container>
 }
 

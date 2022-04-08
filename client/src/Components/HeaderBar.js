@@ -149,7 +149,7 @@ function HeaderBar(props) {
                 });
             }
         }else{
-            if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+            if (document.body.scrollTop > 40 || document.documentElement.scrollTop > 40) {
                 setappBarMobile({
                     padding: 0,
                     width: '100%',
@@ -157,7 +157,6 @@ function HeaderBar(props) {
                     transition: 'height .35s ease-in-out'
                 });
             } else {
-                console.log('hittytitty')
                 setappBarMobile({
                     padding: 0,
                     width: '100%',

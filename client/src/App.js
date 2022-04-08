@@ -20,12 +20,12 @@ import Schedule40 from './Pages/40Schedule';
 import Rules from './Pages/Rules';
 import SignUp from './Pages/SignUp';
 import Game from './Pages/Game';
-import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { createTheme, ThemeProvider, responsiveFontSizes } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline';
 import bg from './assets/bg.jpg';
 import Player from './Pages/Player';
 
-const theme = createTheme({
+let theme = responsiveFontSizes(createTheme({
   palette: {
     mode: 'dark',
 	primary: {
@@ -50,7 +50,9 @@ const theme = createTheme({
 		  }
 	  }
   }
-});
+}));
+const isMobile = window.screen.width < 600;
+const appBarPadding = isMobile ? '210px' : '120px';
 
 function App() {
   return (
@@ -58,7 +60,7 @@ function App() {
 		<CssBaseline />
         <Router>
           <Box style={{backgroundImage: `url(${bg})`, backgroundPosition: 'center top', backgroundRepeat: 'no-repeat', backgroundColor: '#FFFFFF'}}>
-			<Box style={{maxWidth: '960px',height: '100%', minHeight: '100vh', margin: 'auto', backgroundColor: '#1e1e1e', paddingTop: '110px'}}>
+			<Box style={{maxWidth: '960px',height: '100%', minHeight: '100vh', margin: 'auto', backgroundColor: '#1e1e1e', paddingTop: appBarPadding}}>
 				<HeaderBar style={{marginBottom: '50px'}}></HeaderBar>
 				{/* <Navigation2></Navigation2> */}
 				<Switch>
