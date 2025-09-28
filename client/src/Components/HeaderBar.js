@@ -1,26 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import GameCard from './GameCard';
-import { AppBar, IconButton, List, ListItem } from '@mui/material';
+import { AppBar, Fade, Typography } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { getGames, upcomingGamesValue } from '../redux/upcomingGamesSlice';
 import Navigation from './Navigation';
 import { Box } from '@mui/system';
 import Logo from '../assets/tmhl_logo.png';
 import { toggleMenu } from '../redux/menuSlice';
-import { Menu } from '@mui/icons-material';
 import moment from 'moment';
+import { useHistory } from 'react-router-dom';
 
 const styles = {
-    appBar: {
-        display: 'flex',
-        flexDirection: 'row',
-        padding: 0,
-        width: '100%',
-        height: '80px'
-    },
     headerContainer: {
         display: 'flex',
         flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        zIndex: 999,
+    },
+    headerContainerMobile: {
+        display: 'flex',
+        flexDirection: 'column',
         width: '100%',
         position: 'absolute',
         top: '0px',
@@ -29,42 +30,35 @@ const styles = {
     },
     gameBarLeft: {
         display: 'flex',
-        flexDirection: 'row-reverse',
+        flexDirection: 'column',
         alignItems: 'flex-start',
-        padding: 0,
-        width: '100%',
+        paddingTop: '5px',
+        paddingLeft: '10px',
+        paddingRight: '10px',
+        height: '95%',
+        width: '355px',
         overflow: 'hidden',
-        paddingBottom: '6px',
-        marginRight: '10px',
-        marginLeft: '-50px',
-        marginTop: '15px'
+        backdropFilter: 'blur'
     },
     gameBarRight: {
         display: 'flex',
-        flexDirection: 'row',
+        flexDirection: 'column',
         alignItems: 'flex-start',
-        padding: 0,
-        width: '100%',
+        paddingTop: '5px',
+        paddingLeft: '10px',
+        paddingRight: '10px',
+        height: '95%',
+        width: '355px',
         overflow: 'hidden',
-        paddingBottom: '6px',
-        marginLeft: '10px',
-        marginTop: '15px'
+        backdropFilter: 'blur'
     },
     listItemLeft: {
-        width: '120px',
+        width: '160px',
         padding: '0px',
-        marginLeft: '20px'
     },
     listItemRight: {
-        width: '120px',
+        width: '160px',
         padding: '0px',
-        marginRight: '20px'
-    },
-    menuButton: {
-        height: '50px',
-        width: '50px',
-        marginTop: '15px',
-        zIndex: 10050
     },
     gameCardLeft: {
         marginLeft: '100px',
@@ -72,7 +66,24 @@ const styles = {
     },
     gameCardRight: {
         marginRight: '10px'
-    }
+    },
+    logoContainer: {
+        display: 'flex',
+        height: '180px',
+        width: '250px',
+        paddingTop: '10px',
+        justifyContent: 'center'
+    },
+    logoStyle: {
+        height: '90%'
+    },
+    menuButton: {
+        cursor: 'pointer',
+
+        '&:hover': {
+            color: '#ff6900'
+        }
+    },
 };
 
 
@@ -80,11 +91,20 @@ function HeaderBar(props) {
     const classes = styles;
     const upcomingGames = useSelector(upcomingGamesValue);
     const dispatch = useDispatch();
-    const [ logoStyle, setlogoStyle ] = useState({
-        marginTop: '5px',
-        transition: 'transform .35s ease-in-out',
-        transform: 'scale(1)',
-        width: '120px',
+    let history = useHistory();
+    const [ appBarStyle, setappBarStyle ] = useState({
+        display: 'flex',
+        flexDirection: 'row',
+        padding: 0,
+        width: '100%',
+        height: '200px'
+    });
+    const [ logoContainerStyle, setlogoContainerStyle ] = useState({
+        display: 'flex',
+        height: '160px',
+        width: '250px',
+        paddingTop: '10px',
+        justifyContent: 'center'
     });
     
     useEffect(() => {
@@ -95,50 +115,141 @@ function HeaderBar(props) {
 
     function scrollFunction() {
         if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
-            setlogoStyle({
-                marginTop: '5px',
-                transition: 'transform .35s ease-in-out',
-                transform: 'scale(0.7) translate(0%, -30%)',
-                width: '120px',
+            setappBarStyle({
+                display: 'flex',
+                flexDirection: 'row',
+                padding: 0,
+                width: '100%',
+                height: '80px',
+                transition: 'height .5s',
+            });
+            setlogoContainerStyle({
+                display: 'flex',
+                height: '80px',
+                width: '250px',
+                paddingTop: '10px',
+                justifyContent: 'center',
+                transition: 'height .5s',
             });
         } else {
-            setlogoStyle({
-                marginTop: '5px',
-                transition: 'transform .35s ease-in-out',
-                transform: 'scale(1)',
-                width: '120px',
+            setappBarStyle({
+                display: 'flex',
+                flexDirection: 'row',
+                padding: 0,
+                width: '100%',
+                height: '200px',
+                transition: 'height .5s',
+            });
+            setlogoContainerStyle({
+                display: 'flex',
+                height: '160px',
+                width: '250px',
+                paddingTop: '10px',
+                justifyContent: 'center',
+                transition: 'height .5s',
             });
         }
     }
 
-    return <AppBar sx={classes.appBar} position="fixed">
-        <Navigation style={{zIndex: 1000}}/>
-        <Box sx={classes.headerContainer}>
-            <IconButton onClick={() => {dispatch(toggleMenu())}} sx={classes.menuButton}><Menu /></IconButton>
-            <List sx={classes.gameBarLeft}>
-                {upcomingGames.filter(game => game.league===2)?.reverse().map((game) => {
-                    return <ListItem key={game.gamesId} sx={classes.listItemLeft}>
-                        <GameCard
-                            homeTeam={game.homeTeam} homeScore={game.homeScore??0}
-                            awayTeam={game.awayTeam} awayScore={game.awayScore??0} 
-                            date={moment(game.date).format('MMM DD')} time={game.time}/>
-                    </ListItem>
-                })}
-            </List>
-            <img src={Logo} style={logoStyle} alt="TMHL logo"/>
-            <List sx={classes.gameBarRight}>
-                {upcomingGames.filter(game => game.league===1).map((game) => {
-                    return <ListItem key={game.gamesId} sx={classes.listItemRight}>
-                        <GameCard sx={classes.gameCardRight}
-                            homeTeam={game.homeTeam} homeScore={game.homeScore??0} 
-                            awayTeam={game.awayTeam} awayScore={game.awayScore??0}
-                            date={moment(game.date).format('MMM DD')} time={game.time}
-                        />
-                    </ListItem>
-                })}
-            </List>
-        </Box>
-    </AppBar>
+    function goPage(page) {
+        let route = `${page}`;
+        history.push(route);
+    }
+
+    return (
+        !(document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) ?
+        <AppBar sx={appBarStyle} position="fixed">
+            <Navigation style={{zIndex: 1000}}/>
+            <Box sx={classes.headerContainer}>
+                <Fade in={!(document.body.scrollTop > 50 || document.documentElement.scrollTop > 50)}>
+                    <Box sx={classes.gameBarLeft}>
+                        <Typography variant="h5" sx={{width: '100%', marginBottom: '3px'}}>Next 40+ Games</Typography>
+                        <Box sx={{display: 'flex', alignContent: 'space-around', flexWrap: 'wrap', justifyContent: 'space-between', height: '180px'}}>
+                            {upcomingGames.filter(game => game.league===2)?.map((game) => {
+                                return <Box key={game.gamesId} sx={classes.listItemLeft} onClick={() => goPage(`/game/${game.gamesid}`)}>
+                                    <GameCard
+                                        homeTeam={game.homeShortForm} homeScore={game.homeScore??0}
+                                        awayTeam={game.awayShortForm} awayScore={game.awayScore??0} 
+                                        date={moment(game.date).format('MMM DD')} time={game.time}
+                                        homeColour={game.homePrimary} awayColour={game.awayPrimary}
+                                        />
+                                </Box>
+                            })}
+                        </Box>
+                        <Box sx={{width: '100%', marginTop: '5px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                            <Typography sx={classes.menuButton} onClick={() => goPage('/40rosters')}>Rosters</Typography>
+                            <Typography sx={classes.menuButton} onClick={() => goPage('/40standings')}>Standings</Typography>
+                            <Typography sx={classes.menuButton} onClick={() => goPage('/40schedule')}>Schedule</Typography>
+                        </Box>
+                    </Box>
+                </Fade>
+                <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                    <Box sx={logoContainerStyle}>
+                        <img src={Logo} style={classes.logoStyle} alt="TMHL logo"/>
+                    </Box>
+                    <Box sx={{width: '100%', marginTop: '5px', display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
+                        <Typography sx={classes.menuButton} onClick={() => {dispatch(toggleMenu())}}>Menu</Typography>
+                    </Box>
+                </Box>
+                <Fade in={!(document.body.scrollTop > 50 || document.documentElement.scrollTop > 50)}>
+                    <Box sx={classes.gameBarRight}>
+                        <Typography variant="h5" sx={{width: '100%', marginBottom: '3px'}}>Next 19+ Games</Typography>
+                        <Box sx={{display: 'flex', alignContent: 'space-around', flexWrap: 'wrap', justifyContent: 'space-between', height: '100%'}}>
+                            {upcomingGames.filter(game => game.league===1).map((game) => {
+                                return <Box key={game.gamesId} sx={classes.listItemRight} onClick={() => goPage(`/game/${game.gamesid}`)}>
+                                    <GameCard
+                                        homeTeam={game.homeShortForm} homeScore={game.homeScore??0} 
+                                        awayTeam={game.awayShortForm} awayScore={game.awayScore??0}
+                                        date={moment(game.date).format('MMM DD')} time={game.time}
+                                        homeColour={game.homePrimary} awayColour={game.awayPrimary}
+                                    />
+                                </Box>
+                            })}
+                        </Box>
+                        <Box sx={{width: '100%', marginTop: '5px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                            <Typography sx={classes.menuButton} onClick={() => goPage('/19rosters')}>Rosters</Typography>
+                            <Typography sx={classes.menuButton} onClick={() => goPage('/19standings')}>Standings</Typography>
+                            <Typography sx={classes.menuButton} onClick={() => goPage('/19stats')}>Stats</Typography>
+                            <Typography sx={classes.menuButton} onClick={() => goPage('/19schedule')}>Schedule</Typography>
+                        </Box>
+                    </Box>
+                </Fade>
+            </Box>
+            
+        </AppBar>
+        :
+        <AppBar sx={appBarStyle} position="fixed">
+            <Navigation style={{zIndex: 1000}}/>
+            <Box sx={classes.headerContainer}>
+                <Fade in={(document.body.scrollTop > 50 || document.documentElement.scrollTop > 50)}>
+                    <Box sx={classes.gameBarLeft}>
+                        <Typography variant="h5" sx={{width: '100%', marginBottom: '3px'}}>40+ League</Typography>
+                        <Box sx={{width: '100%', marginTop: '5px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                            <Typography sx={classes.menuButton} onClick={() => goPage('/40rosters')}>Rosters</Typography>
+                            <Typography sx={classes.menuButton} onClick={() => goPage('/40standings')}>Standings</Typography>
+                            <Typography sx={classes.menuButton} onClick={() => goPage('/40schedule')}>Schedule</Typography>
+                        </Box>
+                    </Box>
+                </Fade>
+                <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                    <Box sx={logoContainerStyle}>
+                        <img src={Logo} style={classes.logoStyle} alt="TMHL logo"/>
+                    </Box>
+                </Box>
+                <Fade in={(document.body.scrollTop > 50 || document.documentElement.scrollTop > 50)}>
+                    <Box sx={classes.gameBarRight}>
+                        <Typography variant="h5" sx={{width: '100%', marginBottom: '3px'}}>19+ League</Typography>
+                        <Box sx={{width: '100%', marginTop: '5px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                            <Typography sx={classes.menuButton} onClick={() => goPage('/19rosters')}>Rosters</Typography>
+                            <Typography sx={classes.menuButton} onClick={() => goPage('/19standings')}>Standings</Typography>
+                            <Typography sx={classes.menuButton} onClick={() => goPage('/19stats')}>Stats</Typography>
+                            <Typography sx={classes.menuButton} onClick={() => goPage('/19schedule')}>Schedule</Typography>
+                        </Box>
+                    </Box>
+                </Fade>
+            </Box>            
+        </AppBar>
+    );
     
 }
 

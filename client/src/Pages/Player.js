@@ -15,22 +15,22 @@ function Player(props) {
     const [ gameRows, setGameRows ] = useState([]);
     const [ playerName, setPlayerName ] = useState([]);
     let seasonsColumns = [
-        { field: 'seasonsName', headerName: 'SEASON', sortable: false, flex: 1 },
-        { field: 'teamName', headerName: 'TEAM', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
-        { field: 'goals', headerName: 'GOALS', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
-        { field: 'assists', headerName: 'ASSISTS', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
-        { field: 'points',  headerName: 'POINTS', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
-        { field: 'pims',  headerName: 'PIMS', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
+        { field: 'seasonsName', headerName: 'SEASON', flex: 1 },
+        { field: 'teamName', headerName: 'TEAM', headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'goals', headerName: 'GOALS', type: 'number', headerAlign: 'center', align: 'center' },
+        { field: 'assists', headerName: 'ASSISTS', type: 'number', headerAlign: 'center', align: 'center' },
+        { field: 'points',  headerName: 'POINTS', type: 'number', headerAlign: 'center', align: 'center' },
+        { field: 'pims',  headerName: 'PIMS', type: 'number', headerAlign: 'center', align: 'center' },
     ];
     let gamesColumns = [
-        { field: 'seasonsName', headerName: 'SEASON', sortable: false, flex: 1 },
-        { field: 'date', headerName: 'DATE', type: 'number', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
-        { field: 'teamName', headerName: 'TEAM', type: 'number', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
-        { field: 'vs', headerName: 'VS', type: 'number', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
-        { field: 'goals',  headerName: 'GOALS', type: 'number', sortable: false, headerAlign: 'center', align: 'center', width: 40 },
-        { field: 'assists',  headerName: 'ASSISTS', type: 'number', sortable: false, headerAlign: 'center', align: 'center', width: 40 },
-        { field: 'points',  headerName: 'POINTS', type: 'number', sortable: false, headerAlign: 'center', align: 'center', width: 40 },
-        { field: 'pims',  headerName: 'PIMS', type: 'number', sortable: false, headerAlign: 'center', align: 'center', width: 40 },
+        { field: 'seasonsName', headerName: 'SEASON', flex: 1 },
+        { field: 'date', headerName: 'DATE', type: 'number', headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'teamName', headerName: 'TEAM', type: 'number', headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'vs', headerName: 'VS', type: 'number', headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'goals',  headerName: 'GOALS', type: 'number', headerAlign: 'center', align: 'center', width: 40 },
+        { field: 'assists',  headerName: 'ASSISTS', type: 'number', headerAlign: 'center', align: 'center', width: 40 },
+        { field: 'points',  headerName: 'POINTS', type: 'number', headerAlign: 'center', align: 'center', width: 40 },
+        { field: 'pims',  headerName: 'PIMS', type: 'number', headerAlign: 'center', align: 'center', width: 40 },
     ];
     
     useEffect(() => {
@@ -45,7 +45,7 @@ function Player(props) {
         setGameRows(players.playerGames.map((game) => {
             return { id: game.gamesId, ...game, date: moment(game.date).format('YYYY-MM-DD')};
         }).reverse());
-        setPlayerName(players.playerSeasons[0].playerName);
+        setPlayerName(players.playerSeasons[0]?.playerName);
     }, [players]);// eslint-disable-line react-hooks/exhaustive-deps
 
 

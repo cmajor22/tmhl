@@ -96,7 +96,7 @@ function Rosters40(props) {
                                 <Typography>{player.playerName}</Typography>
                                 {player.isCaptain === 1 && <Typography sx={classes.playerExtra}>(C)</Typography>}
                                 {player.isGoalie === 1 && <Typography sx={classes.playerExtra}>(G)</Typography>}
-                            </Box>
+                            </Box>;
                         })}
                     </Paper>
                 </Grid>

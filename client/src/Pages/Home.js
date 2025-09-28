@@ -5,8 +5,6 @@ import { getPostData, postsValue } from '../redux/postsSlice';
 import Logo from '../assets/tmhl_logo.png';
 
 const styles = {
-    mainContainer: {
-    },
     postContainer: {
         padding: '10px',
         marginBottom: '15px'
@@ -51,7 +49,6 @@ const Post = (props) => {
 }
 
 function Home(props) {
-    const classes = styles;
     const dispatch = useDispatch();
     const posts = useSelector(postsValue);
     const [postsList, setpostsList] = React.useState([]);
@@ -64,7 +61,7 @@ function Home(props) {
         setpostsList(posts.posts);
     }, [posts]);// eslint-disable-line react-hooks/exhaustive-deps
 
-    return <Container sx={classes.mainContainer}>
+    return <Container>
         {postsList.map((post) => {
             return <Post title={post.post_title} message={post.post_content} date={post.post_date} />
         })}

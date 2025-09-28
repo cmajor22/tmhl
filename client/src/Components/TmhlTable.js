@@ -35,6 +35,7 @@ function TmhlTable(props) {
 
     function rowClicked(event) {
         event.row.gamesId && history.push(`/game/${event.row.gamesId}`);
+        event.row.playersId && history.push(`/player/${event.row.playersId}`);
     }
 
     function returnRows(searchText) {
@@ -73,8 +74,8 @@ function TmhlTable(props) {
             rows={filteredRows}
             columns={columns}
             density='compact'
-            disableColumnFilter={true}
-            disableColumnMenu={true}
+            disableColumnFilter={false}
+            disableColumnMenu={false}
             hideFooter={true}
             onRowClick={(event) => {rowClicked(event)}}
         />

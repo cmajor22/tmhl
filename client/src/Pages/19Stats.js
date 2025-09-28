@@ -54,6 +54,7 @@ function Stats19(props) {
     
     const handleTypeChange = (event) => {
         setType(event.target.value);
+        getData(event.target.value, type);
     }
     
     useEffect(() => {
@@ -65,7 +66,7 @@ function Stats19(props) {
             setSeason(seasons.seasons[0]);
             handleSeasonChange({target: {value: seasons.seasons[0].seasonsid}});
         }
-    }, [seasons]);// eslint-disable-line react-hooks/exhaustive-deps
+    }, [seasons, type]);// eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         let teams = stats.statsTeams.map((item, i) => {

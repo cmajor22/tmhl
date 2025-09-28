@@ -57,28 +57,30 @@ function App() {
       <ThemeProvider theme={theme}>
 		<CssBaseline />
         <Router>
-          <Box style={{backgroundImage: `url(${bg})`, backgroundPosition: 'center top', backgroundRepeat: 'no-repeat', backgroundColor: '#FFFFFF'}}>
-			<Box style={{maxWidth: '960px',height: '100%', minHeight: '100vh', margin: 'auto', backgroundColor: '#1e1e1e', paddingTop: '110px'}}>
-				<HeaderBar style={{marginBottom: '50px'}}></HeaderBar>
-				{/* <Navigation2></Navigation2> */}
-				<Switch>
-					<Route exact path="/home"><Home /></Route>
-					<Route exact path="/leagueInfo"><LeagueInfo/></Route>
-					<Route exact path="/presidentsMessage"><PresidentsMessage/></Route>
-					<Route exact path="/executive"><Executive/></Route>
-					<Route exact path="/19Rosters"><Rosters19/></Route>
-					<Route exact path="/19Stats"><Stats19/></Route>
-					<Route exact path="/19Standings"><Standings19/></Route>
-					<Route exact path="/19Schedule"><Schedule19/></Route>
-					<Route exact path="/40Rosters"><Rosters40/></Route>
-					<Route exact path="/40Standings"><Standings40/></Route>
-					<Route exact path="/40Schedule"><Schedule40/></Route>
-					<Route exact path="/Rules"><Rules/></Route>
-					<Route exact path="/SignUp"><SignUp/></Route>
-					<Route exact path="/Game/:gameId"><Game/></Route>
-					<Route exact path="/Player/:playerId"><Player/></Route>
-					<Route path="/"><Home /></Route>
-				</Switch>
+        	<Box style={{backgroundImage: `url(${bg})`, backgroundPosition: 'center top', backgroundRepeat: 'no-repeat', backgroundColor: '#FFFFFF'}}>
+				<Box style={{maxWidth: '960px',height: '100%', minHeight: '100vh', margin: 'auto', backgroundColor: '#1e1e1e', paddingTop: '110px'}}>
+					<HeaderBar style={{maxWidth: '100%'}}></HeaderBar>
+					{/* <Navigation2></Navigation2> */}
+					<Box sx={{paddingTop: '100px'}}>
+						<Switch>
+							<Route exact path="/home"><Home /></Route>
+							<Route exact path="/leagueInfo"><LeagueInfo/></Route>
+							<Route exact path="/presidentsMessage"><PresidentsMessage/></Route>
+							<Route exact path="/executive"><Executive/></Route>
+							<Route exact path="/19Rosters"><Rosters19/></Route>
+							<Route exact path="/19Stats"><Stats19/></Route>
+							<Route exact path="/19Standings"><Standings19/></Route>
+							<Route exact path="/19Schedule"><Schedule19/></Route>
+							<Route exact path="/40Rosters"><Rosters40/></Route>
+							<Route exact path="/40Standings"><Standings40/></Route>
+							<Route exact path="/40Schedule"><Schedule40/></Route>
+							<Route exact path="/Rules"><Rules/></Route>
+							<Route exact path="/SignUp"><SignUp/></Route>
+							<Route exact path="/Game/:gameId"><Game/></Route>
+							<Route exact path="/Player/:playerId"><Player/></Route>
+							<Route path="/"><Home /></Route>
+						</Switch>
+					</Box>
 				</Box>
 			</Box>
         </Router>
