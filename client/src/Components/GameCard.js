@@ -22,12 +22,25 @@ const styles = {
     teamName: {
         fontSize: '14px'
     },
+    teamNameMobile: {
+        fontSize: '14px'
+    },
     score: {
         fontSize: '14px',
         color: `#FFFFFF80`,
         textAlign: 'right'
     },
+    scoreMobile: {
+        fontSize: '14px',
+        color: `#FFFFFF80`,
+        textAlign: 'right'
+    },
     time: {
+        fontSize: '14px',
+        color: `#FFFFFF80`,
+        textAlign: 'right'
+    },
+    timeMobile: {
         fontSize: '14px',
         color: `#FFFFFF80`,
         textAlign: 'right'

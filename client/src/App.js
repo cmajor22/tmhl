@@ -20,12 +20,12 @@ import Schedule40 from './Pages/40Schedule';
 import Rules from './Pages/Rules';
 import SignUp from './Pages/SignUp';
 import Game from './Pages/Game';
-import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { createTheme, ThemeProvider, responsiveFontSizes } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline';
 import bg from './assets/bg.jpg';
 import Player from './Pages/Player';
 
-const theme = createTheme({
+let theme = responsiveFontSizes(createTheme({
   palette: {
     mode: 'dark',
 	primary: {
@@ -50,7 +50,9 @@ const theme = createTheme({
 		  }
 	  }
   }
-});
+}));
+const isMobile = window.screen.width < 600;
+const appBarPadding = isMobile ? '210px' : '120px';
 
 function App() {
   return (

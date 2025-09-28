@@ -4,6 +4,7 @@ import { useHistory, withRouter } from 'react-router-dom';
 import { toggleMenu } from '../redux/menuSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { Box } from '@mui/system';
+import Logo from '../assets/tmhl_logo.png';
 
 const styles = {
     drawer: {
@@ -24,6 +25,11 @@ const styles = {
         '&:before': {
             display: 'none',
         }
+    },
+    logoMobile: {
+        height: '100px',
+        marginTop: '10px',
+        marginLeft: '10px'
     },
 };
 
@@ -64,6 +70,7 @@ function Navigation(props) {
     return (
         <Drawer anchor="left" open={isOpen} onClose={() => dispatch(toggleMenu())} sx={classes.drawer}>
             <Box sx={classes.drawerContent}>
+                <img src={Logo} style={classes.logoMobile} alt="TMHL logo"/>
                 <List>
                     <ListItemButton onClick={() => {goPage('/home')}}>
                         <ListItemText>Home</ListItemText>

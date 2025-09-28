@@ -19,7 +19,8 @@ module.exports = (express, connection) => {
       awayPenalties.gamesId=teamsforgames.gamesId where games.seasonsId=seasons.seasonsid and 
       games.gamesId=teamsforgames.gamesId and home.teamsId=teamsforgames.homeId and away.teamsId=teamsforgames.awayId and 
       leaguesid=? and isPlayoffs=? and uploaded=1 and seasons.seasonsId=? and isFinals=? 
-      group by games.gamesId`;
+      group by games.gamesId
+      order by games.date,convert(SUBSTRING_INDEX(games.time, ':', 1), unsigned integer)`;
 
     // connection.query(sql, [1, 0, 7, 0], function (err, rows) {
     connection.query(sql, [league, isPlayoffs, season, isFinals], function (err, rows) {
@@ -106,7 +107,8 @@ module.exports = (express, connection) => {
       group by games.gamesId 
       having count(distinct hg.goalsId)>count(distinct ag.goalsId) ) wins1 
       group by homeId,awayId 
-      ) t1  left join teams 'teamName' on teamName.teamsId = team  left join teams 'vsName' on vsName.teamsId=vs  group by team,vs`;
+      ) t1  left join teams 'teamName' on teamName.teamsId = team  left join teams 'vsName' on vsName.teamsId=vs  
+      group by team,vs`;
 
     connection.query(sql, [season, isPlayoffs, isFinals, league, 
       season, isPlayoffs, isFinals, league,

@@ -28,6 +28,17 @@ const styles = {
         left: '0px',
         zIndex: 999,
     },
+    headerContainerMobile: {
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%',
+        zIndex: 999,
+    },
+    gameBarMobile: {
+        padding: 0,
+        width: '90%',
+        overflow: 'hidden',
+    },
     gameBarLeft: {
         display: 'flex',
         flexDirection: 'column',

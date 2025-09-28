@@ -87,7 +87,7 @@ function Rosters40(props) {
         <br />
         <Grid container spacing={3}>
             {teamsList.map((team) => {
-                return <Grid item xs={4}>
+                return <Grid item xs={12} md={6} lg={4}>
                     <Paper elevation={3} sx={classes.teamItem}>
                         <PageTitle title={team[0].teamName} variant="h4"/>
                         {team.map((player) => {

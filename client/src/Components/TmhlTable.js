@@ -12,10 +12,7 @@ const styles = {
 
 function TmhlTable(props) {
     const classes = styles;
-    const columns = props.columns;
-    const rows = props.rows;
-    const filterType = props.filterType;
-    const hasFilter = props.hasFilter;
+    const { columns, rows, filterType, hasFilter, hiddenColumns } = props;
     const [rowsSearch, setRowsSearch] = React.useState('');
     const [filteredRows, setFilteredRows] = React.useState([]);
     const history = useHistory();
@@ -78,6 +75,7 @@ function TmhlTable(props) {
             disableColumnMenu={false}
             hideFooter={true}
             onRowClick={(event) => {rowClicked(event)}}
+            columnVisibilityModel={hiddenColumns}
         />
     </Fragment>
     

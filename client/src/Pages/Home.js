@@ -7,7 +7,8 @@ import Logo from '../assets/tmhl_logo.png';
 const styles = {
     postContainer: {
         padding: '10px',
-        marginBottom: '15px'
+        marginBottom: '15px',
+        overflow: 'hidden'
     },
     titleContainer: {
         display: 'flex',

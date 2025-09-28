@@ -17,15 +17,24 @@ function Stats19(props) {
     const [goalsStats, setGoalsStats] = React.useState([]);
     const [assistsStats, setAssistsStats] = React.useState([]);
     const [allStats, setAllStats] = React.useState([]);
+    const isMobile = window.screen.width < 600;
+    let hiddenColumnsGoalies = {};
+    let hiddenColumnsPlayers = {};
+    let fixedWidthMedium = isMobile ? 10 : 60;
+    let fixedWidthSmall = isMobile ? 6 : 60;
+    let goalTitle = isMobile ? "G" : "GOALS";
+    let assistTitle = isMobile ? "A" : "ASSISTS";
+    let pointsTitle = isMobile ? "P" : "POINTSS";
+    let pimsTitle = isMobile ? "PIM" : "PIMS";
     let goaliesColumns = [
-        { field: 'goalie', headerName: 'Name', sortable: false, flex: 1 },
-        { field: 'gamesPlayed', headerName: 'GP', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
-        { field: 'wins',  headerName: 'W', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
-        { field: 'losses',  headerName: 'L', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
-        { field: 'ties',  headerName: 'T', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
-        { field: 'goalsAgainst',  headerName: 'GA', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
-        { field: 'goalsAgainstAverage',  headerName: 'GAA', type: 'number', sortable: false, width: 80, headerAlign: 'center', align: 'center' },
-        { field: 'shutouts',  headerName: 'SO', type: 'number', sortable: false, width: 60, headerAlign: 'center', align: 'center' },
+        { field: 'goalie', headerName: 'Name', sortable: false, flex: 1, minWidth: 150 },
+        { field: 'gamesPlayed', headerName: 'GP', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
+        { field: 'wins',  headerName: 'W', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
+        { field: 'losses',  headerName: 'L', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
+        { field: 'ties',  headerName: 'T', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
+        { field: 'goalsAgainst',  headerName: 'GA', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
+        { field: 'goalsAgainstAverage',  headerName: 'GAA', type: 'number', sortable: false, minWidth: fixedWidthMedium, headerAlign: 'center', align: 'center' },
+        { field: 'shutouts',  headerName: 'SO', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
       ];
     let goalsColumns = [
         { field: 'name', headerName: 'NAME', sortable: false, flex: 1 },
@@ -40,12 +49,21 @@ function Stats19(props) {
     let allColumns = [
         { field: 'id', headerName: ' ', sortable: true, width: 20 },
         { field: 'name', headerName: 'NAME', sortable: false, flex: 1 },
-        { field: 'team', headerName: 'TEAM', type: 'number', sortable: false, width: 150, headerAlign: 'center', align: 'center' },
-        { field: 'goals',  headerName: 'GOALS', type: 'number', sortable: true, width: 120, headerAlign: 'center', align: 'center' },
-        { field: 'assists',  headerName: 'ASSISTS', type: 'number', sortable: true, width: 120, headerAlign: 'center', align: 'center' },
-        { field: 'points',  headerName: 'POINTS', type: 'number', sortable: true, width: 120, headerAlign: 'center', align: 'center' },
-        { field: 'pims',  headerName: 'PIMS', type: 'number', sortable: true, width: 100, headerAlign: 'center', align: 'center' },
-      ];
+        { field: 'team', headerName: 'TEAM', type: 'number', sortable: false, width: fixedWidthMedium, headerAlign: 'center', align: 'center' },
+        { field: 'goals',  headerName: goalTitle, type: 'number', sortable: true, width: fixedWidthMedium, headerAlign: 'center', align: 'center' },
+        { field: 'assists',  headerName: assistTitle, type: 'number', sortable: true, width: fixedWidthMedium, headerAlign: 'center', align: 'center' },
+        { field: 'points',  headerName: pointsTitle, type: 'number', sortable: true, width: fixedWidthMedium, headerAlign: 'center', align: 'center' },
+        { field: 'pims',  headerName: pimsTitle, type: 'number', sortable: true, width: fixedWidthMedium, headerAlign: 'center', align: 'center' },
+    ];
+    if(isMobile) {
+        hiddenColumnsGoalies = {
+            gamesPlayed: false,
+        };
+        hiddenColumnsPlayers = {
+            id: false,
+            team: false
+        };
+    }
   
     const handleSeasonChange = (event) => {
         setSeason(event.target.value);
@@ -223,6 +241,7 @@ function Stats19(props) {
                         rows={goaliesStats}
                         columns={goaliesColumns}
                         hasFilter={false}
+                        hiddenColumns={hiddenColumnsGoalies}
                     />
                 </Grid>
                 :
@@ -230,7 +249,7 @@ function Stats19(props) {
             }
             <br />
             {(goalsStats.length!==0) ?
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                     <TmhlTable
                         rows={goalsStats}
                         columns={goalsColumns}
@@ -242,7 +261,7 @@ function Stats19(props) {
             }
             <br />
             {(assistsStats.length!==0) ?
-                <Grid item xs={6}>
+                <Grid item xs={12} md={6}>
                     <TmhlTable
                         rows={assistsStats}
                         columns={assistsColumns}
@@ -260,6 +279,7 @@ function Stats19(props) {
                         columns={allColumns}
                         hasFilter={true}
                         filterType='player'
+                        hiddenColumns={hiddenColumnsPlayers}
                     />
                 </Grid>
                 :
