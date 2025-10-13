@@ -6,7 +6,7 @@ module.exports = (express, connection) => {
     const season = req.body.season;
 
     const sql = `select date,games.time,home.name as 'homeTeam',away.name as 'awayTeam',uploaded,
-      count(distinct homeGoals.goalsId) as 'homeGoals',count(distinct awayGoals.goalsId) as 'awayGoals' from seasons,
+      count(distinct homeGoals.goalsId) as 'homeGoals',count(distinct awayGoals.goalsId) as 'awayGoals',games.gamesId from seasons,
       teams home,teams away,games,teamsforgames left join goals homeGoals on homeGoals.teamsId=teamsforgames.homeId and 
       homeGoals.gamesId=teamsforgames.gamesId left join goals awayGoals on awayGoals.teamsId=teamsforgames.awayId and 
       awayGoals.gamesId=teamsforgames.gamesId where games.seasonsId=seasons.seasonsid and games.gamesId=teamsforgames.gamesId and 

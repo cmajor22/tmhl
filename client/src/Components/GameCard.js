@@ -64,8 +64,20 @@ function GameCard(props) {
                 <Box elevation={1} sx={classes.gameCard}>
                     <Grid container alignItems="center">
                         <Grid item xs={7}>
-                            <Typography sx={classes.teamName}>{props.homeTeam}</Typography>
-                            <Typography sx={classes.teamName}>{props.awayTeam}</Typography>
+                            <Box sx={{display: 'flex', flexDirection: 'row'}}>
+                                <Box sx={{height: '24px', width: '24px', marginRight: '3px'}}>
+                                    <img src={`/assets/${props.homeTeam}.svg`}/>
+                                </Box>
+                                <Typography sx={classes.teamName}>
+                                    {props.homeTeam}
+                                </Typography>
+                            </Box>
+                            <Box sx={{display: 'flex', flexDirection: 'row'}}>
+                                <Box sx={{height: '24px', width: '24px', marginRight: '3px'}}>
+                                    <img src={`/assets/${props.awayTeam}.svg`}/>
+                                </Box>
+                                <Typography sx={classes.teamName}>{props.awayTeam}</Typography>
+                            </Box>
                         </Grid>
                         {(props.homeScore !== 0 || props.awayScore !== 0) &&
                             <Grid item xs={5}>

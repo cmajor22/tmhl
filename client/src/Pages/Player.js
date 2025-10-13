@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container } from '@mui/material';
+import { Container, Skeleton } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import TmhlTable from '../Components/TmhlTable';
@@ -40,7 +40,7 @@ function Player(props) {
     
     useEffect(() => {
         setSeasonRows(players.playerSeasons.map((season) => {
-            return { id: season.seasonsName, ...season};
+            return { id: season.seasonsName??season.name, ...season};
         }));
         setGameRows(players.playerGames.map((game) => {
             return { id: game.gamesId, ...game, date: moment(game.date).format('YYYY-MM-DD')};
@@ -52,11 +52,23 @@ function Player(props) {
     return <Container>
         <br />
         <br />
-        <PageTitle title={playerName} variant="h3" />
+        {players.playerGamesLoading ?
+            <Skeleton animation="wave" height={30}/>
+            :
+            <PageTitle title={playerName} variant="h3" />
+        }
         <br />
-        <TmhlTable rows={seasonRows} columns={seasonsColumns}></TmhlTable>
+        {players.playerSeasonsLoading ?
+            <Skeleton animation="wave" height={200}/>
+            :
+            <TmhlTable rows={seasonRows} columns={seasonsColumns}></TmhlTable>
+        }
         <br />
-        <TmhlTable rows={gameRows} columns={gamesColumns}></TmhlTable>
+        {players.playerGamesLoading ?
+            <Skeleton animation="wave" height={500}/>
+            :
+            <TmhlTable rows={gameRows} columns={gamesColumns}></TmhlTable>
+        }
         <br />
         <br />
     </Container>

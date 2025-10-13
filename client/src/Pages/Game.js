@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Box, Container, Typography } from '@mui/material';
+import { Grid, Box, Container, Typography, Skeleton } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import { gameAway, gameGoals, gameHome, gamePenalties, gamesValue } from '../redux/gamesSlice';
@@ -103,17 +103,33 @@ function Game(props) {
     return <Container>
         <br />
         <Box style={{maxWidth: '500px', margin: 'auto'}}>
-            <TmhlTable rows={summaryRows} columns={summaryColumns}></TmhlTable>
+            {(game.gameHomeLoading || game.gameAwayLoading) ?
+                <Skeleton animation="wave" height={100}/>
+                :
+                <TmhlTable rows={summaryRows} columns={summaryColumns}></TmhlTable>
+            }
         </Box>
         <br />
         <Grid container spacing={1}>
             <Grid item xs={6}>
-                <Typography variant='h5'>{homeRows[0]?.teamName}</Typography>
-                <TmhlTable rows={homeRows} columns={playerColumns}></TmhlTable>
+                {game.gameHomeLoading ?
+                    <Skeleton animation="wave" height={300}/>
+                    :
+                    [
+                        <Typography variant='h5'>{homeRows[0]?.teamName}</Typography>,
+                        <TmhlTable rows={homeRows} columns={playerColumns}></TmhlTable>
+                    ]
+                }
             </Grid>
             <Grid item xs={6}>
-                <Typography variant='h5'>{awayRows[0]?.teamName}</Typography>
-                <TmhlTable rows={awayRows} columns={playerColumns}></TmhlTable>
+                {game.gameAwayLoading ?
+                    <Skeleton animation="wave" height={300}/>
+                    :
+                    [
+                        <Typography variant='h5'>{awayRows[0]?.teamName}</Typography>,
+                        <TmhlTable rows={awayRows} columns={playerColumns}></TmhlTable>
+                    ]
+                }
             </Grid>
         </Grid>
         <br />

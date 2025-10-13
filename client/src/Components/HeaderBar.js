@@ -66,10 +66,12 @@ const styles = {
     listItemLeft: {
         width: '160px',
         padding: '0px',
+        cursor: 'pointer'
     },
     listItemRight: {
         width: '160px',
         padding: '0px',
+        cursor: 'pointer'
     },
     gameCardLeft: {
         marginLeft: '100px',
@@ -115,7 +117,8 @@ function HeaderBar(props) {
         height: '160px',
         width: '250px',
         paddingTop: '10px',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        cursor: 'pointer'
     });
     
     useEffect(() => {
@@ -141,6 +144,7 @@ function HeaderBar(props) {
                 paddingTop: '10px',
                 justifyContent: 'center',
                 transition: 'height .5s',
+                cursor: 'pointer'
             });
         } else {
             setappBarStyle({
@@ -158,6 +162,7 @@ function HeaderBar(props) {
                 paddingTop: '10px',
                 justifyContent: 'center',
                 transition: 'height .5s',
+                cursor: 'pointer'
             });
         }
     }
@@ -176,9 +181,9 @@ function HeaderBar(props) {
                     <Box sx={classes.gameBarLeft}>
                         <Typography variant="h5" sx={{width: '100%', marginBottom: '3px'}}>Next 40+ Games</Typography>
                         <Box sx={{display: 'flex', alignContent: 'space-around', flexWrap: 'wrap', justifyContent: 'space-between', height: '180px'}}>
-                            {upcomingGames.filter(game => game.league===2)?.map((game) => {
-                                return <Box key={game.gamesId} sx={classes.listItemLeft} onClick={() => goPage(`/game/${game.gamesid}`)}>
-                                    <GameCard
+                            {upcomingGames.filter(game => game.league===2)?.map((game, i) => {
+                                return <Box key={i} sx={classes.listItemLeft} onClick={() => goPage(`/game/${game.gamesid}`)}>
+                                    <GameCard key={i}
                                         homeTeam={game.homeShortForm} homeScore={game.homeScore??0}
                                         awayTeam={game.awayShortForm} awayScore={game.awayScore??0} 
                                         date={moment(game.date).format('MMM DD')} time={game.time}
@@ -195,7 +200,7 @@ function HeaderBar(props) {
                     </Box>
                 </Fade>
                 <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                    <Box sx={logoContainerStyle}>
+                    <Box sx={logoContainerStyle} onClick={() => goPage('/')}>
                         <img src={Logo} style={classes.logoStyle} alt="TMHL logo"/>
                     </Box>
                     <Box sx={{width: '100%', marginTop: '5px', display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
@@ -206,9 +211,9 @@ function HeaderBar(props) {
                     <Box sx={classes.gameBarRight}>
                         <Typography variant="h5" sx={{width: '100%', marginBottom: '3px'}}>Next 19+ Games</Typography>
                         <Box sx={{display: 'flex', alignContent: 'space-around', flexWrap: 'wrap', justifyContent: 'space-between', height: '100%'}}>
-                            {upcomingGames.filter(game => game.league===1).map((game) => {
-                                return <Box key={game.gamesId} sx={classes.listItemRight} onClick={() => goPage(`/game/${game.gamesid}`)}>
-                                    <GameCard
+                            {upcomingGames.filter(game => game.league===1).map((game, i) => {
+                                return <Box key={i} sx={classes.listItemRight} onClick={() => goPage(`/game/${game.gamesid}`)}>
+                                    <GameCard key={i}
                                         homeTeam={game.homeShortForm} homeScore={game.homeScore??0} 
                                         awayTeam={game.awayShortForm} awayScore={game.awayScore??0}
                                         date={moment(game.date).format('MMM DD')} time={game.time}

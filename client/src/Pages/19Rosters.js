@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { Typography, FormControl, InputLabel, Select, MenuItem, Grid, Container, Box, Paper } from '@mui/material';
+import { Typography, FormControl, InputLabel, Select, MenuItem, Grid, Container, Box, Paper, Skeleton } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { get19, rostersValue } from '../redux/rostersSlice';
 import { seasonsList, seasonsValue } from '../redux/seasonsSlice';
 import PageTitle from '../Components/PageTitle';
+import PlayerRow from '../Components/PlayerRow';
 
 const styles = {
     teamItem: {
@@ -78,29 +79,53 @@ function Rosters19(props) {
                 label="Season"
                 onChange={handleChange}
             >
-                {seasons.seasons.map((seasons) => {
-                    return <MenuItem key={seasons.seasonsId} value={seasons.name}>{seasons.name}</MenuItem>;
+                {seasons.seasons.map((seasons, i) => {
+                    return <MenuItem key={i} value={seasons.name}>{seasons.name}</MenuItem>;
                 })}
             </Select>
         </FormControl>
         <br />
         <br />
         <Grid container spacing={3}>
-            {teamsList.map((team) => {
-                return <Grid key={team.teamsId} item xs={12} md={6} lg={4}>
-                    <Paper elevation={3} sx={classes.teamItem}>
-                        <PageTitle title={team[0].teamName} variant="h4"/>
-                        {team.map((player) => {
-                            return <Box key={player.playersId} sx={classes.playerItem}>
-                                <Typography sx={classes.playerNumber}>{player.number}</Typography>
-                                <Typography>{player.playerName}</Typography>
-                                {player.isCaptain === 1 && <Typography sx={classes.playerExtra}>(C)</Typography>}
-                                {player.isGoalie === 1 && <Typography sx={classes.playerExtra}>(G)</Typography>}
-                            </Box>
-                        })}
-                    </Paper>
-                </Grid>
-            })}
+            {
+                !(rosters.rosters19Loading || seasons.seasonsLoading) ?
+                teamsList.map((team, i) => {
+                    return <Grid key={i} item xs={12} md={6} lg={4}>
+                        <Paper key={i} elevation={3} sx={{background: `#${team[0].primaryColour}15`, backdropFilter: 'blur(10px)'}}>
+                            <PageTitle key={i} title={team[0].teamName} variant="h4" primaryColour={team[0].primaryColour} shortForm={team[0].shortForm}/>
+                            {team.map((player, i) => {
+                                return <PlayerRow key={i}
+                                    playerNumber={player.number} playerName={player.playerName}
+                                    isCaptain={player.isCaptain} isGoalie={player.isGoalie} />
+                                
+                            })}
+                        </Paper>
+                    </Grid>
+                })
+                :
+                <Box  sx={{padding: "15px", width: '100%'}}>
+                    <Grid container spacing={3}>
+                        <Grid item lg={4}>
+                            <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
+                        </Grid>
+                        <Grid item lg={4}>
+                            <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
+                        </Grid>
+                        <Grid item lg={4}>
+                            <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
+                        </Grid>
+                        <Grid item lg={4}>
+                            <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
+                        </Grid>
+                        <Grid item lg={4}>
+                            <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
+                        </Grid>
+                        <Grid item lg={4}>
+                            <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
+                        </Grid>
+                    </Grid>
+                </Box>
+            }
         </Grid>
         <br />
     </Container>

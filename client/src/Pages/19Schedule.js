@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Container, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { Box, Container, FormControl, Grid, InputLabel, MenuItem, Select, Skeleton } from '@mui/material';
 import TmhlTable from '../Components/TmhlTable';
 import { scheduleGames, scheduleValue } from '../redux/scheduleSlice';
 import { seasonsValue, seasonsList } from '../redux/seasonsSlice';
@@ -71,31 +71,43 @@ function Schedule19(props) {
     return <Container>
         <PageTitle title="19+ Schedule" variant="h2"/>
         <br />
-        <FormControl fullWidth>
-            <InputLabel id="season-select-label">Season</InputLabel>
-            <Select
-                labelId="season-select-label"
-                id="season-select"
-                value={season}
-                label="Season"
-                onChange={handleSeasonChange}
-            >
-                {seasons.seasons.map((season) => {
-                    return <MenuItem key={season.seasonsid} value={season.seasonsid}>{season.name}</MenuItem>;
-                })}
-            </Select>
-        </FormControl>
-        <br />
-        <br />
-        {(filteredGames.length!==0) ?
-            <TmhlTable
-                rows={filteredGames}
-                columns={gamesColumns}
-                hasFilter={true}
-                hiddenColumns={hiddenColumns}
-            />
-            :
-            null
+        {
+            schedule.scheduleGamesLoading
+            ?
+                <Box sx={{padding: "15px", width: '100%'}}>
+                    <Grid container spacing={3}>
+                        <Grid item lg={12}>
+                            <Skeleton animation="wave" height={100} sx={{transform: "unset"}}/>
+                        </Grid>
+                        <Grid item lg={12}>
+                            <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
+                        </Grid>
+                    </Grid>
+                </Box>
+                :
+                [
+                    <FormControl fullWidth>
+                        <InputLabel id="season-select-label">Season</InputLabel>
+                        <Select
+                            labelId="season-select-label"
+                            id="season-select"
+                            value={season}
+                            label="Season"
+                            onChange={handleSeasonChange}
+                        >
+                            {seasons.seasons.map((season) => {
+                                return <MenuItem key={season.seasonsid} value={season.seasonsid}>{season.name}</MenuItem>;
+                            })}
+                        </Select>
+                    </FormControl>,
+                    <br />,
+                    <TmhlTable
+                        rows={filteredGames}
+                        columns={gamesColumns}
+                        hasFilter={true}
+                        hiddenColumns={hiddenColumns}
+                    />
+                ]
         }
         <br />
     </Container>

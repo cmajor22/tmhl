@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Box, Container, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Typography } from '@mui/material';
+import { Box, Container, FormControl, Grid, InputLabel, MenuItem, Paper, Select, Skeleton, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { seasonsList, seasonsValue } from '../redux/seasonsSlice';
 import { standingsValue, standingsGames, standingsTeams, standingsVs } from '../redux/standingsSlice';
@@ -265,99 +265,121 @@ function Standings19(props) {
     return <Container>
         <PageTitle title="19+ Standings" variant="h2"/>
         <br />
-        <Grid container spacing={3}>
-            <Grid item xs={6}>
-                <FormControl fullWidth>
-                    <InputLabel id="season-select-label">Season</InputLabel>
-                    <Select
-                        labelId="season-select-label"
-                        id="season-select"
-                        value={season}
-                        label="Season"
-                        onChange={handleSeasonChange}
-                    >
-                        {seasons.seasons.map((season) => {
-                            return <MenuItem value={season.seasonsid}>{season.name}</MenuItem>;
-                        })}
-                    </Select>
-                </FormControl>
-            </Grid>
-            <Grid item xs={6}>
-                <FormControl fullWidth>
-                    <InputLabel id="type-select-label">Type</InputLabel>
-                    <Select
-                        labelId="type-select-label"
-                        id="type-select"
-                        value={type}
-                        label="Type"
-                        onChange={handleTypeChange}
-                    >
-                        <MenuItem value="Regular Season">Regular Season</MenuItem>
-                        <MenuItem value="Playoffs">Playoffs</MenuItem>
-                        <MenuItem value="Finals">Finals</MenuItem>
-                    </Select>
-                </FormControl>
-            </Grid>
-            <br /><br />
-            {type==='Regular Season' && teams.length!==0 &&
-                <Grid item xs={12}>
-                    <DataGrid
-                        autoHeight
-                        rows={teams}
-                        columns={teamsColumnsRegular}
-                        density='compact'
-                        disableColumnFilter={true}
-                        disableColumnMenu={true}
-                        hideFooter={true}
-                        columnVisibilityModel={hiddenColumnsStandings}
-                    />
+        <br />
+        {
+            standings.standingsGamesLoading || standings.standingsTeamsLoading || standings.standingsVsLoading
+            ?
+                <Box  sx={{padding: "15px", width: '100%'}}>
+                    <Grid container spacing={3}>
+                        <Grid item lg={6}>
+                            <Skeleton animation="wave" height={100} sx={{transform: "unset"}}/>
+                        </Grid>
+                        <Grid item lg={6}>
+                            <Skeleton animation="wave" height={100} sx={{transform: "unset"}}/>
+                        </Grid>
+                        <Grid item lg={12}>
+                            <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
+                        </Grid>
+                        <Grid item lg={12}>
+                            <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
+                        </Grid>
+                    </Grid>
+                </Box>
+                :
+                <Grid container spacing={3}>
+                    <Grid item xs={6}>
+                        <FormControl fullWidth>
+                            <InputLabel id="season-select-label">Season</InputLabel>
+                            <Select
+                                labelId="season-select-label"
+                                id="season-select"
+                                value={season}
+                                label="Season"
+                                onChange={handleSeasonChange}
+                            >
+                                {seasons.seasons.map((season) => {
+                                    return <MenuItem value={season.seasonsid}>{season.name}</MenuItem>;
+                                })}
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <FormControl fullWidth>
+                            <InputLabel id="type-select-label">Type</InputLabel>
+                            <Select
+                                labelId="type-select-label"
+                                id="type-select"
+                                value={type}
+                                label="Type"
+                                onChange={handleTypeChange}
+                            >
+                                <MenuItem value="Regular Season">Regular Season</MenuItem>
+                                <MenuItem value="Playoffs">Playoffs</MenuItem>
+                                <MenuItem value="Finals">Finals</MenuItem>
+                            </Select>
+                        </FormControl>
+                    </Grid>
+                    <br /><br />
+                    {type==='Regular Season' && teams.length!==0 &&
+                        <Grid item xs={12}>
+                            <DataGrid
+                                autoHeight
+                                rows={teams}
+                                columns={teamsColumnsRegular}
+                                density='compact'
+                                disableColumnFilter={true}
+                                disableColumnMenu={true}
+                                hideFooter={true}
+                                columnVisibilityModel={hiddenColumnsStandings}
+                            />
+                        </Grid>
+                    }
+                    {type==='Playoffs' && teams.length!==0 &&
+                        <Grid item xs={12}>
+                            <DataGrid
+                                autoHeight
+                                rows={teams}
+                                columns={teamsColumnsPlayoffs}
+                                density='compact'
+                                disableColumnFilter={true}
+                                disableColumnMenu={true}
+                                hideFooter={true}
+                                columnVisibilityModel={hiddenColumnsStandings}
+                            />
+                        </Grid>
+                    }
+                    {type!=='Finals' && filteredGames.length!==0 &&
+                        <Grid item xs={12}>
+                            <TmhlTable
+                                rows={filteredGames}
+                                columns={gamesColumns}
+                                hasFilter={true}
+                                hiddenColumns={hiddenColumnsGames}
+                            />
+                        </Grid>
+                    }
+                    {type==='Finals' &&
+                        <Grid item xs={12}>
+                            {[...filteredGames].sort(finalGameOrder).map((game, index) => {
+                                return <Paper elevation={3} sx={classes.finalGameBox}>
+                                    <Box sx={classes.finalGameHeader}>
+                                        {index===0 && <PageTitle title="Championship" variant="h3"/>}
+                                        {index===1 && <PageTitle title="3RD Place" variant="h3"/>}
+                                        {index===2 && <PageTitle title="5TH Place" variant="h3"/>}
+                                        {index===3 && <PageTitle title="7TH Place" variant="h3"/>}
+                                    </Box>
+                                    <Box sx={classes.finalGameContent}>
+                                        <Typography variant="h6">
+                                            {game.homeGoals > game.awayGoals && `${game.homeTeam} (${game.homeGoals}) over ${game.awayTeam} (${game.awayGoals})`}
+                                            {game.homeGoals < game.awayGoals && `${game.awayTeam} (${game.awayGoals}) over ${game.homeTeam} (${game.homeGoals})`}
+                                        </Typography>
+                                    </Box>
+                                </Paper>
+                            })}
+                        </Grid>
+                    }
                 </Grid>
-            }
-            {type==='Playoffs' && teams.length!==0 &&
-                <Grid item xs={12}>
-                    <DataGrid
-                        autoHeight
-                        rows={teams}
-                        columns={teamsColumnsPlayoffs}
-                        density='compact'
-                        disableColumnFilter={true}
-                        disableColumnMenu={true}
-                        hideFooter={true}
-                        columnVisibilityModel={hiddenColumnsStandings}
-                    />
-                </Grid>
-            }
-            {type!=='Finals' && filteredGames.length!==0 &&
-                <Grid item xs={12}>
-                    <TmhlTable
-                        rows={filteredGames}
-                        columns={gamesColumns}
-                        hasFilter={true}
-                        hiddenColumns={hiddenColumnsGames}
-                    />
-                </Grid>
-            }
-            {type==='Finals' &&
-                <Grid item xs={12}>
-                    {[...filteredGames].sort(finalGameOrder).map((game, index) => {
-                        return <Paper elevation={3} sx={classes.finalGameBox}>
-                            <Box sx={classes.finalGameHeader}>
-                                {index===0 && <PageTitle title="Championship" variant="h3"/>}
-                                {index===1 && <PageTitle title="3RD Place" variant="h3"/>}
-                                {index===2 && <PageTitle title="5TH Place" variant="h3"/>}
-                                {index===3 && <PageTitle title="7TH Place" variant="h3"/>}
-                            </Box>
-                            <Box sx={classes.finalGameContent}>
-                                <Typography variant="h6">
-                                    {game.homeGoals > game.awayGoals && `${game.homeTeam} (${game.homeGoals}) over ${game.awayTeam} (${game.awayGoals})`}
-                                    {game.homeGoals < game.awayGoals && `${game.awayTeam} (${game.awayGoals}) over ${game.homeTeam} (${game.homeGoals})`}
-                                </Typography>
-                            </Box>
-                        </Paper>
-                    })}
-                </Grid>
-            }
-        </Grid>
+        }
         <br />
     </Container>
 }
