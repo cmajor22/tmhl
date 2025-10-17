@@ -138,6 +138,9 @@ function Navigation(props) {
                     <ListItemButton onClick={() => {goPage('/signUp')}}>
                         <ListItemText>Sign Up</ListItemText>
                     </ListItemButton>
+                    <ListItemButton onClick={() => dispatch(toggleMenu())}>
+                        <ListItemText>Close</ListItemText>
+                    </ListItemButton>
                 </List>
             </Box>
         </Drawer>
