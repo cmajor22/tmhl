@@ -1,10 +1,11 @@
-import { Drawer, ListItemText, ListItemIcon, List, ListItemButton, Collapse } from '@mui/material';
+import { Drawer, ListItemText, ListItemIcon, List, ListItemButton, Collapse, IconButton } from '@mui/material';
 import React from 'react';
 import { useHistory, withRouter } from 'react-router-dom';
 import { toggleMenu } from '../redux/menuSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { Box } from '@mui/system';
 import Logo from '../assets/tmhl_logo.png';
+import CloseIcon from '@mui/icons-material/Close';
 
 const styles = {
     drawer: {
@@ -27,7 +28,7 @@ const styles = {
         }
     },
     logoMobile: {
-        height: '100px',
+        height: '60px',
         marginTop: '10px',
         marginLeft: '10px'
     },
@@ -70,7 +71,13 @@ function Navigation(props) {
     return (
         <Drawer anchor="left" open={isOpen} onClose={() => dispatch(toggleMenu())} sx={classes.drawer}>
             <Box sx={classes.drawerContent}>
-                <img src={Logo} style={classes.logoMobile} alt="TMHL logo"/>
+                <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', 
+                    paddingTop: '5px', paddingLeft: '5px', paddingRight: '5px', width: '100vw'}}>
+                    <img src={Logo} style={classes.logoMobile} alt="TMHL logo"/>
+                    <IconButton sx={{backgroundColor: 'rgba(255,255,255,.05)'}}>
+                        <CloseIcon onClick={() => {dispatch(toggleMenu())}} sx={{cursor: 'pointer', fontSize: '44px'}} color="white"/>
+                    </IconButton>
+                </Box>
                 <List>
                     <ListItemButton onClick={() => {goPage('/home')}}>
                         <ListItemText>Home</ListItemText>
