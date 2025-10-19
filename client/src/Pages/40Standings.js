@@ -58,27 +58,34 @@ function Standings40(props) {
         { field: 'penalties',  headerName: 'PIM', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
         { field: 'streak',  headerName: streakTitle, type: 'number', sortable: false, width: fixedWidthMedium, headerAlign: 'center', align: 'center' },
       ];
-      let teamsColumnsPlayoffs = [
-          { field: 'name', headerName: 'Team', sortable: false, flex: 1, minWidth: 100 },
-          { field: 'gamesPlayed', headerName: 'GP', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
-          { field: 'wins',  headerName: 'RW', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
-          { field: 'otWins',  headerName: 'OW', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
-          { field: 'otLosses',  headerName: 'OL', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
-          { field: 'losses',  headerName: 'L', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
-          { field: 'points',  headerName: 'PTS', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
-          { field: 'goalsFor',  headerName: 'GF', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
-          { field: 'goalsAgainst',  headerName: 'GA', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
-          { field: 'plusMinus',  headerName: '+/-', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
-          { field: 'penalties',  headerName: 'PIM', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
-        ];
-      const gamesColumns = [
-          { field: 'date', headerName: 'DATE', sortable: false, width: fixedWidthDate, valueGetter: getFormattedDate },
-          { field: 'time', headerName: 'TIME', sortable: false, width: fixedWidthDate, headerAlign: 'center', align: 'center' },
-          { field: 'homeTeam',  headerName: 'HOME', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
-          { field: 'homeGoals',  headerName: goalTitle, type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
-          { field: 'awayTeam',  headerName: 'AWAY', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
-          { field: 'awayGoals',  headerName: goalTitle, type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
-        ];
+    let teamsColumnsPlayoffs = [
+        { field: 'name', headerName: 'Team', sortable: false, flex: 1, minWidth: 100 },
+        { field: 'gamesPlayed', headerName: 'GP', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
+        { field: 'wins',  headerName: 'RW', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
+        { field: 'otWins',  headerName: 'OW', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
+        { field: 'otLosses',  headerName: 'OL', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
+        { field: 'losses',  headerName: 'L', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
+        { field: 'points',  headerName: 'PTS', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
+        { field: 'goalsFor',  headerName: 'GF', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
+        { field: 'goalsAgainst',  headerName: 'GA', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
+        { field: 'plusMinus',  headerName: '+/-', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
+        { field: 'penalties',  headerName: 'PIM', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
+    ];
+    const gamesColumns = isMobile ? [
+        { field: 'date', headerName: 'DATE', sortable: false, width: fixedWidthDate, valueGetter: getFormattedDate },
+        { field: 'time', headerName: 'TIME', sortable: false, width: fixedWidthDate, headerAlign: 'center', align: 'center' },
+        { field: 'homeShortForm',  headerName: 'HOME', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'homeGoals',  headerName: goalTitle, type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
+        { field: 'awayShortForm',  headerName: 'AWAY', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'awayGoals',  headerName: goalTitle, type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
+    ] : [
+        { field: 'date', headerName: 'DATE', sortable: false, width: fixedWidthDate, valueGetter: getFormattedDate },
+        { field: 'time', headerName: 'TIME', sortable: false, width: fixedWidthDate, headerAlign: 'center', align: 'center' },
+        { field: 'homeTeam',  headerName: 'HOME', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'homeGoals',  headerName: goalTitle, type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
+        { field: 'awayTeam',  headerName: 'AWAY', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'awayGoals',  headerName: goalTitle, type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
+    ];
     const [teams, setTeams] = React.useState([]);
     if(isMobile) {
         hiddenColumnsGames = {

@@ -13,11 +13,11 @@ function Game(props) {
     const [ homeRows, setHomeRows] = useState([]);
     const [ awayRows, setAwayRows] = useState([]);
     let summaryColumns = [
-        { field: 'team', headerName: 'TEAM', sortable: false, flex: 1 },
-        { field: 'first', headerName: '1', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
-        { field: 'second', headerName: '2', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
-        { field: 'third', headerName: '3', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
-        { field: 'final',  headerName: 'FINAL', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
+        { field: 'team', headerName: 'TEAM', sortable: false, flex: 2 },
+        { field: 'first', headerName: '1', type: 'number', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'second', headerName: '2', type: 'number', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'third', headerName: '3', type: 'number', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'final',  headerName: 'F', type: 'number', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
     ];
     let playerColumns = [
         { field: 'playerName', headerName: 'TEAM', flex: 1 },
@@ -101,7 +101,6 @@ function Game(props) {
     }
 
     return <Container>
-        <br />
         <Box style={{maxWidth: '500px', margin: 'auto'}}>
             {(game.gameHomeLoading || game.gameAwayLoading) ?
                 <Skeleton animation="wave" height={100}/>
@@ -111,7 +110,7 @@ function Game(props) {
         </Box>
         <br />
         <Grid container spacing={1}>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
                 {game.gameHomeLoading ?
                     <Skeleton animation="wave" height={300}/>
                     :
@@ -121,7 +120,7 @@ function Game(props) {
                     ]
                 }
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
                 {game.gameAwayLoading ?
                     <Skeleton animation="wave" height={300}/>
                     :

@@ -9,7 +9,8 @@ module.exports = (express, connection) => {
 
     const sql = `select games.gamesId as id,games.gamesId,date,games.time,home.name as 'homeTeam',away.name as 'awayTeam',uploaded,
       seasons.leaguesId,isPlayoffs,isOvertime,count(distinct homeGoals.goalsId) as 'homeGoals',count(distinct awayGoals.goalsId) as 'awayGoals',
-      ifNull(homePenalties.minutes,0) as 'homePIM', ifNull(awayPenalties.minutes,0) as 'awayPIM' 
+      ifNull(homePenalties.minutes,0) as 'homePIM', ifNull(awayPenalties.minutes,0) as 'awayPIM',
+      home.shortForm as 'homeShortForm',away.shortForm as 'awayShortForm'
       from seasons,teams home,teams away,games,teamsforgames left join goals homeGoals on homeGoals.teamsId=teamsforgames.homeId and 
       homeGoals.gamesId=teamsforgames.gamesId left join goals awayGoals on awayGoals.teamsId=teamsforgames.awayId and 
       awayGoals.gamesId=teamsforgames.gamesId left join (select gamesId,teamsId,sum(minutes) as 'minutes' from penalties 

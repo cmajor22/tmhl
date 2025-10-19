@@ -72,7 +72,14 @@ function Standings19(props) {
         { field: 'plusMinus',  headerName: '+/-', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
         { field: 'penalties',  headerName: 'PIM', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
       ];
-    const gamesColumns = [
+    const gamesColumns = isMobile ? [
+        { field: 'date', headerName: 'DATE', sortable: false, width: fixedWidthDate, valueGetter: getFormattedDate },
+        { field: 'time', headerName: 'TIME', sortable: false, width: fixedWidthDate, headerAlign: 'center', align: 'center' },
+        { field: 'homeShortForm',  headerName: 'HOME', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'homeGoals',  headerName: goalTitle, type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
+        { field: 'awayShortForm',  headerName: 'AWAY', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'awayGoals',  headerName: goalTitle, type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
+    ] : [
         { field: 'date', headerName: 'DATE', sortable: false, width: fixedWidthDate, valueGetter: getFormattedDate },
         { field: 'time', headerName: 'TIME', sortable: false, width: fixedWidthDate, headerAlign: 'center', align: 'center' },
         { field: 'homeTeam',  headerName: 'HOME', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },

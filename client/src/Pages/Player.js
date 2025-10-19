@@ -11,18 +11,35 @@ function Player(props) {
     const { playerId } = useParams();
     const dispatch = useDispatch();
     const players = useSelector(playersValue);
+    const isMobile = window.screen.width < 600;
     const [ seasonRows, setSeasonRows ] = useState([]);
     const [ gameRows, setGameRows ] = useState([]);
     const [ playerName, setPlayerName ] = useState([]);
-    let seasonsColumns = [
-        { field: 'seasonsName', headerName: 'SEASON', flex: 1 },
-        { field: 'teamName', headerName: 'TEAM', headerAlign: 'center', align: 'center', flex: 1 },
-        { field: 'goals', headerName: 'GOALS', type: 'number', headerAlign: 'center', align: 'center' },
-        { field: 'assists', headerName: 'ASSISTS', type: 'number', headerAlign: 'center', align: 'center' },
-        { field: 'points',  headerName: 'POINTS', type: 'number', headerAlign: 'center', align: 'center' },
-        { field: 'pims',  headerName: 'PIMS', type: 'number', headerAlign: 'center', align: 'center' },
+    let seasonsColumns = isMobile ? [
+        { field: 'seasonsName', headerName: 'SEASON', width: 95 },
+        { field: 'teamName', headerName: 'TEAM', headerAlign: 'center', align: 'center', width: 100 },
+        { field: 'goals', headerName: 'G', type: 'number', headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'assists', headerName: 'A', type: 'number', headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'points',  headerName: 'P', type: 'number', headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'pims',  headerName: 'PIM', type: 'number', headerAlign: 'center', align: 'center', flex: 1 },
+    ] : [
+        { field: 'seasonsName', headerName: 'SEASON', flex: 2 },
+        { field: 'teamName', headerName: 'TEAM', headerAlign: 'center', align: 'center', flex: 2 },
+        { field: 'goals', headerName: 'GOALS', type: 'number', headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'assists', headerName: 'ASSISTS', type: 'number', headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'points',  headerName: 'POINTS', type: 'number', headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'pims',  headerName: 'PIMS', type: 'number', headerAlign: 'center', align: 'center', flex: 1 },
     ];
-    let gamesColumns = [
+    let gamesColumns = isMobile ? [
+        { field: 'seasonsName', headerName: 'SEASON', width: 95 },
+        { field: 'date', headerName: 'DATE', type: 'number', headerAlign: 'center', align: 'center', width: 95 },
+        { field: 'shortForm', headerName: 'TEAM', type: 'number', headerAlign: 'center', align: 'center', width: 95 },
+        { field: 'vsShortForm', headerName: 'VS', type: 'number', headerAlign: 'center', align: 'center', width: 100 },
+        { field: 'goals',  headerName: 'G', type: 'number', headerAlign: 'center', align: 'center', width: 100 },
+        { field: 'assists',  headerName: 'A', type: 'number', headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'points',  headerName: 'P', type: 'number', headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'pims',  headerName: 'PIM', type: 'number', headerAlign: 'center', align: 'center', flex: 1 },
+    ] : [
         { field: 'seasonsName', headerName: 'SEASON', flex: 1 },
         { field: 'date', headerName: 'DATE', type: 'number', headerAlign: 'center', align: 'center', flex: 1 },
         { field: 'teamName', headerName: 'TEAM', type: 'number', headerAlign: 'center', align: 'center', flex: 1 },
@@ -50,8 +67,6 @@ function Player(props) {
 
 
     return <Container>
-        <br />
-        <br />
         {players.playerGamesLoading ?
             <Skeleton animation="wave" height={30}/>
             :

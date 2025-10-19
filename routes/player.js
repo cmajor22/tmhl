@@ -4,12 +4,12 @@ module.exports = (express, connection) => {
   /* Game goals */
   router.put('/seasons', function(req, res, next) {
     const playersId = req.body.playersId;
-    const sql = `select playerName,t1.playersId as 'playerId',teamName,seasonsName,leaguesid,hasStats,hasStatsV2,
+    const sql = `select playerName,t1.playersId as 'playerId',teamName,shortForm,seasonsName,leaguesid,hasStats,hasStatsV2,
       ifNull(goals.goals,0) as 'goals',  (ifNull(assist1.assists1,0) + ifNull(assist2.assists2,0)) as 'assists',
       (ifNull(goals.goals,0) + ifNull(assist1.assists1,0) + ifNull(assist2.assists2,0)) as 'points',
       ifNull(penalties.pims,0) as 'pims'
       from (select players.name as 'playerName',seasons.seasonsId,seasons.name as 'seasonsName',leaguesid,hasStats,hasStatsV2,
-      players.playersId,teams.name as 'teamName' from seasons,teams,playersforteams,players
+      players.playersId,teams.name as 'teamName', teams.shortForm from seasons,teams,playersforteams,players
       where seasons.seasonsId=teams.seasonsId and teams.teamsId = playersforteams.teamsId and 
       players.playersId=playersforteams.playersId and playersforteams.playersId=?
       group by players.playersId,seasons.seasonsId) t1  left join (select goal,count(*) as 'goals',seasons.seasonsId
@@ -34,13 +34,15 @@ module.exports = (express, connection) => {
   /* Game home list */
   router.put('/games', function(req, res, next) {
     const playersId = req.body.playersId;
-    const sql = `select playerName,t1.playersId as 'playerId',teamName,seasonsName,leaguesid,hasStats,hasStatsV2,
+    const sql = `select playerName,t1.playersId as 'playerId',teamName,shortForm,seasonsName,leaguesid,hasStats,hasStatsV2,
     ifNull(goals.goals,0) as 'goals',  (ifNull(assist1.assists1,0) + ifNull(assist2.assists2,0)) as 'assists',
     (ifNull(goals.goals,0) + ifNull(assist1.assists1,0) + ifNull(assist2.assists2,0)) as 'points',
     ifNull(penalties.pims,0) as 'pims',t1.gamesId,homeName,awayName,if(teamName=homeName,awayName,homeName) as 'vs',
+    if(teamName=homeName,homeShortForm,awayShortForm) as 'shortForm',if(teamName=homeName,awayShortForm,homeShortForm) as 'vsShortForm',
     t1.date,t1.time from  ( select players.name as 'playerName',seasons.seasonsId,seasons.name as 'seasonsName',
-    leaguesid,hasStats,hasStatsV2, players.playersId,teams.name as 'teamName',games.gamesId,home.name as'homeName',
-    away.name as 'awayName',date,time from seasons,teams,playersforteams,players,games,teamsforgames
+    leaguesid,hasStats,hasStatsV2, players.playersId,teams.name as 'teamName', teams.shortForm,games.gamesId,home.name as'homeName',
+    away.name as 'awayName',ifNull(home.shortForm,home.name) as homeShortForm,ifNull(away.shortForm,away.name) as awayShortForm,
+    date,time from seasons,teams,playersforteams,players,games,teamsforgames
     left join teams home on teamsforgames.homeId=home.teamsId  left join teams away on teamsforgames.awayId=away.teamsId
     where seasons.seasonsId=teams.seasonsId and teams.teamsId = playersforteams.teamsId and players.playersId=playersforteams.playersId
     and seasons.seasonsId=games.seasonsId and teamsforgames.gamesId=games.gamesId and playersforteams.playersId=? and uploaded=1

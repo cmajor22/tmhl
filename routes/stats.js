@@ -15,7 +15,7 @@ module.exports = (express, connection) => {
   router.put('/goalies/all', function(req, res, next) {
     const league = req.body.league;
 
-    const sql = `select players.name from playersforteams,teams,players,seasons 
+    const sql = `select players.name,teams.name as team from playersforteams,teams,players,seasons 
       where playersforteams.teamsId=teams.teamsId and playersforteams.playersId=players.playersId and 
       seasons.seasonsId=teams.seasonsId and isgoalie=1 and leaguesid=? group by players.name`;
 
@@ -32,7 +32,8 @@ module.exports = (express, connection) => {
       count(distinct homeGoals.goalsId) as 'homeGoals',count(distinct awayGoals.goalsId) as 'awayGoals', 
       ifNull(homePenalties.minutes,0) as 'homePIM', ifNull(awayPenalties.minutes,0) as 'awayPIM', uploaded as 'isUploaded',
       seasons.leaguesId,isPlayoffs,isOvertime, home.name as 'homeTeam',away.name as 'awayTeam', homeGoalie.name as 'homeGoalie',
-      awayGoalie.name as 'awayGoalie', homeGoalie.playersId as 'homeId', awayGoalie.playersId as 'awayId' 
+      awayGoalie.name as 'awayGoalie', homeGoalie.playersId as 'homeId', awayGoalie.playersId as 'awayId',
+      home.shortForm as 'homeShortForm',away.shortForm as 'awayShortForm'
       from seasons,teams home,teams away,games,teamsforgames 
       left join goals homeGoals on homeGoals.teamsId=teamsforgames.homeId and homeGoals.gamesId=teamsforgames.gamesId 
       left join goals awayGoals on awayGoals.teamsId=teamsforgames.awayId and awayGoals.gamesId=teamsforgames.gamesId 

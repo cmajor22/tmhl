@@ -28,6 +28,7 @@ function Stats19(props) {
     let pimsTitle = isMobile ? "PIM" : "PIMS";
     let goaliesColumns = [
         { field: 'goalie', headerName: 'Name', sortable: false, flex: 1, minWidth: 150 },
+        { field: 'team', headerName: 'TEAM', sortable: false, headerAlign: 'center', align: 'center' },
         { field: 'gamesPlayed', headerName: 'GP', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
         { field: 'wins',  headerName: 'W', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
         { field: 'losses',  headerName: 'L', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
@@ -37,12 +38,12 @@ function Stats19(props) {
         { field: 'shutouts',  headerName: 'SO', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
       ];
     let goalsColumns = [
-        { field: 'name', headerName: 'NAME', sortable: false, flex: 1 },
-        { field: 'team', headerName: 'TEAM', sortable: false, headerAlign: 'center', align: 'center' },
-        { field: 'goals',  headerName: 'GOALS', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
+        { field: 'name', headerName: 'NAME', sortable: false, flex: 2 },
+        { field: 'team', headerName: 'TEAM', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'goals',  headerName: 'GOALS', type: 'number', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
     ];
     let assistsColumns = [
-        { field: 'name', headerName: 'NAME', sortable: false, flex: 1 },
+        { field: 'name', headerName: 'NAME', sortable: false, flex: 2 },
         { field: 'team', headerName: 'TEAM', sortable: false, headerAlign: 'center', align: 'center' },
         { field: 'assists',  headerName: 'ASSISTS', type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
     ];
@@ -114,6 +115,7 @@ function Stats19(props) {
                 if(team.goalie==='') {
                     team.goalie = addGoalie(item, team.name);
                     team.goalieNum = addGoalieNum(item, team.name);
+                    team.team = team.name;
                 }
             }
         };

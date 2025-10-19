@@ -21,7 +21,14 @@ function Schedule40(props) {
     let fixedWidthDate = isMobile ? 100 : 120;
     let fixedWidthGoal = isMobile ? 10 : 120;
     let goalTitle = isMobile ? "G" : "GOALS";
-    const gamesColumns = [
+    const gamesColumns = isMobile ? [
+        { field: 'date', headerName: 'DATE', sortable: false, width: fixedWidthDate, valueGetter: getFormattedDate },
+        { field: 'time', headerName: 'TIME', sortable: false, width: fixedWidthDate, headerAlign: 'center', align: 'center' },
+        { field: 'homeShortForm',  headerName: 'HOME', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'homeGoals',  headerName: goalTitle, type: 'number', sortable: false, width: fixedWidthGoal, headerAlign: 'center', align: 'center' },
+        { field: 'awayShortForm',  headerName: 'AWAY', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
+        { field: 'awayGoals',  headerName: goalTitle, type: 'number', sortable: false, width: fixedWidthGoal, headerAlign: 'center', align: 'center' },
+    ] : [
         { field: 'date', headerName: 'DATE', sortable: false, width: fixedWidthDate, valueGetter: getFormattedDate },
         { field: 'time', headerName: 'TIME', sortable: false, width: fixedWidthDate, headerAlign: 'center', align: 'center' },
         { field: 'homeTeam',  headerName: 'HOME', sortable: false, headerAlign: 'center', align: 'center', flex: 1 },
