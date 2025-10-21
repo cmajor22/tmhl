@@ -19,7 +19,8 @@ const styles = {
         alignItems: 'center',
         width: '100%',
         zIndex: 999,
-        spacing: 1
+        spacing: 1,
+        background: 'radial-gradient(#323232, #1e1e1e)'
     },
     headerContainerMobile: {
         display: 'flex',
