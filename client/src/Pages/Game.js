@@ -100,12 +100,14 @@ function Game(props) {
         return -1;
     }
 
-    return <Container>
+    return <Container sx={{paddingBottom: '15px'}}>
         <Box style={{maxWidth: '500px', margin: 'auto'}}>
             {(game.gameHomeLoading || game.gameAwayLoading) ?
                 <Skeleton animation="wave" height={100}/>
                 :
-                <TmhlTable rows={summaryRows} columns={summaryColumns}></TmhlTable>
+                <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
+                    <TmhlTable rows={summaryRows} columns={summaryColumns}></TmhlTable>
+                </Box>
             }
         </Box>
         <br />
@@ -114,25 +116,23 @@ function Game(props) {
                 {game.gameHomeLoading ?
                     <Skeleton animation="wave" height={300}/>
                     :
-                    [
-                        <Typography variant='h5'>{homeRows[0]?.teamName}</Typography>,
+                    <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
+                        <Typography variant='h5'>{homeRows[0]?.teamName}</Typography>
                         <TmhlTable rows={homeRows} columns={playerColumns}></TmhlTable>
-                    ]
+                    </Box>
                 }
             </Grid>
             <Grid item xs={12} md={6}>
                 {game.gameAwayLoading ?
                     <Skeleton animation="wave" height={300}/>
                     :
-                    [
-                        <Typography variant='h5'>{awayRows[0]?.teamName}</Typography>,
+                    <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
+                        <Typography variant='h5'>{awayRows[0]?.teamName}</Typography>
                         <TmhlTable rows={awayRows} columns={playerColumns}></TmhlTable>
-                    ]
+                    </Box>
                 }
             </Grid>
         </Grid>
-        <br />
-        <br />
     </Container>
 }
 

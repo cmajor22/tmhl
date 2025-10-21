@@ -25,18 +25,22 @@ const styles = {
 function LeagueInfo(props) {
     const classes = styles;
 
-    return <Container>
-        <PageTitle title="League Information" variant="h2"/>
+    return <Container sx={{paddingBottom: '15px'}}>
+        <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
+            <PageTitle title="League Information" variant="h2"/>
+        </Box>
         <br />
-        <Typography>
-            The Tottenham Men’s Hockey League is celebrating 40 years of providing Men’s recreational hockey.  
-            The league’s focus is to provide fun, recreational hockey for men over 19 years of age in Tottenham and surrounding area. 
-            The league is very well organized with 2 divisions, referees, time keepers, jerseys and full statistics all supported by our website. 
-            The teams are drafted each year from a ranking system, which ensures competitively balanced teams.  
-            This also provides the opportunity to meet and play with new people each year.  We have 14 teams, with 1 captain per team and a 5 man executive.  
-            Games are played at the Tottenham Community Center.  The season starts in early September with playoffs in late February/March using a 26 game schedule. 
-            The last night of our season includes our Championship games and our end of year banquet.
-        </Typography>
+        <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '10px'}}>
+            <Typography>
+                The Tottenham Men’s Hockey League is celebrating 40 years of providing Men’s recreational hockey.  
+                The league’s focus is to provide fun, recreational hockey for men over 19 years of age in Tottenham and surrounding area. 
+                The league is very well organized with 2 divisions, referees, time keepers, jerseys and full statistics all supported by our website. 
+                The teams are drafted each year from a ranking system, which ensures competitively balanced teams.  
+                This also provides the opportunity to meet and play with new people each year.  We have 14 teams, with 1 captain per team and a 5 man executive.  
+                Games are played at the Tottenham Community Center.  The season starts in early September with playoffs in late February/March using a 26 game schedule. 
+                The last night of our season includes our Championship games and our end of year banquet.
+            </Typography>
+        </Box>
 
         <br />
 
@@ -84,15 +88,10 @@ function LeagueInfo(props) {
                 </Paper>
             </Grid>
         </Grid>
-
         <br />
- 
-        <Typography>Registration is approximately $420</Typography>
-
-        <br />
-
-        <Typography>If you are interested in joining our league please <Link href="/signUp">sign up</Link> and fill out your information and a league representative will contact you.</Typography>
-        <br /><br />
+        <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
+            <Typography>Registration is approximately $450.  If you are interested in joining our league please <Link href="/signUp">sign up</Link> and fill out your information and a league representative will contact you.</Typography>
+        </Box>
     </Container>
 }
 

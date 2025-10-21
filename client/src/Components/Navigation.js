@@ -74,8 +74,8 @@ function Navigation(props) {
                 <Box sx={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', 
                     paddingTop: '5px', paddingLeft: '5px', paddingRight: '5px', width: '100vw'}}>
                     <img src={Logo} style={classes.logoMobile} alt="TMHL logo"/>
-                    <IconButton sx={{backgroundColor: 'rgba(255,255,255,.05)'}}>
-                        <CloseIcon onClick={() => {dispatch(toggleMenu())}} sx={{cursor: 'pointer', fontSize: '44px'}} color="white"/>
+                    <IconButton sx={{backgroundColor: 'rgba(255,255,255,.05)'}} onClick={() => {dispatch(toggleMenu())}}>
+                        <CloseIcon sx={{cursor: 'pointer', fontSize: '44px'}} color="white"/>
                     </IconButton>
                 </Box>
                 <List>

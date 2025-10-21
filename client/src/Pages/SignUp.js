@@ -6,8 +6,6 @@ import InputMask from "react-input-mask";
 import { signUp } from '../api/signupApi';
 
 const styles = {
-    formContainer: {
-    },
     sendBox: {
         display: 'flex',
         justifyContent: 'flex-end'
@@ -73,10 +71,12 @@ function SignUp(props) {
         })
     }
 
-    return <Container>
-        <PageTitle title="Sign Up Here" variant="h2" />
+    return <Container sx={{paddingBottom: '15px'}}>
+        <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
+            <PageTitle title="Sign Up Here" variant="h2" />
+        </Box>
         <br />
-        <Box sx={classes.formContainer}>
+        <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
             <TextField required fullWidth label="Full Name" value={name} onChange={(e) => {setname(e.target.value); setnameError(false)}} error={nameError}/>
             <br /><br />
             <TextField fullWidth label="Address" value={address} onChange={(e) => setaddress(e.target.value)} />
@@ -138,7 +138,7 @@ function SignUp(props) {
                     Send
                 </Button>
             </Box>
-            <br /><br />
+            <br />
         </Box>
     </Container>
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Container, Paper, Typography } from '@mui/material';
+import { Box, Container, Typography } from '@mui/material';
 import PageTitle from '../Components/PageTitle';
 import SportsHockeyIcon from '@mui/icons-material/SportsHockey';
 
@@ -81,10 +81,12 @@ function Rules(props) {
         `Tie-breaking Procedures (40+): Head to head, Regulation time wins, Goals against, Goals for, Regular season standings.`
     ]
 
-    return <Container>
-        <PageTitle title="TMHL Rules" variant="h2"/>
+    return <Container sx={{paddingBottom: '15px'}}>
+        <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
+            <PageTitle title="TMHL Rules" variant="h2"/>
+        </Box>
         <br />
-        <Paper elevation={3} sx={classes.ruleContainer}>
+        <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
             <PageTitle title="General" variant="h4" />
             {regRules.map((item) => {
                 return <Box sx={classes.ruleItem}>
@@ -94,9 +96,9 @@ function Rules(props) {
                     </Typography>
                 </Box>
             })}
-        </Paper>
+        </Box>
         <br />
-        <Paper elevation={3} sx={classes.ruleContainer}>
+        <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
             <PageTitle title="Regular Season Addendum" variant="h4" />
             {seasonRules.map((item) => {
                 return <Box sx={classes.ruleItem}>
@@ -106,9 +108,9 @@ function Rules(props) {
                     </Typography>
                 </Box>
             })}
-        </Paper>
+        </Box>
         <br />
-        <Paper elevation={3} sx={classes.ruleContainer}>
+        <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
             <PageTitle title="Playoffs Addendum" variant="h4" />
             {playoffsRules.map((item) => {
                 return <Box sx={classes.ruleItem}>
@@ -118,8 +120,7 @@ function Rules(props) {
                     </Typography>
                 </Box>
             })}
-        </Paper>
-        <br />
+        </Box>
     </Container>
 }
 

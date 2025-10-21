@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Skeleton } from '@mui/material';
+import { Box, Container, Skeleton } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import TmhlTable from '../Components/TmhlTable';
@@ -66,26 +66,30 @@ function Player(props) {
     }, [players]);// eslint-disable-line react-hooks/exhaustive-deps
 
 
-    return <Container>
+    return <Container sx={{paddingBottom: '15px'}}>
         {players.playerGamesLoading ?
             <Skeleton animation="wave" height={30}/>
             :
-            <PageTitle title={playerName} variant="h3" />
+            <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
+                <PageTitle title={playerName} variant="h3" />
+            </Box>
         }
         <br />
         {players.playerSeasonsLoading ?
             <Skeleton animation="wave" height={200}/>
             :
-            <TmhlTable rows={seasonRows} columns={seasonsColumns}></TmhlTable>
+            <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
+                <TmhlTable rows={seasonRows} columns={seasonsColumns}></TmhlTable>
+            </Box>
         }
         <br />
         {players.playerGamesLoading ?
             <Skeleton animation="wave" height={500}/>
             :
-            <TmhlTable rows={gameRows} columns={gamesColumns}></TmhlTable>
+            <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
+                <TmhlTable rows={gameRows} columns={gamesColumns}></TmhlTable>
+            </Box>
         }
-        <br />
-        <br />
     </Container>
 }
 

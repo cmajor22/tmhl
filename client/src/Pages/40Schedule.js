@@ -75,23 +75,23 @@ function Schedule40(props) {
         dispatch(scheduleGames({league: 2, season: s}));
     }
 
-    return <Container>
-        <PageTitle title="40+ Schedule" variant="h2"/>
-        <br />
-        {
-            schedule.scheduleGamesLoading ?
-                <Box sx={{padding: "15px", width: '100%'}}>
-                    <Grid container spacing={3}>
-                        <Grid item lg={12}>
-                            <Skeleton animation="wave" height={100} sx={{transform: "unset"}}/>
-                        </Grid>
-                        <Grid item lg={12}>
-                            <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
-                        </Grid>
+    return <Container sx={{paddingBottom: '15px'}}>
+        {schedule.scheduleGamesLoading ?
+            <Box sx={{padding: "15px", width: '100%'}}>
+                <Grid container spacing={3}>
+                    <Grid item lg={12}>
+                        <Skeleton animation="wave" height={100} sx={{transform: "unset"}}/>
                     </Grid>
-                </Box>
-                :
-                [
+                    <Grid item lg={12}>
+                        <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
+                    </Grid>
+                </Grid>
+            </Box>
+            :
+            [
+                <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.7)', backdropFilter: 'blur(5px)', padding: '5px', marginBottom: '15px'}}>
+                    <PageTitle title="40+ Schedule" variant="h2"/>
+                    <br />
                     <FormControl fullWidth>
                         <InputLabel id="season-select-label">Season</InputLabel>
                         <Select
@@ -101,21 +101,22 @@ function Schedule40(props) {
                             label="Season"
                             onChange={handleSeasonChange}
                         >
-                            {seasons.seasons.map((season) => {
-                                return <MenuItem value={season.seasonsid}>{season.name}</MenuItem>;
+                            {seasons.seasons.map((season, i) => {
+                                return <MenuItem key={i} value={season.seasonsid}>{season.name}</MenuItem>;
                             })}
                         </Select>
-                    </FormControl>,
-                    <br />,
+                    </FormControl>
+                </Box>,
+                <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.7)', backdropFilter: 'blur(5px)', padding: '5px'}}>
                     <TmhlTable
                         rows={filteredGames}
                         columns={gamesColumns}
                         hasFilter={true}
                         hiddenColumns={hiddenColumns}
                     />
-                ]
-        }
-        <br />
+                </Box>
+            ]
+            }
     </Container>
 }
 

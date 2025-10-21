@@ -22,7 +22,7 @@ import SignUp from './Pages/SignUp';
 import Game from './Pages/Game';
 import { createTheme, ThemeProvider, responsiveFontSizes } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline';
-import bg from './assets/bg.jpg';
+import bg from './assets/ice.png';
 import Player from './Pages/Player';
 
 let theme = responsiveFontSizes(createTheme({
@@ -51,17 +51,15 @@ let theme = responsiveFontSizes(createTheme({
 	  }
   }
 }));
-const isMobile = window.screen.width < 600;
-const appBarPadding = isMobile ? '210px' : '120px';
 
 function App() {
   return (
       <ThemeProvider theme={theme}>
 		<CssBaseline />
         <Router>
-        	<Box style={{backgroundImage: `url(${bg})`, backgroundPosition: 'center top', backgroundRepeat: 'no-repeat', backgroundColor: '#FFFFFF'}}>
+        	<Box style={{backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),url(${bg})`, backgroundSize: 'cover', backgroundColor: '#FFFFFF', backgroundAttachment: 'fixed'}}>
 				<Box sx={{maxWidth: '960px', height: '100%', minHeight: '100vh', margin: 'auto', 
-					background: 'radial-gradient(#1e1e1eEE, #1e1e1eFF)', paddingTop: {xs: '280px', md: '110px'}}}>
+					paddingTop: {xs: '280px', md: '110px'}}}>
 					<HeaderBar style={{maxWidth: '100%'}}></HeaderBar>
 					{/* <Navigation2></Navigation2> */}
 					<Box sx={{paddingTop: '100px'}}>

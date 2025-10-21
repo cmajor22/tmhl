@@ -41,7 +41,6 @@ function Standings40(props) {
     let hiddenColumnsStandings = {};
     let hiddenColumnsGames = {};
     let fixedWidthDate = isMobile ? 100 : 120;
-    let fixedWidthMedium = isMobile ? 20 : 60;
     let fixedWidthSmall = isMobile ? 10 : 60;
     let goalTitle = isMobile ? "G" : "GOALS";
     let streakTitle = isMobile ? "STK" : "STREAK";
@@ -56,7 +55,7 @@ function Standings40(props) {
         { field: 'goalsAgainst',  headerName: 'GA', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
         { field: 'plusMinus',  headerName: '+/-', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
         { field: 'penalties',  headerName: 'PIM', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
-        { field: 'streak',  headerName: streakTitle, type: 'number', sortable: false, width: fixedWidthMedium, headerAlign: 'center', align: 'center' },
+        { field: 'streak',  headerName: streakTitle, type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
       ];
     let teamsColumnsPlayoffs = [
         { field: 'name', headerName: 'Team', sortable: false, flex: 1, minWidth: 100 },
@@ -270,64 +269,70 @@ function Standings40(props) {
     }
 
     return <Container>
-        <PageTitle title="40+ Standings" variant="h2"/>
-        <br />
-        {
-            standings.standingsGamesLoading || standings.standingsTeamsLoading || standings.standingsVsLoading
-            ?
-                <Box  sx={{padding: "15px", width: '100%'}}>
+        <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.7)', backdropFilter: 'blur(5px)', padding: '5px', marginBottom: '15px'}}>
+            <PageTitle title="40+ Standings" variant="h2"/>
+            <br />
+            {
+                standings.standingsGamesLoading || standings.standingsTeamsLoading || standings.standingsVsLoading
+                ?
+                    <Box  sx={{padding: "15px", width: '100%'}}>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12} lg={6}>
+                                <Skeleton animation="wave" height={100} sx={{transform: "unset"}}/>
+                            </Grid>
+                            <Grid item xs={12} lg={6}>
+                                <Skeleton animation="wave" height={100} sx={{transform: "unset"}}/>
+                            </Grid>
+                            <Grid item xs={12} lg={12}>
+                                <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
+                            </Grid>
+                            <Grid item xs={12} lg={12}>
+                                <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                :
                     <Grid container spacing={3}>
-                        <Grid item lg={6}>
-                            <Skeleton animation="wave" height={100} sx={{transform: "unset"}}/>
+                        <Grid item xs={6}>
+                            <FormControl fullWidth>
+                                <InputLabel id="season-select-label">Season</InputLabel>
+                                <Select
+                                    labelId="season-select-label"
+                                    id="season-select"
+                                    value={season}
+                                    label="Season"
+                                    onChange={handleSeasonChange}
+                                >
+                                    {seasons.seasons.map((season, i) => {
+                                        return <MenuItem key={i} value={season.seasonsid}>{season.name}</MenuItem>;
+                                    })}
+                                </Select>
+                            </FormControl>
                         </Grid>
-                        <Grid item lg={6}>
-                            <Skeleton animation="wave" height={100} sx={{transform: "unset"}}/>
-                        </Grid>
-                        <Grid item lg={12}>
-                            <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
-                        </Grid>
-                        <Grid item lg={12}>
-                            <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
+                        <Grid item xs={6}>
+                            <FormControl fullWidth>
+                                <InputLabel id="type-select-label">Mode</InputLabel>
+                                <Select
+                                    labelId="type-select-label"
+                                    id="type-select"
+                                    value={type}
+                                    label="Type"
+                                    onChange={handleTypeChange}
+                                >
+                                    <MenuItem value="Regular Season">Regular Season</MenuItem>
+                                    <MenuItem value="Playoffs">Playoffs</MenuItem>
+                                    <MenuItem value="Finals">Finals</MenuItem>
+                                </Select>
+                            </FormControl>
                         </Grid>
                     </Grid>
-                </Box>
-            :
-            <Grid container spacing={3}>
-                <Grid item xs={6}>
-                    <FormControl fullWidth>
-                        <InputLabel id="season-select-label">Season</InputLabel>
-                        <Select
-                            labelId="season-select-label"
-                            id="season-select"
-                            value={season}
-                            label="Season"
-                            onChange={handleSeasonChange}
-                        >
-                            {seasons.seasons.map((season) => {
-                                return <MenuItem value={season.seasonsid}>{season.name}</MenuItem>;
-                            })}
-                        </Select>
-                    </FormControl>
-                </Grid>
-                <Grid item xs={6}>
-                    <FormControl fullWidth>
-                        <InputLabel id="type-select-label">Mode</InputLabel>
-                        <Select
-                            labelId="type-select-label"
-                            id="type-select"
-                            value={type}
-                            label="Type"
-                            onChange={handleTypeChange}
-                        >
-                            <MenuItem value="Regular Season">Regular Season</MenuItem>
-                            <MenuItem value="Playoffs">Playoffs</MenuItem>
-                            <MenuItem value="Finals">Finals</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Grid>
-                <br /><br />
-                {type==='Regular Season' && teams.length!==0 &&
-                    <Grid item xs={12}>
+            }
+        </Box>
+        <Grid container spacing={3}>
+            <br />
+            {type==='Regular Season' && teams.length!==0 &&
+                <Grid item xs={12}>
+                    <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
                         <DataGrid
                             autoHeight
                             rows={teams}
@@ -338,10 +343,12 @@ function Standings40(props) {
                             hideFooter={true}
                             columnVisibilityModel={hiddenColumnsStandings}
                         />
-                    </Grid>
-                }
-                {type==='Playoffs' && teams.length!==0 &&
-                    <Grid item xs={12}>
+                    </Box>
+                </Grid>
+            }
+            {type==='Playoffs' && teams.length!==0 &&
+                <Grid item xs={12}>
+                    <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
                         <DataGrid
                             autoHeight
                             rows={teams}
@@ -352,20 +359,24 @@ function Standings40(props) {
                             hideFooter={true}
                             columnVisibilityModel={hiddenColumnsStandings}
                         />
-                    </Grid>
-                }
-                {type!=='Finals' && filteredGames.length!==0 &&
-                    <Grid item xs={12}>
+                    </Box>
+                </Grid>
+            }
+            {type!=='Finals' && filteredGames.length!==0 &&
+                <Grid item xs={12}>
+                    <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px', marginBottom: '15px'}}>
                         <TmhlTable
                             rows={filteredGames}
                             columns={gamesColumns}
                             hasFilter={true}
                             hiddenColumns={hiddenColumnsGames}
                         />
-                    </Grid>
-                }
-                {type==='Finals' &&
-                    <Grid item xs={12}>
+                    </Box>
+                </Grid>
+            }
+            {type==='Finals' &&
+                <Grid item xs={12}>
+                    <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px', marginBottom: '15px'}}>
                         {[...filteredGames].sort(finalGameOrder).map((game, index) => {
                             return <Paper elevation={3} sx={classes.finalGameBox}>
                                 <Box sx={classes.finalGameHeader}>
@@ -382,12 +393,10 @@ function Standings40(props) {
                                 </Box>
                             </Paper>
                         })}
-                    </Grid>
-                }
-            </Grid>
-        }
-        
-        <br />
+                    </Box>
+                </Grid>
+            }
+        </Grid>
     </Container>
 }
 

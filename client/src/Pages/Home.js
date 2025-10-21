@@ -7,8 +7,10 @@ import Logo from '../assets/tmhl_logo.png';
 const styles = {
     postContainer: {
         padding: '10px',
+        overflow: 'hidden',
         marginBottom: '15px',
-        overflow: 'hidden'
+        backgroundColor: 'rgba(0, 0, 0, 0.75)',
+        backdropFilter: 'blur(5px)'
     },
     titleContainer: {
         display: 'flex',
@@ -62,9 +64,9 @@ function Home(props) {
         setpostsList(posts.posts);
     }, [posts]);// eslint-disable-line react-hooks/exhaustive-deps
 
-    return <Container>
-        {postsList.map((post) => {
-            return <Post title={post.post_title} message={post.post_content} date={post.post_date} />
+    return <Container sx={{paddingBottom: '15px'}}>
+        {postsList.map((post, i) => {
+            return <Post key={i} title={post.post_title} message={post.post_content} date={post.post_date} />
         })}
     </Container>
 }

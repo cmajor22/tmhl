@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Typography, FormControl, InputLabel, Select, MenuItem, Grid, Container, Paper, Box, Skeleton } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, Grid, Container, Paper, Box, Skeleton } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { get40, rostersValue } from '../redux/rostersSlice';
 import { seasonsList, seasonsValue } from '../redux/seasonsSlice';
@@ -68,30 +68,31 @@ function Rosters40(props) {
     }, [rosters]);// eslint-disable-line react-hooks/exhaustive-deps
 
     return <Container>
-        <PageTitle title="40+ Rosters" variant="h2"/>
-        <br />
-        <FormControl fullWidth>
-            <InputLabel id="season-select-label">Season</InputLabel>
-            <Select
-                labelId="season-select-label"
-                id="season-select"
-                value={season}
-                label="Season"
-                onChange={handleChange}
-            >
-                {seasons.seasons.map((seasons, i) => {
-                    return <MenuItem key={i} value={seasons.name}>{seasons.name}</MenuItem>;
-                })}
-            </Select>
-        </FormControl>
-        <br />
+        <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.7)', backdropFilter: 'blur(5px)', padding: '5px'}}>
+            <PageTitle title="40+ Rosters" variant="h2"/>
+            <br />
+            <FormControl fullWidth>
+                <InputLabel id="season-select-label">Season</InputLabel>
+                <Select
+                    labelId="season-select-label"
+                    id="season-select"
+                    value={season}
+                    label="Season"
+                    onChange={handleChange}
+                >
+                    {seasons.seasons.map((seasons, i) => {
+                        return <MenuItem key={i} value={seasons.name}>{seasons.name}</MenuItem>;
+                    })}
+                </Select>
+            </FormControl>
+        </Box>
         <br />
         <Grid container spacing={3}>
             {
                 !(rosters.rosters40Loading || seasons.seasonsLoading) ?
                     teamsList.map((team, i) => {
                         return <Grid key={i} item xs={12} md={6} lg={4}>
-                            <Paper key={i} elevation={3} sx={{background: `#${team[0].primaryColour}15`, backdropFilter: 'blur(10px)'}}>
+                            <Paper key={i} elevation={3} sx={{background: `#000000AA`, backdropFilter: 'blur(10px)'}}>
                                 <PageTitle key={i} title={team[0].teamName} variant="h4" primaryColour={team[0].primaryColour} shortForm={team[0].shortForm}/>
                                 {team.map((player, i) => {
                                     return <PlayerRow key={i}
@@ -104,22 +105,22 @@ function Rosters40(props) {
                     :
                     <Box sx={{padding: "15px", width: '100%'}}>
                         <Grid container spacing={3}>
-                            <Grid item lg={4}>
+                            <Grid item xs={12} lg={4}>
                                 <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
                             </Grid>
-                            <Grid item lg={4}>
+                            <Grid item xs={12} lg={4}>
                                 <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
                             </Grid>
-                            <Grid item lg={4}>
+                            <Grid item xs={12} lg={4}>
                                 <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
                             </Grid>
-                            <Grid item lg={4}>
+                            <Grid item xs={12} lg={4}>
                                 <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
                             </Grid>
-                            <Grid item lg={4}>
+                            <Grid item xs={12} lg={4}>
                                 <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
                             </Grid>
-                            <Grid item lg={4}>
+                            <Grid item xs={12} lg={4}>
                                 <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
                             </Grid>
                         </Grid>

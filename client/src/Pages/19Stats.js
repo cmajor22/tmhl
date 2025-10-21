@@ -202,108 +202,116 @@ function Stats19(props) {
     }
 
     return <Container>
-        <PageTitle title="19+ Stats" variant="h2"/>
-        <br />
-        {
-            stats.statsTeamsLoading || stats.statsGoaliesLoading || stats.statsPlayersLoading
-            ?
-            <Box sx={{padding: "15px", width: '100%'}}>
+        <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px', marginBottom: '15px'}}>
+            <PageTitle title="19+ Stats" variant="h2"/>
+            <br />
+            {
+                stats.statsTeamsLoading || stats.statsGoaliesLoading || stats.statsPlayersLoading
+                ?
+                <Box sx={{padding: "15px", width: '100%'}}>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} lg={6}>
+                            <Skeleton animation="wave" height={100} sx={{transform: "unset"}}/>
+                        </Grid>
+                        <Grid item xs={12} lg={6}>
+                            <Skeleton animation="wave" height={100} sx={{transform: "unset"}}/>
+                        </Grid>
+                        <Grid item xs={12} lg={12}>
+                            <Skeleton animation="wave" height={200} sx={{transform: "unset"}}/>
+                        </Grid>
+                        <Grid item xs={12} lg={6}>
+                            <Skeleton animation="wave" height={100} sx={{transform: "unset"}}/>
+                        </Grid>
+                        <Grid item xs={12} lg={6}>
+                            <Skeleton animation="wave" height={100} sx={{transform: "unset"}}/>
+                        </Grid>
+                        <Grid item xs={12} lg={12}>
+                            <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
+                        </Grid>
+                    </Grid>
+                </Box>
+                :
                 <Grid container spacing={3}>
-                    <Grid item lg={6}>
-                        <Skeleton animation="wave" height={100} sx={{transform: "unset"}}/>
+                    <Grid item xs={6}>
+                        <FormControl fullWidth>
+                            <InputLabel id="season-select-label">Season</InputLabel>
+                            <Select
+                                labelId="season-select-label"
+                                id="season-select"
+                                value={season}
+                                label="Season"
+                                onChange={handleSeasonChange}
+                            >
+                                {seasons.seasons.map((season, i) => {
+                                    return <MenuItem key={i} value={season.seasonsid}>{season.name}</MenuItem>;
+                                })}
+                            </Select>
+                        </FormControl>
                     </Grid>
-                    <Grid item lg={6}>
-                        <Skeleton animation="wave" height={100} sx={{transform: "unset"}}/>
-                    </Grid>
-                    <Grid item lg={12}>
-                        <Skeleton animation="wave" height={200} sx={{transform: "unset"}}/>
-                    </Grid>
-                    <Grid item lg={6}>
-                        <Skeleton animation="wave" height={100} sx={{transform: "unset"}}/>
-                    </Grid>
-                    <Grid item lg={6}>
-                        <Skeleton animation="wave" height={100} sx={{transform: "unset"}}/>
-                    </Grid>
-                    <Grid item lg={12}>
-                        <Skeleton animation="wave" height={300} sx={{transform: "unset"}}/>
+                    <Grid item xs={6}>
+                        <FormControl fullWidth>
+                            <InputLabel id="type-select-label">Mode</InputLabel>
+                            <Select
+                                labelId="type-select-label"
+                                id="type-select"
+                                value={type}
+                                label="Type"
+                                onChange={handleTypeChange}
+                            >
+                                <MenuItem value="0">Regular Season</MenuItem>
+                                <MenuItem value="1">Playoffs</MenuItem>
+                                <MenuItem value="2">Finals</MenuItem>
+                            </Select>
+                        </FormControl>
                     </Grid>
                 </Grid>
-            </Box>
-            :
-            <Grid container spacing={3}>
-                <Grid item xs={6}>
-                    <FormControl fullWidth>
-                        <InputLabel id="season-select-label">Season</InputLabel>
-                        <Select
-                            labelId="season-select-label"
-                            id="season-select"
-                            value={season}
-                            label="Season"
-                            onChange={handleSeasonChange}
-                        >
-                            {seasons.seasons.map((season) => {
-                                return <MenuItem value={season.seasonsid}>{season.name}</MenuItem>;
-                            })}
-                        </Select>
-                    </FormControl>
-                </Grid>
-                <Grid item xs={6}>
-                    <FormControl fullWidth>
-                        <InputLabel id="type-select-label">Mode</InputLabel>
-                        <Select
-                            labelId="type-select-label"
-                            id="type-select"
-                            value={type}
-                            label="Type"
-                            onChange={handleTypeChange}
-                        >
-                            <MenuItem value="0">Regular Season</MenuItem>
-                            <MenuItem value="1">Playoffs</MenuItem>
-                            <MenuItem value="2">Finals</MenuItem>
-                        </Select>
-                    </FormControl>
-                </Grid>
-                <br />
-                
-                {(goaliesStats.length!==0) ?
-                    <Grid item xs={12}>
+            }
+        </Box>
+        <Grid container spacing={3}>
+            {(goaliesStats.length!==0 && !(stats.statsTeamsLoading || stats.statsGoaliesLoading || stats.statsPlayersLoading)) ?
+                <Grid item xs={12}>
+                    <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
                         <TmhlTable
                             rows={goaliesStats}
                             columns={goaliesColumns}
                             hasFilter={false}
                             hiddenColumns={hiddenColumnsGoalies}
                         />
-                    </Grid>
-                    :
-                    null
-                }
-                <br />
-                {(goalsStats.length!==0) ?
-                    <Grid item xs={12} md={6}>
+                    </Box>
+                </Grid>
+                :
+                null
+            }
+            {(goalsStats.length!==0 && !(stats.statsTeamsLoading || stats.statsGoaliesLoading || stats.statsPlayersLoading)) ?
+                <Grid item xs={12} md={6}>
+                    <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
                         <TmhlTable
                             rows={goalsStats}
                             columns={goalsColumns}
                             hasFilter={false}
                         />
-                    </Grid>
-                    :
-                    null
-                }
-                <br />
-                {(assistsStats.length!==0) ?
-                    <Grid item xs={12} md={6}>
+                    </Box>
+                </Grid>
+                :
+                null
+            }
+            {(assistsStats.length!==0 && !(stats.statsTeamsLoading || stats.statsGoaliesLoading || stats.statsPlayersLoading)) ?
+                <Grid item xs={12} md={6}>
+                    <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
                         <TmhlTable
                             rows={assistsStats}
                             columns={assistsColumns}
                             hasFilter={false}
                         />
-                    </Grid>
-                    :
-                    null
-                }
-                <br />
-                {(allStats.length!==0) ?
-                    <Grid item xs={12}>
+                    </Box>
+                </Grid>
+                :
+                null
+            }
+            <br />
+            {(allStats.length!==0 && !(stats.statsTeamsLoading || stats.statsGoaliesLoading || stats.statsPlayersLoading)) ?
+                <Grid item xs={12}>
+                    <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px', marginBottom: '15px'}}>
                         <TmhlTable
                             rows={allStats}
                             columns={allColumns}
@@ -311,13 +319,12 @@ function Stats19(props) {
                             filterType='player'
                             hiddenColumns={hiddenColumnsPlayers}
                         />
-                    </Grid>
-                    :
-                    null
-                }
-            </Grid>
-        }
-        <br />
+                    </Box>
+                </Grid>
+                :
+                null
+            }
+        </Grid>
     </Container>
 }
 
