@@ -73,7 +73,7 @@ function TmhlTable(props) {
             density='compact'
             disableColumnFilter={false}
             disableColumnMenu={false}
-            hideFooter={true}
+            hideFooter={filteredRows.length <= 100}
             onRowClick={(event) => {rowClicked(event)}}
             columnVisibilityModel={hiddenColumns}
         />

@@ -5,7 +5,7 @@ module.exports = (express, connection) => {
   router.put('/', function(req, res, next) {
     const league = req.body.league;
     const year = req.body.year;
-    const sql = `select playerNumber as 'number',players.name as 'playerName', teams.name as 'teamName',isGoalie,isCaptain,
+    const sql = `select players.playersId,playerNumber as 'number',players.name as 'playerName', teams.name as 'teamName',isGoalie,isCaptain,
       primaryColour,secondaryColour,shortForm
       from playersforteams,teams,seasons,players
       where playersforteams.teamsId=teams.teamsId and teams.seasonsId=seasons.seasonsid 
@@ -21,7 +21,7 @@ module.exports = (express, connection) => {
 
   /* Team Captains */
   router.put('/captains', function(req, res, next) {
-    const sql = `select playerNumber as 'number',players.name as 'playerName', teams.name as 'teamName',isGoalie,isCaptain,leaguesId,
+    const sql = `select players.playersId,playerNumber as 'number',players.name as 'playerName', teams.name as 'teamName',isGoalie,isCaptain,leaguesId,
       primaryColour,secondaryColour,shortForm
       from playersforteams,teams,seasons,players
       where playersforteams.teamsId=teams.teamsId and teams.seasonsId=seasons.seasonsid 

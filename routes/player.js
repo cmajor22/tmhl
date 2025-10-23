@@ -22,7 +22,7 @@ module.exports = (express, connection) => {
       group by seasonsId,assist2) assist2 on  t1.playersId=assist2.assist2 and t1.seasonsId=assist2.seasonsId
       left join (select playersId,sum(penalties.minutes) as 'pims',seasons.seasonsId from penalties,games,seasons
       where penalties.gamesId=games.gamesid and games.seasonsId=seasons.seasonsId group by seasonsId,playersId) penalties
-      on t1.playersId=penalties.playersId and t1.seasonsId=penalties.seasonsId where hasStats=1 and leaguesid=1 order by seasonsName`;
+      on t1.playersId=penalties.playersId and t1.seasonsId=penalties.seasonsId where hasStats=1 and leaguesid=1 order by seasonsName desc`;
 
     connection.query(sql, [playersId], function (err, rows) {
       if (err) throw {err};

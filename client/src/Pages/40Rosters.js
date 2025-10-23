@@ -95,7 +95,7 @@ function Rosters40(props) {
                             <Paper key={i} elevation={3} sx={{background: `#000000AA`, backdropFilter: 'blur(10px)'}}>
                                 <PageTitle key={i} title={team[0].teamName} variant="h4" primaryColour={team[0].primaryColour} shortForm={team[0].shortForm}/>
                                 {team.map((player, i) => {
-                                    return <PlayerRow key={i}
+                                    return <PlayerRow key={i} playersId={player.playersId}
                                         playerNumber={player.number} playerName={player.playerName}
                                         isCaptain={player.isCaptain} isGoalie={player.isGoalie} />
                                 })}
