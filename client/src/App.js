@@ -59,7 +59,7 @@ function App() {
         <Router>
         	<Box style={{backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),url(${bg})`, backgroundSize: 'cover', backgroundColor: '#FFFFFF', backgroundAttachment: 'fixed'}}>
 				<Box sx={{maxWidth: '960px', height: '100%', minHeight: '100vh', margin: 'auto', 
-					paddingTop: {xs: '280px', md: '110px'}}}>
+					paddingTop: {xs: '280px', sm: '180px', md: '140px'}}}>
 					<HeaderBar style={{maxWidth: '100%'}}></HeaderBar>
 					{/* <Navigation2></Navigation2> */}
 					<Box sx={{paddingTop: '100px'}}>

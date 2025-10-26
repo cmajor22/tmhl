@@ -17,7 +17,7 @@ function Stats19(props) {
     const [goalsStats, setGoalsStats] = React.useState([]);
     const [assistsStats, setAssistsStats] = React.useState([]);
     const [allStats, setAllStats] = React.useState([]);
-    const isMobile = window.screen.width < 600;
+    const isMobile = window.innerWidth < 600;
     let hiddenColumnsGoalies = {};
     let hiddenColumnsPlayers = {};
     let fixedWidthMedium = isMobile ? 10 : 60;

@@ -37,7 +37,7 @@ function Standings40(props) {
     const [season, setSeason] = React.useState('1');
     const [type, setType] = React.useState('Regular Season');
     const [filteredGames, setFilteredGames] = React.useState([]);
-    const isMobile = window.screen.width < 600;
+    const isMobile = window.innerWidth < 600;
     let hiddenColumnsStandings = {};
     let hiddenColumnsGames = {};
     let fixedWidthDate = isMobile ? 100 : 120;

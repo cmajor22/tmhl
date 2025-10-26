@@ -11,7 +11,7 @@ function Player(props) {
     const { playerId } = useParams();
     const dispatch = useDispatch();
     const players = useSelector(playersValue);
-    const isMobile = window.screen.width < 600;
+    const isMobile = window.innerWidth < 600;
     const [ seasonRows, setSeasonRows ] = useState([]);
     const [ gameRows, setGameRows ] = useState([]);
     const [ playerName, setPlayerName ] = useState([]);

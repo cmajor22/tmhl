@@ -16,7 +16,7 @@ function Schedule19(props) {
     const schedule = useSelector(scheduleValue);
     const [season, setSeason] = React.useState('1');
     const [filteredGames, setFilteredGames] = React.useState([]);
-    const isMobile = window.screen.width < 600;
+    const isMobile = window.innerWidth < 600;
     let hiddenColumns = {};
     let fixedWidthDate = isMobile ? 100 : 120;
     let fixedWidthGoal = isMobile ? 10 : 120;
