@@ -91,7 +91,7 @@ function Rosters19(props) {
             {
                 !(rosters.rosters19Loading || seasons.seasonsLoading) ?
                 teamsList.map((team, i) => {
-                    return <Grid key={i} item xs={12} md={6} lg={4}>
+                    return <Grid key={i} item xs={12} sm={6} lg={4}>
                         <Paper key={i} elevation={3} sx={{background: `#000000AA`, backdropFilter: 'blur(10px)'}}>
                             <PageTitle key={i} title={team[0].teamName} variant="h4" primaryColour={team[0].primaryColour} shortForm={team[0].shortForm}/>
                             {team.map((player, i) => {
