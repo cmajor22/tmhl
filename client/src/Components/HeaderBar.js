@@ -116,7 +116,7 @@ function HeaderBar(props) {
             <img src={Logo} style={{
                 position: 'fixed', height: scrollPosition > 50 ? '60px' : '140px',
                 top: 10, left: '50%', transform: 'translateX(-50%)', transition: 'height .5s',
-            }} alt="TMHL logo"/>
+            }} alt="TMHL logo" onClick={() => {scrollPosition > 50 ? dispatch(toggleMenu()) : goPage('/')}}/>
             }
 
             <Navigation style={{zIndex: 1000}}/>
@@ -197,7 +197,11 @@ function HeaderBar(props) {
                             </Box>
                         </Box>
                     </Grid>,
-                    <Grid item xs={0} sm={2} />,
+                    <Grid item xs={0} sm={2}>
+                        <Box sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', paddingTop: '5px'}}>
+                            {scrollPosition<=50 && <Typography sx={classes.menuButton} onClick={() => dispatch(toggleMenu())}>Menu</Typography>}
+                        </Box>
+                    </Grid>,
                     <Grid item xs={5}>
                         <Box sx={{display: 'flex', justifyContent: 'flex-start', paddingLeft: '10px', paddingRight: '10px'}}>
                             <Box sx={{width: '100%', marginTop: '5px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', maxWidth: '380px'}}>
