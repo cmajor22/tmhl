@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import GameCard from './GameCard';
-import { AppBar, Fade, Grid, IconButton, Typography } from '@mui/material';
+import { AppBar, Fade, Grid, IconButton, Typography, Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useSelector, useDispatch } from 'react-redux';
 import { getGames, upcomingGamesValue } from '../redux/upcomingGamesSlice';
 import Navigation from './Navigation';
-import { Box } from '@mui/system';
 import Logo from '../assets/tmhl_logo.png';
 import { toggleMenu } from '../redux/menuSlice';
 import moment from 'moment';

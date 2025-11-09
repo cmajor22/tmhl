@@ -63,5 +63,27 @@ module.exports = (express, connection) => {
     });
   });
 
+  router.put('/points', function(req, res, next) {
+    const playersId = req.body.playersId;
+
+    const sql = `select * from goals where goal=? or assist1=? or assist2=?`;
+
+    connection.query(sql, [playersId, playersId, playersId], function (err, rows) {
+      if (err) throw {err};
+      res.send(rows);
+    });
+  });
+
+  router.put('/penalties', function(req, res, next) {
+    const playersId = req.body.playersId;
+
+    const sql = `select * from penalties where playersId=9`;
+
+    connection.query(sql, [playersId], function (err, rows) {
+      if (err) throw {err};
+      res.send(rows);
+    });
+  });
+
   return router;
 }

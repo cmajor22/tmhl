@@ -3,9 +3,61 @@ import { Box, Container, Grid, Skeleton, Typography } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import TmhlTable from '../Components/TmhlTable';
-import { playerGamesData, playerSeasonsData, playersValue } from '../redux/playersSlice';
+import { playerGamesData, playerSeasonsData, playerPointsData, playerPenaltiesData, playersValue } from '../redux/playersSlice';
 import PageTitle from '../Components/PageTitle';
 import moment from 'moment';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend,
+  } from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+  
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
+);
+
+function getOptions(title) {
+    return {
+        indexAxis: 'y',
+        elements: { bar: { borderWidth: 1 } },
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { 
+            legend: { display: false }, 
+            title: { 
+                display: true, 
+                text: title,
+                color: '#fff'
+            } 
+        },
+        scales: {
+            x: { ticks: { color: '#fff' } },
+            y: { ticks: { color: '#fff' } }
+        }
+    };
+
+}
+
+function StatItem(title, value) {
+    return <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
+        <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
+            {title}
+        </Box>
+        <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
+            <Typography variant='h3'>{value}</Typography>
+        </Box>
+    </Box>;
+}
 
 function Player(props) {
     const { playerId } = useParams();
@@ -16,6 +68,10 @@ function Player(props) {
     const [ gameRows, setGameRows ] = useState([]);
     const [ playerName, setPlayerName ] = useState([]);
     const [ medals, setMedals ] = useState([]);
+    const [ pointStats, setpointStats ] = useState({labels: [], datasets: []});
+    const [ goalStats, setgoalStats ] = useState({labels: [], datasets: []});
+    const [ assistStats, setassistStats ] = useState({labels: [], datasets: []});
+    
     let seasonsColumns = isMobile ? [
         { field: 'seasonsName', headerName: 'SEASON', width: 95 },
         { field: 'teamName', headerName: 'TEAM', headerAlign: 'center', align: 'center', width: 100 },
@@ -54,6 +110,8 @@ function Player(props) {
     useEffect(() => {
         dispatch(playerSeasonsData({playerId}));
         dispatch(playerGamesData({playerId}));
+        dispatch(playerPointsData({playerId}));
+        dispatch(playerPenaltiesData({playerId}));
     }, []);// eslint-disable-line react-hooks/exhaustive-deps
     
     useEffect(() => {
@@ -160,7 +218,96 @@ function Player(props) {
             return '';
         });
         setMedals(medals)
-    }, [players]);// eslint-disable-line react-hooks/exhaustive-deps
+    }, [players.playerGames, players.playerSeasons]);// eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        let pointStats = {
+            first: 0, second: 0, third: 0, overtime: 0, evenStrength: 0, shortHanded: 0, powerplay: 0
+        }
+        let goalStats = {
+            first: 0, second: 0, third: 0, overtime: 0, evenStrength: 0, shortHanded: 0, powerplay: 0, assisted: 0, unassisted: 0
+        }
+        let assistStats = {
+            first: 0, second: 0, third: 0, overtime: 0, evenStrength: 0, shortHanded: 0, powerplay: 0, primary: 0, secondary: 0
+        }
+        players.playerPoints.forEach(p => {
+            // Goals
+            if(p.period===1 && p.goal.toString()===playerId) {
+                goalStats.first++;
+                pointStats.first++;
+            }else if(p.period===2 && p.goal.toString()===playerId){
+                goalStats.second++;
+                pointStats.second++;
+            }else if(p.period===3 && p.isOT===0 && p.goal.toString()===playerId){
+                goalStats.third++;
+                pointStats.third++;
+            }else if(p.isOT===1 && p.goal.toString()===playerId){
+                goalStats.overtime++;
+                pointStats.overtime++;
+            }
+            if(p.isSHG===1 && p.goal.toString()===playerId){
+                goalStats.shortHanded++;
+                pointStats.shortHanded++;
+            }else if(p.isPP===1 && p.goal.toString()===playerId){
+                goalStats.powerplay++;
+                pointStats.powerplay++;
+            }else if(p.goal.toString()===playerId){
+                goalStats.evenStrength++;
+                pointStats.evenStrength++;
+            }
+            if(p.assist1===0 && p.assist2===0 && p.goal.toString()===playerId){
+                goalStats.unassisted++;
+            }else if(p.goal.toString()===playerId){
+                goalStats.assisted++;
+            }
+            
+            // Assists
+            if(p.period===1 && (p.assist1.toString()===playerId || p.assist2.toString()===playerId)) {
+                assistStats.first++;
+                pointStats.first++;
+            }else if(p.period===2 && (p.assist1.toString()===playerId || p.assist2.toString()===playerId)){
+                assistStats.second++;
+                pointStats.second++;
+            }else if(p.period===3 && p.isOT===0 && (p.assist1.toString()===playerId || p.assist2.toString()===playerId)){
+                assistStats.third++;
+                pointStats.third++;
+            }else if(p.isOT===1 && (p.assist1.toString()===playerId || p.assist2.toString()===playerId)){
+                assistStats.overtime++;
+                pointStats.overtime++;
+            }
+            if(p.isSHG===1 && (p.assist1.toString()===playerId || p.assist2.toString()===playerId)){
+                assistStats.shortHanded++;
+                pointStats.shortHanded++;
+            }else if(p.isPP===1 && (p.assist1.toString()===playerId || p.assist2.toString()===playerId)){
+                assistStats.powerplay++;
+                pointStats.powerplay++;
+            }else if((p.assist1.toString()===playerId || p.assist2.toString()===playerId)){
+                assistStats.evenStrength++;
+                pointStats.evenStrength++;
+            }
+            if(p.assist1.toString()===playerId){
+                assistStats.primary++;
+            }else if(p.assist2.toString()===playerId){
+                assistStats.secondary++;
+            }
+        });
+        setpointStats([
+            pointStats.first, pointStats.second, pointStats.third, pointStats.overtime, 
+            pointStats.evenStrength, pointStats.powerplay, pointStats.shortHanded
+        ]);
+        setgoalStats([
+            goalStats.first, goalStats.second, goalStats.third, goalStats.overtime, goalStats.evenStrength,
+            goalStats.powerplay, goalStats.shortHanded, goalStats.assisted, goalStats.unassisted
+        ]);
+        setassistStats([
+            assistStats.first, assistStats.second, assistStats.third, assistStats.overtime, assistStats.evenStrength,
+            assistStats.powerplay, assistStats.shortHanded, assistStats.primary, assistStats.secondary
+        ]);
+    }, [players.playerPoints, playerId]);
+
+    useEffect(() => {
+        
+    }, [players.playerPenalties]);
 
 
     return <Container sx={{paddingBottom: '15px'}}>
@@ -171,422 +318,97 @@ function Player(props) {
                 <PageTitle title={playerName} variant="h3" />
             </Box>
         }
-        <br />
-        {players.playerSeasonsLoading ?
+        {players.playerGamesLoading || players.playerPointsLoading ?
             <Skeleton animation="wave" height={200}/>
             :
-            <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
+            <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px', marginTop: '20px'}}>
                 <PageTitle title='Accolades' variant="h3" /><br />
-                <Grid container spacing={1}>
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Games Played
+                
+                <Box sx={{padding: '10px', marginBottom: '15px',
+                    backgroundColor: 'rgba(255, 255, 255, 0.15)', backdropFilter: 'blur(5px)'}}>
+                    <Grid container spacing={1}>
+                        <Grid item xs={6} md={3}>{StatItem('Games Played',medals.gamesPlayed)}</Grid>
+                        <Grid item xs={6} md={3}>{StatItem('Points',medals.totalPoints)}</Grid>
+                        <Grid item xs={6} md={3}>{StatItem('PPG',(medals.totalPoints/medals.gamesPlayed).toFixed(2))}</Grid>
+                        <Grid item xs={6} md={3}>{StatItem('PIMs',medals.totalPims)}</Grid>
+                        <Grid item xs={6} md={3}>{StatItem('Point Streak',medals.pointStreak)}</Grid>
+                        <Grid item xs={6} md={3}>{StatItem('Goal Streak',medals.goalStreak)}</Grid>
+                        <Grid item xs={6} md={3}>{StatItem('Assist Streak',medals.assistStreak)}</Grid>
+                        <Grid item xs={6} md={3}>{StatItem('Gordies',medals.gordies)}</Grid>
+                        {!!medals.points1 && <Grid item xs={6} md={3}>{StatItem('1 Point Games', medals.points1)}</Grid>}
+                        {!!medals.points2 && <Grid item xs={6} md={3}>{StatItem('2 Point Games', medals.points2)}</Grid>}
+                        {!!medals.points3 && <Grid item xs={6} md={3}>{StatItem('3 Point Games', medals.points3)}</Grid>}
+                        {!!medals.points4 && <Grid item xs={6} md={3}>{StatItem('4 Point Games', medals.points4)}</Grid>}
+                        {!!medals.points5 && <Grid item xs={6} md={3}>{StatItem('5 Point Games', medals.points5)}</Grid>}
+                        {!!medals.points6 && <Grid item xs={6} md={3}>{StatItem('6 Point Games', medals.points6)}</Grid>}
+                        {!!medals.points7 && <Grid item xs={6} md={3}>{StatItem('7 Point Games', medals.points7)}</Grid>}
+                        {!!medals.points8 && <Grid item xs={6} md={3}>{StatItem('8 Point Games', medals.points8)}</Grid>}
+                        {!!medals.points9 && <Grid item xs={6} md={3}>{StatItem('9 Point Games', medals.points9)}</Grid>}
+                        {!!medals.points10 && <Grid item xs={6} md={3}>{StatItem('10 Point Games', medals.points10)}</Grid>}
+                        <Grid item xs={12}>
+                            <Box sx={{width: '100%', minHeight: '300px'}}>
+                                <Bar options={getOptions('Points')}
+                                    data={{
+                                        labels: ['First Period', 'Second Period', 'Third Period', 'Overtime','Even Strength', 'Power Play', 'Short Handed'],
+                                        datasets: [{
+                                            label: 'Points', borderColor: 'rgb(255, 69, 0)', backgroundColor: 'rgba(255, 69, 0, 0.3)', data: pointStats,
+                                        }],
+                                    }}
+                                />
                             </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.gamesPlayed}</Typography>
-                            </Box>
-                        </Box>
+                        </Grid>
                     </Grid>
-                </Grid>
-                <br />
-                <Grid container spacing={1}>
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Goals
+                </Box>
+                <Box sx={{padding: '10px', marginBottom: '15px', backgroundColor: 'rgba(255, 255, 255, 0.15)', backdropFilter: 'blur(5px)'}}>
+                    <Grid container spacing={1}>
+                        <Grid item xs={6} md={3}>{StatItem('Goals',medals.totalGoals)}</Grid>
+                        <Grid item xs={6} md={3}>{StatItem('GPG',(medals.totalGoals/medals.gamesPlayed).toFixed(2))}</Grid>
+                        {!!medals.goals1 && <Grid item xs={6} md={3}>{StatItem('1 Goal Games', medals.goals1)}</Grid>}
+                        {!!medals.goals2 && <Grid item xs={6} md={3}>{StatItem('2 Goal Games', medals.goals2)}</Grid>}
+                        {!!medals.goals3 && <Grid item xs={6} md={3}>{StatItem('3 Goal Games', medals.goals3)}</Grid>}
+                        {!!medals.goals4 && <Grid item xs={6} md={3}>{StatItem('4 Goal Games', medals.goals4)}</Grid>}
+                        {!!medals.goals5 && <Grid item xs={6} md={3}>{StatItem('5 Goal Games', medals.goals5)}</Grid>}
+                        <Grid item xs={12}>
+                            <Box sx={{width: '100%', minHeight: '300px'}}>
+                                <Bar sx={{width: '100%'}} options={getOptions('Goals')}
+                                    data={{
+                                        labels: ['First Period', 'Second Period', 'Third Period', 'Overtime',
+                                            'Even Strength', 'Power Play', 'Short Handed', 'Assisted', 'Unassisted'],
+                                        datasets: [{
+                                            label: 'Goals', borderColor: 'rgb(255, 69, 0)', backgroundColor: 'rgba(255, 69, 0, 0.3)', data: goalStats,
+                                        }]
+                                    }}
+                                />
                             </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.totalGoals}</Typography>
-                            </Box>
-                        </Box>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Assists
+                </Box>
+                    
+                <Box sx={{padding: '10px', marginBottom: '15px', backgroundColor: 'rgba(255, 255, 255, 0.15)', backdropFilter: 'blur(5px)'}}>
+                    <Grid container spacing={1}>
+                        <Grid item xs={6} md={3}>{StatItem('Assists',medals.totalAssists)}</Grid>
+                        <Grid item xs={6} md={3}>{StatItem('APG',(medals.totalAssists/medals.gamesPlayed).toFixed(2))}</Grid>
+                        {!!medals.assists1 && <Grid item xs={6} md={3}>{StatItem('1 Assist Games', medals.assists1)}</Grid>}
+                        {!!medals.assists2 && <Grid item xs={6} md={3}>{StatItem('2 Assist Games', medals.assists2)}</Grid>}
+                        {!!medals.assists3 && <Grid item xs={6} md={3}>{StatItem('3 Assist Games', medals.assists3)}</Grid>}
+                        {!!medals.assists4 && <Grid item xs={6} md={3}>{StatItem('4 Assist Games', medals.assists4)}</Grid>}
+                        {!!medals.assists5 && <Grid item xs={6} md={3}>{StatItem('5 Assist Games', medals.assists5)}</Grid>}
+                        <Grid item xs={12}>
+                            <Box sx={{width: '100%', minHeight: '300px'}}>
+                                <Bar sx={{width: '100%'}} options={getOptions('Assists')}
+                                    data={{
+                                        labels: ['First Period', 'Second Period', 'Third Period', 'Overtime',
+                                            'Even Strength', 'Power Play', 'Short Handed', 'Primary', 'Secondary'],
+                                        datasets: [{
+                                            label: 'Assists', borderColor: 'rgb(255, 69, 0)', backgroundColor: 'rgba(255, 69, 0, 0.3)',
+                                            data: assistStats
+                                        }],
+                                    }}
+                                />
                             </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.totalAssists}</Typography>
-                            </Box>
-                        </Box>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Points
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.totalPoints}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                PIMs
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.totalPims}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                GPG
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{(medals.totalGoals/medals.gamesPlayed).toFixed(2)}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                APG
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{(medals.totalAssists/medals.gamesPlayed).toFixed(2)}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                PPG
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{(medals.totalPoints/medals.gamesPlayed).toFixed(2)}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                PIMsPG
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{(medals.totalPims/medals.gamesPlayed).toFixed(2)}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                </Grid>
-                <br />
-                <Grid container spacing={1}>
-                    {medals.goals1>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                One Goal Games
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.goals1}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                    {medals.goals2>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Two Goal Games
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.goals2}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                    {medals.goals3>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Three Goal Games
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.goals3}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                    {medals.goals4>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Four Goal Games
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.goals4}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                    {medals.goals5>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Five Goal Games
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.goals5}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                </Grid>
-                <br />
-                <Grid container spacing={1}>
-                    {medals.assists1>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                One Assist Games
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.assists1}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                    {medals.assists2>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Two Assist Games
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.assists2}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                    {medals.assists3>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Three Assist Games
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.assists3}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                    {medals.assists4>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Four Assist Games
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.assists4}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                    {medals.assists5>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Five Assist Games
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.assists5}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                </Grid>
-                <br />
-                <Grid container spacing={1}>
-                    {medals.points1>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                One Point Games
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.points1}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                    {medals.points2>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Two Point Games
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.points2}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                    {medals.points3>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Three Point Games
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.points3}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                    {medals.points4>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Four Point Games
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.points4}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                    {medals.points5>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Five Point Games
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.points5}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                    {medals.points6>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Six Point Games
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.points6}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                    {medals.points7>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Seven Point Games
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.points7}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                    {medals.points8>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Eight Point Games
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.points8}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                    {medals.points9>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Nine Point Games
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.points9}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                    {medals.points10>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Ten (!) Point Games
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.points10}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                </Grid>
-                <br />
-                <Grid container spacing={1}>
-                    {medals.goalStreak>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Longest Goal Streak
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.goalStreak}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                    {medals.assistStreak>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Assist Streak
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.assistStreak}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                    {medals.pointStreak>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Point Streak
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.pointStreak}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                    {medals.pimStreak>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Penalty Streak
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.pimStreak}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                </Grid>
-                <br />
-                <Grid container spacing={1}>
-                    {medals.gordies>0 &&
-                    <Grid item xs={6} md={3}>
-                        <Box sx={{border: '1px solid #ff6900', borderRadius: '5px'}}>
-                            <Box sx={{display: 'flex', justifyContent: 'center', borderBottom: '1px solid #ff690080'}}>
-                                Gordies
-                            </Box>
-                            <Box sx={{display: 'flex', justifyContent: 'center', alignContent: 'center'}}>
-                                <Typography variant='h3'>{medals.gordies}</Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                    }
-                </Grid>
+                </Box>
             </Box>
         }
         <br />
@@ -602,7 +424,7 @@ function Player(props) {
             <Skeleton animation="wave" height={500}/>
             :
             <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
-                <TmhlTable rows={gameRows} columns={gamesColumns}></TmhlTable>
+                <TmhlTable rows={gameRows} columns={gamesColumns} hasFilter={true}></TmhlTable>
             </Box>
         }
     </Container>

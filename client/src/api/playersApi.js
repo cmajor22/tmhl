@@ -42,3 +42,45 @@ export async function getGamesData(playersId) {
   });
 }
 
+export async function getPointsData(playersId) {
+  return new Promise((resolve) => {
+    fetch(`${server}/player/points`, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({playersId})})
+      .then(res => res.json())
+      .then(
+        (result) => {
+          resolve(result);
+        },
+        (error) => {
+          resolve([]);
+        }
+      )
+  });
+}
+
+export async function getPenaltiesData(playersId) {
+  return new Promise((resolve) => {
+    fetch(`${server}/player/penalties`, {
+      method: 'PUT',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({playersId})})
+      .then(res => res.json())
+      .then(
+        (result) => {
+          resolve(result);
+        },
+        (error) => {
+          resolve([]);
+        }
+      )
+  });
+}
+

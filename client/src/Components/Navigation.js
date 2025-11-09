@@ -1,9 +1,8 @@
-import { Drawer, ListItemText, ListItemIcon, List, ListItemButton, Collapse, IconButton } from '@mui/material';
+import { Drawer, ListItemText, ListItemIcon, List, ListItemButton, Collapse, IconButton, Box } from '@mui/material';
 import React from 'react';
 import { useHistory, withRouter } from 'react-router-dom';
 import { toggleMenu } from '../redux/menuSlice';
 import { useSelector, useDispatch } from 'react-redux';
-import { Box } from '@mui/system';
 import Logo from '../assets/tmhl_logo.png';
 import CloseIcon from '@mui/icons-material/Close';
 

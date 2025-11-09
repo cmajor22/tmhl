@@ -66,7 +66,7 @@ function GameCard(props) {
                         <Grid item xs={7}>
                             <Box sx={{display: 'flex', flexDirection: 'row'}}>
                                 <Box sx={{height: '24px', width: '24px', marginRight: '3px'}}>
-                                    <img src={`/assets/${props.homeTeam}.svg`}/>
+                                    <img src={`/assets/${props.homeTeam}.svg`} alt="Home Logo"/>
                                 </Box>
                                 <Typography sx={classes.teamName}>
                                     {props.homeTeam}
@@ -74,7 +74,7 @@ function GameCard(props) {
                             </Box>
                             <Box sx={{display: 'flex', flexDirection: 'row'}}>
                                 <Box sx={{height: '24px', width: '24px', marginRight: '3px'}}>
-                                    <img src={`/assets/${props.awayTeam}.svg`}/>
+                                    <img src={`/assets/${props.awayTeam}.svg`} alt="Away Logo"/>
                                 </Box>
                                 <Typography sx={classes.teamName}>{props.awayTeam}</Typography>
                             </Box>

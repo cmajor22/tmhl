@@ -8,7 +8,8 @@ import PlayerRow from '../Components/PlayerRow';
 
 const styles = {
     teamItem: {
-        padding: '5px'
+        background: `#000000AA`,
+        backdropFilter: 'blur(10px)'
     },
     playerItem: {
         display: 'flex',
@@ -92,7 +93,7 @@ function Rosters19(props) {
                 !(rosters.rosters19Loading || seasons.seasonsLoading) ?
                 teamsList.map((team, i) => {
                     return <Grid key={i} item xs={12} sm={6} lg={4}>
-                        <Paper key={i} elevation={3} sx={{background: `#000000AA`, backdropFilter: 'blur(10px)'}}>
+                        <Paper key={i} elevation={3} sx={classes.teamItem}>
                             <PageTitle key={i} title={team[0].teamName} variant="h4" primaryColour={team[0].primaryColour} shortForm={team[0].shortForm}/>
                             {team.map((player, i) => {
                                 return <PlayerRow key={i} playersId={player.playersId}

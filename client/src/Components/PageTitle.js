@@ -24,7 +24,7 @@ function PageTitle(props) {
             <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: '3px',
                 background: `linear-gradient(to right, #${primaryColour}CC, #${primaryColour}88)`}}>
                 <Box sx={{height: '32px', width: '32px', marginRight: '16px', display: 'flex', alignContent: 'center'}}>
-                    <img src={`/assets/${props.shortForm}.svg`}/>
+                    <img src={`/assets/${shortForm}.svg`} alt="Team Logo"/>
                 </Box>
                 <Typography variant={variant}>{title}</Typography>
             </Box>
