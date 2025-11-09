@@ -1,7 +1,7 @@
 module.exports = (express, connection) => {
   var router = express.Router();
 
-  router.put('/games', function(req, res, next) {
+  router.post('/games', function(req, res, next) {
     const league = req.body.league;
     const season = req.body.season;
 

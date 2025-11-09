@@ -2,7 +2,7 @@ module.exports = (express, connection) => {
   var router = express.Router();
 
   /* Season Rosters */
-  router.put('/getUpcomingGames', function(req, res, next) {
+  router.post('/getUpcomingGames', function(req, res, next) {
     const league = req.body.league;
     const year = req.body.year;
     const sql = `

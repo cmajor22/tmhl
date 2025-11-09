@@ -3,7 +3,7 @@ import { server } from "../endpoint";
 export async function getGameData(gamesId) {
   return new Promise((resolve) => {
     fetch(`${server}/games`, {
-      method: 'PUT',
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -24,7 +24,7 @@ export async function getGameData(gamesId) {
 export async function getGameGoals(gameId) {
   return new Promise((resolve) => {
     fetch(`${server}/game/goals`, {
-      method: 'PUT',
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -44,7 +44,7 @@ export async function getGameGoals(gameId) {
 export async function getGamePenalties(gameId) {
   return new Promise((resolve) => {
     fetch(`${server}/game/penalties`, {
-      method: 'PUT',
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -65,7 +65,7 @@ export async function getGamePenalties(gameId) {
 export async function getGameHome(gameId) {
   return new Promise((resolve) => {
     fetch(`${server}/game/home`, {
-      method: 'PUT',
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -86,7 +86,7 @@ export async function getGameHome(gameId) {
 export async function getGameAway(gameId) {
   return new Promise((resolve) => {
     fetch(`${server}/game/away`, {
-      method: 'PUT',
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

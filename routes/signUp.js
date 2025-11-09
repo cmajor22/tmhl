@@ -13,7 +13,7 @@ module.exports = (express, connection) => {
     },
   });
 
-  router.put('/', function(req, res, next) {
+  router.post('/', function(req, res, next) {
     const {name,address,city,postalCode,email,phone,mobile,age,division,position,levelPlayed,lastYear,people,comments} = req.body;
     
     transporter.sendMail({

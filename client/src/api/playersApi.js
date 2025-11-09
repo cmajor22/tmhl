@@ -3,7 +3,7 @@ import { server } from "../endpoint";
 export async function getSeasonsData(playersId) {
   return new Promise((resolve) => {
     fetch(`${server}/player/seasons`, {
-      method: 'PUT',
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -24,7 +24,7 @@ export async function getSeasonsData(playersId) {
 export async function getGamesData(playersId) {
   return new Promise((resolve) => {
     fetch(`${server}/player/games`, {
-      method: 'PUT',
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -45,7 +45,7 @@ export async function getGamesData(playersId) {
 export async function getPointsData(playersId) {
   return new Promise((resolve) => {
     fetch(`${server}/player/points`, {
-      method: 'PUT',
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -66,7 +66,7 @@ export async function getPointsData(playersId) {
 export async function getPenaltiesData(playersId) {
   return new Promise((resolve) => {
     fetch(`${server}/player/penalties`, {
-      method: 'PUT',
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

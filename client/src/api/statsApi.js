@@ -3,7 +3,7 @@ import { server } from "../endpoint";
 export async function getStatsTeams(season) {
   return new Promise((resolve) => {
     fetch(`${server}/stats/teams`, {
-      method: 'PUT',
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -24,7 +24,7 @@ export async function getStatsTeams(season) {
 export async function getStatsGoalies(isPlayoffs, season, isFinals) {
   return new Promise((resolve) => {
     fetch(`${server}/stats/goalieStats`, {
-      method: 'PUT',
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -45,7 +45,7 @@ export async function getStatsGoalies(isPlayoffs, season, isFinals) {
 export async function getStatsPlayers(isPlayoffs, season, isFinals) {
   return new Promise((resolve) => {
     fetch(`${server}/stats/playerStats`, {
-      method: 'PUT',
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'

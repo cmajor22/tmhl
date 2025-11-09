@@ -2,7 +2,7 @@ module.exports = (express, connection) => {
   var router = express.Router();
 
   /* Game goals */
-  router.put('/goals', function(req, res, next) {
+  router.post('/goals', function(req, res, next) {
     const gameId = req.body.gameId;
     const sql = `select seasons.hasStatsV2,games.gamesId,games.date,games.time,home.teamsId as 'homeId',
       home.name as 'homeName',away.teamsId as 'awayId',away.name as 'awayName',goals.teamsId as 'goalTeam',
@@ -23,7 +23,7 @@ module.exports = (express, connection) => {
   });
 
   /* Game penalties */
-  router.put('/penalties', function(req, res, next) {
+  router.post('/penalties', function(req, res, next) {
     const gameId = req.body.gameId;
     const sql = `select seasons.hasStatsV2,games.gamesId,games.date,games.time,home.teamsId as 'homeId',home.name as 'homeName',
       away.teamsId as 'awayId',away.name as 'awayName',penalties.teamsId as 'penaltyTeam', penalty.name as 'penalty',infraction,
@@ -41,7 +41,7 @@ module.exports = (express, connection) => {
   });
 
   /* Game home list */
-  router.put('/home', function(req, res, next) {
+  router.post('/home', function(req, res, next) {
     const gameId = req.body.gameId;
     const sql = `select homeT4.*,teamName,goals+assists as 'points',ifnull(sum(penalties.minutes),0) as 'penalties' 
     from ( select homeT3.*,assists1+count(distinct goalsId) as 'assists' from ( select homeT2.*,count(distinct goalsId) as 'assists1' 
@@ -62,7 +62,7 @@ module.exports = (express, connection) => {
   });
 
   /* Game away list */
-  router.put('/away', function(req, res, next) {
+  router.post('/away', function(req, res, next) {
     const gameId = req.body.gameId;
     const sql = `select awayT4.*,teamName,goals+assists as 'points',ifnull(sum(penalties.minutes),0) as 'penalties' 
       from ( select awayT3.*,assists1+count(distinct goalsId) as 'assists' from ( select awayT2.*,count(distinct goalsId) as 'assists1' 

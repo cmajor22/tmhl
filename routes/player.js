@@ -2,7 +2,7 @@ module.exports = (express, connection) => {
   var router = express.Router();
 
   /* Game goals */
-  router.put('/seasons', function(req, res, next) {
+  router.post('/seasons', function(req, res, next) {
     const playersId = req.body.playersId;
     const sql = `select playerName,t1.playersId as 'playerId',teamName,shortForm,seasonsName,leaguesid,hasStats,hasStatsV2,
       ifNull(goals.goals,0) as 'goals',  (ifNull(assist1.assists1,0) + ifNull(assist2.assists2,0)) as 'assists',
@@ -32,7 +32,7 @@ module.exports = (express, connection) => {
   });
 
   /* Game home list */
-  router.put('/games', function(req, res, next) {
+  router.post('/games', function(req, res, next) {
     const playersId = req.body.playersId;
     const sql = `select playerName,t1.playersId as 'playerId',teamName,shortForm,seasonsName,leaguesid,hasStats,hasStatsV2,
     ifNull(goals.goals,0) as 'goals',  (ifNull(assist1.assists1,0) + ifNull(assist2.assists2,0)) as 'assists',
@@ -63,7 +63,7 @@ module.exports = (express, connection) => {
     });
   });
 
-  router.put('/points', function(req, res, next) {
+  router.post('/points', function(req, res, next) {
     const playersId = req.body.playersId;
 
     const sql = `select * from goals where goal=? or assist1=? or assist2=?`;
@@ -74,7 +74,7 @@ module.exports = (express, connection) => {
     });
   });
 
-  router.put('/penalties', function(req, res, next) {
+  router.post('/penalties', function(req, res, next) {
     const playersId = req.body.playersId;
 
     const sql = `select * from penalties where playersId=9`;

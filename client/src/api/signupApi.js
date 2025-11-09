@@ -3,7 +3,7 @@ import { server } from "../endpoint";
 export async function signUp(userInfo) {
   return new Promise((resolve) => {
     fetch(`${server}/signup`, {
-      method: 'PUT',
+      method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
