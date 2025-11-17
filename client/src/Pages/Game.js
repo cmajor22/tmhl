@@ -216,7 +216,7 @@ function Game(props) {
                     <Box sx={{marginTop: '15px', marginBottom: '15px'}}>
                         {events[2]?.map(e => Event(e))}
                     </Box>
-                    {events[3].length>0 ?
+                    {events[3]?.length>0 ?
                         [
                             <Typography variant="h4">Overtime</Typography>,
                             <Box sx={{marginTop: '15px', marginBottom: '15px'}}>
