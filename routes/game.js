@@ -7,7 +7,9 @@ module.exports = (express, connection) => {
     const sql = `select seasons.hasStatsV2,games.gamesId,games.date,games.time,home.teamsId as 'homeId',
       home.name as 'homeName',away.teamsId as 'awayId',away.name as 'awayName',goals.teamsId as 'goalTeam',
       isSHG,isPP,isOT,period,goals.time as 'goalTime', goal.name as 'goal',ifnull(assist1.name,'') as 'assist1',
-      ifnull(assist2.name,'') as 'assist2' from games,seasons,teamsforgames left join teams home on home.teamsId=teamsforgames.homeId 
+      ifnull(assist2.name,'') as 'assist2',ifnull(home.shortForm,'') as homeShortForm,ifnull(away.shortForm,'') as awayShortForm,
+      ifnull(home.primaryColour,'') as homePrimaryColour,ifnull(away.primaryColour,'') as awayPrimaryColour
+      from games,seasons,teamsforgames left join teams home on home.teamsId=teamsforgames.homeId 
       left join teams away on away.teamsId=teamsforgames.awayId left join (select * from goals where gamesid=?) goals 
       on goals.gamesId=teamsforgames.gamesId left join players goal on goal.playersId = goals.goal 
       left join players assist1 on assist1.playersId = goals.assist1 left join players assist2 on assist2.playersId = goals.assist2 
@@ -27,7 +29,9 @@ module.exports = (express, connection) => {
     const gameId = req.body.gameId;
     const sql = `select seasons.hasStatsV2,games.gamesId,games.date,games.time,home.teamsId as 'homeId',home.name as 'homeName',
       away.teamsId as 'awayId',away.name as 'awayName',penalties.teamsId as 'penaltyTeam', penalty.name as 'penalty',infraction,
-      minutes,period,penalties.time as 'penaltyTime' from games,seasons,teamsforgames 
+      minutes,period,penalties.time as 'penaltyTime',ifnull(home.shortForm,'') as homeShortForm,ifnull(away.shortForm,'') as awayShortForm,
+      ifnull(home.primaryColour,'') as homePrimaryColour,ifnull(away.primaryColour,'') as awayPrimaryColour
+      from games,seasons,teamsforgames 
       left join teams home on home.teamsId=teamsforgames.homeId left join teams away on away.teamsId=teamsforgames.awayId 
       left join (select * from penalties where gamesid=?) penalties on penalties.gamesId=teamsforgames.gamesId 
       left join players penalty on penalties.playersId = penalty.playersId where games.gamesid=?
