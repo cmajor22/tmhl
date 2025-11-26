@@ -48,7 +48,8 @@ const styles = {
         cursor: 'pointer'
     },
     logoStyle: {
-        height: '90%'
+        height: '90%',
+        pointer: 'cursor'
     },
     menuButton: {
         cursor: 'pointer',
@@ -115,6 +116,7 @@ function HeaderBar(props) {
             <img src={Logo} style={{
                 position: 'fixed', height: scrollPosition > 50 ? '60px' : '140px',
                 top: 10, left: '50%', transform: 'translateX(-50%)', transition: 'height .5s',
+                cursor: 'pointer'
             }} alt="TMHL logo" onClick={() => {scrollPosition > 50 ? dispatch(toggleMenu()) : goPage('/')}}/>
             }
 

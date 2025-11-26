@@ -42,6 +42,8 @@ var playerRouter = require('./routes/player') (express, connection);
 app.use('/player', playerRouter);
 var signupRouter = require('./routes/signUp') (express, connection);
 app.use('/signup', signupRouter);
+var records = require('./routes/records') (express, connection);
+app.use('/records', records);
 app.get("/*", (req, res) => {
   res.sendFile(
     path.join(__dirname, './client/build/index.html')

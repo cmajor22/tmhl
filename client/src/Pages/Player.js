@@ -251,13 +251,13 @@ function Player(props) {
             }else if(p.isPP===1 && p.goal.toString()===playerId){
                 goalStats.powerplay++;
                 pointStats.powerplay++;
-            }else if(p.goal.toString()===playerId){
+            }else if(p.goal?.toString()===playerId){
                 goalStats.evenStrength++;
                 pointStats.evenStrength++;
             }
             if(p.assist1===0 && p.assist2===0 && p.goal.toString()===playerId){
                 goalStats.unassisted++;
-            }else if(p.goal.toString()===playerId){
+            }else if(p.goal?.toString()===playerId){
                 goalStats.assisted++;
             }
             
@@ -281,13 +281,13 @@ function Player(props) {
             }else if(p.isPP===1 && (p.assist1.toString()===playerId || p.assist2.toString()===playerId)){
                 assistStats.powerplay++;
                 pointStats.powerplay++;
-            }else if((p.assist1.toString()===playerId || p.assist2.toString()===playerId)){
+            }else if((p.assist1?.toString()===playerId || p.assist2?.toString()===playerId)){
                 assistStats.evenStrength++;
                 pointStats.evenStrength++;
             }
-            if(p.assist1.toString()===playerId){
+            if(p.assist1?.toString()===playerId){
                 assistStats.primary++;
-            }else if(p.assist2.toString()===playerId){
+            }else if(p.assist2?.toString()===playerId){
                 assistStats.secondary++;
             }
         });

@@ -9,6 +9,7 @@ import statsReducer from './statsSlice';
 import gamesSlice from './gamesSlice';
 import postsSlice from './postsSlice';
 import playersSlice from './playersSlice';
+import recordsSlice from './recordsSlice';
 
 export const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
     stats: statsReducer,
     games: gamesSlice,
     posts: postsSlice,
-    players: playersSlice
+    players: playersSlice,
+    records: recordsSlice,
   },
 });

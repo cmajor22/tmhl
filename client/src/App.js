@@ -24,6 +24,8 @@ import { createTheme, ThemeProvider, responsiveFontSizes } from '@mui/material/s
 import CssBaseline from '@mui/material/CssBaseline';
 import bg from './assets/ice.png';
 import Player from './Pages/Player';
+import Records from './Pages/Records';
+import ScrollToTop from "./ScrollToTop";
 
 let theme = responsiveFontSizes(createTheme({
   palette: {
@@ -57,6 +59,7 @@ function App() {
       <ThemeProvider theme={theme}>
 		<CssBaseline />
         <Router>
+      		<ScrollToTop />
         	<Box style={{backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),url(${bg})`, backgroundSize: 'cover', backgroundColor: '#FFFFFF', backgroundAttachment: 'fixed'}}>
 				<Box sx={{maxWidth: '960px', height: '100%', minHeight: '100vh', margin: 'auto', 
 					paddingTop: {xs: '280px', sm: '180px', md: '140px'}}}>
@@ -79,6 +82,7 @@ function App() {
 							<Route exact path="/SignUp"><SignUp/></Route>
 							<Route exact path="/Game/:gameId"><Game/></Route>
 							<Route exact path="/Player/:playerId"><Player/></Route>
+							<Route exact path="/Records"><Records/></Route>
 							<Route path="/"><Home /></Route>
 						</Switch>
 					</Box>

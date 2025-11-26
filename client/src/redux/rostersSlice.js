@@ -34,23 +34,6 @@ export const getCaptains = createAsyncThunk(
     }
 );
 
-// export const rosters19 = createSlice({
-//     name: 'rosters19',
-//     initialState,
-//     reducers: {
-//     },
-//     extraReducers: (builder) => {
-//         builder
-//             .addCase(get19.pending, (state) => {
-//                 state.rosters19Loading = true;
-//             })
-//             .addCase(get19.fulfilled, (state, action) => {
-//                 state.rosters19Loading = false;
-//                 state.rosters19 = [...action.payload];
-//             })
-//     }
-// })
-
 export const rosters = createSlice({
     name: 'rosters',
     initialState,
@@ -76,29 +59,8 @@ export const rosters = createSlice({
     }
 })
 
-// export const rosters40 = createSlice({
-//     name: 'rosters40',
-//     initialState,
-//     reducers: {
-//     },
-//     extraReducers: (builder) => {
-//         builder
-//             .addCase(get40.pending, (state) => {
-//                 state.rosters40Loading = true;
-//             })
-//             .addCase(get40.fulfilled, (state, action) => {
-//                 state.rosters40Loading = false;
-//                 state.rosters40 = [...state.rosters40, ...action.payload];
-//             })
-//     }
-// })
-
 export const rostersValue = (state) => state.rosters.rosters;
-// export const rosters19Value = (state) => state.rosters19.rosters19;
-// export const rosters40Value = (state) => state.rosters40.rosters40;
 
 export default combineReducers({
     rosters: rosters.reducer,
-    // rosters19: rosters19.reducer,
-    // rosters40: rosters40.reducer
 });
