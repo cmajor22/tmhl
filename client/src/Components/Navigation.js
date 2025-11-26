@@ -117,6 +117,10 @@ function Navigation(props) {
                                 <ListItemIcon></ListItemIcon>
                                 <ListItemText>Schedule</ListItemText>
                             </ListItemButton>
+                            <ListItemButton onClick={() => {goPage('/Records')}}>
+                                <ListItemIcon></ListItemIcon>
+                                <ListItemText>Records / Leaderboard</ListItemText>
+                            </ListItemButton>
                         </List>
                     </Collapse>
                     <ListItemButton onClick={() => {handle40Click()}}>

@@ -210,6 +210,7 @@ function HeaderBar(props) {
                                 <Typography sx={classes.menuButton} onClick={() => goPage('/19standings')}>Standings</Typography>
                                 <Typography sx={classes.menuButton} onClick={() => goPage('/19stats')}>Stats</Typography>
                                 <Typography sx={classes.menuButton} onClick={() => goPage('/19schedule')}>Schedule</Typography>
+                                <Typography sx={classes.menuButton} onClick={() => goPage('/records')}>Leaderboard</Typography>
                             </Box>
                         </Box>
                     </Grid>
