@@ -150,7 +150,7 @@ function Records(props) {
         <br />
         <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.7)', backdropFilter: 'blur(5px)', padding: '5px'}}>
             <Tabs value={activeTab} onChange={changeTab} centered>
-                <Tab label={isMobile ? "P" : "Points"} value="0"/>
+                <Tab label={isMobile ? "PTS" : "Points"} value="0"/>
                 <Tab label={isMobile ? "G" : "Goals"} value="1"/>
                 <Tab label={isMobile ? "A" : "Assists"} value="2"/>
                 <Tab label={isMobile ? "PIM" : "Penalties"} value="3"/>
