@@ -84,3 +84,24 @@ export async function getPenaltiesData(playersId) {
   });
 }
 
+export async function getGoaliesData(playersId) {
+  return new Promise((resolve) => {
+    fetch(`${server}/player/gaa`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({playersId})})
+      .then(res => res.json())
+      .then(
+        (result) => {
+          resolve(result);
+        },
+        (error) => {
+          resolve([]);
+        }
+      )
+  });
+}
+

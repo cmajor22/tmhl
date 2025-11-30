@@ -3,7 +3,7 @@ import { Box, Container, Grid, Skeleton, Typography } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
 import TmhlTable from '../Components/TmhlTable';
-import { playerGamesData, playerSeasonsData, playerPointsData, playerPenaltiesData, playersValue } from '../redux/playersSlice';
+import { playerGamesData, playerSeasonsData, playerPointsData, playerPenaltiesData, playersValue, playerGoaliesData } from '../redux/playersSlice';
 import PageTitle from '../Components/PageTitle';
 import moment from 'moment';
 import {
@@ -68,9 +68,11 @@ function Player(props) {
     const [ gameRows, setGameRows ] = useState([]);
     const [ playerName, setPlayerName ] = useState([]);
     const [ medals, setMedals ] = useState([]);
+    const [ goalieMedals, setGoalieMedals ] = useState([]);
     const [ pointStats, setpointStats ] = useState({labels: [], datasets: []});
     const [ goalStats, setgoalStats ] = useState({labels: [], datasets: []});
     const [ assistStats, setassistStats ] = useState({labels: [], datasets: []});
+    const [ goalieStats, setgoalieStats ] = useState({labels: [], datasets: []});
     
     let seasonsColumns = isMobile ? [
         { field: 'seasonsName', headerName: 'SEASON', width: 95 },
@@ -112,6 +114,7 @@ function Player(props) {
         dispatch(playerGamesData({playerId}));
         dispatch(playerPointsData({playerId}));
         dispatch(playerPenaltiesData({playerId}));
+        dispatch(playerGoaliesData({playerId}));
     }, []);// eslint-disable-line react-hooks/exhaustive-deps
     
     useEffect(() => {
@@ -306,9 +309,59 @@ function Player(props) {
     }, [players.playerPoints, playerId]);
 
     useEffect(() => {
-        
-    }, [players.playerPenalties]);
+        let gRows = {
+            gamesPlayed: 0, wins: 0, losses: 0, ties: 0,
+            goalsAgainst: 0, goalsAgainstAverage: 0, goalsSupport: 0, goalsSupportAverage: 0,
+            ga0: 0, ga1: 0, ga2: 0, ga3: 0, ga4: 0, ga5: 0, ga6: 0, ga7: 0, ga8: 0, ga9: 0, ga10: 0
+        }
 
+        players.playerGoalies.forEach((g) => {
+            gRows.gamesPlayed++;
+            if(g.forGoals>g.vsGoals) {
+                gRows.wins++;
+            }else if(g.forGoals<g.vsGoals) {
+                gRows.losses++;
+            }else{
+                gRows.ties++;
+            }
+            gRows.goalsAgainst+=g.vsGoals;
+            gRows.goalsSupport+=g.forGoals;
+            if(g.vsGoals===0) {
+                gRows.ga0++;
+            }else if(g.vsGoals===1) {
+                gRows.ga1++;
+            }else if(g.vsGoals===2) {
+                gRows.ga2++;
+            }else if(g.vsGoals===3) {
+                gRows.ga3++;
+            }else if(g.vsGoals===4) {
+                gRows.ga4++;
+            }else if(g.vsGoals===5) {
+                gRows.ga5++;
+            }else if(g.vsGoals===6) {
+                gRows.ga6++;
+            }else if(g.vsGoals===7) {
+                gRows.ga7++;
+            }else if(g.vsGoals===8) {
+                gRows.ga8++;
+            }else if(g.vsGoals===9) {
+                gRows.ga9++;
+            }else {
+                gRows.ga10++;
+            }
+        })
+        
+        gRows.goalsAgainstAverage = gRows.goalsAgainst / gRows.gamesPlayed;
+        gRows.goalsSupportAverage = gRows.goalsSupport / gRows.gamesPlayed;
+
+        
+        let gStats = [
+            gRows.ga0, gRows.ga1, gRows.ga2, gRows.ga3, gRows.ga4, gRows.ga5,
+            gRows.ga6, gRows.ga7, gRows.ga8, gRows.ga9, gRows.ga0
+        ];
+        setgoalieStats(gStats);
+        setGoalieMedals(gRows);
+    }, [players.playerGoalies]);
 
     return <Container sx={{paddingBottom: '15px'}}>
         {players.playerGamesLoading ?
@@ -323,6 +376,34 @@ function Player(props) {
             :
             <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px', marginTop: '20px'}}>
                 <PageTitle title='Accolades' variant="h3" /><br />
+
+                {!players.playerGoaliesLoading && goalieMedals?.gamesPlayed>0 &&
+                    <Box sx={{padding: '10px', marginBottom: '15px',
+                        backgroundColor: 'rgba(255, 255, 255, 0.15)', backdropFilter: 'blur(5px)'}}>
+                        <Grid container spacing={1}>
+                            <Grid item xs={6} md={3}>{StatItem('Games Played',goalieMedals.gamesPlayed)}</Grid>
+                            <Grid item xs={6} md={3}>{StatItem('Wins',goalieMedals.wins)}</Grid>
+                            <Grid item xs={6} md={3}>{StatItem('Losses',goalieMedals.losses)}</Grid>
+                            <Grid item xs={6} md={3}>{StatItem('Ties',goalieMedals.ties)}</Grid>
+                            <Grid item xs={6} md={3}>{StatItem('GA',goalieMedals.goalsAgainst)}</Grid>
+                            <Grid item xs={6} md={3}>{StatItem('GAA',(goalieMedals.goalsAgainstAverage).toFixed(2))}</Grid>
+                            <Grid item xs={6} md={3}>{StatItem('GS',goalieMedals.goalsSupport)}</Grid>
+                            <Grid item xs={6} md={3}>{StatItem('GSA',(goalieMedals.goalsSupportAverage).toFixed(2))}</Grid>
+                            <Grid item xs={12}>
+                                <Box sx={{width: '100%', minHeight: '300px'}}>
+                                    <Bar options={getOptions('Goals Against')}
+                                        data={{
+                                            labels: ['Shutouts', 'One', 'Two', 'Three','Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten+'],
+                                            datasets: [{
+                                                label: 'Goals Against (Games)', borderColor: 'rgb(255, 69, 0)', backgroundColor: 'rgba(255, 69, 0, 0.3)', data: goalieStats,
+                                            }],
+                                        }}
+                                    />
+                                </Box>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                }
                 
                 <Box sx={{padding: '10px', marginBottom: '15px',
                     backgroundColor: 'rgba(255, 255, 255, 0.15)', backdropFilter: 'blur(5px)'}}>

@@ -63,6 +63,42 @@ module.exports = (express, connection) => {
     });
   });
 
+  /* Goalie GAA */
+  router.post('/gaa', function(req, res, next) {
+    const playersId = req.body.playersId;
+    const sql = `select * from (
+      select * from (
+      select games.gamesId,playersforteams.teamsId,players.playersId,name,
+      count(distinct(goalieTeam.goalsId)) as vsGoals,count(distinct(vsTeam.goalsId)) as forGoals
+      from playersforteams,players,games,teamsforgames
+      left join goals goalieTeam on goalieTeam.gamesid=teamsforgames.gamesId and goalieTeam.teamsId=teamsforgames.awayId
+      left join goals vsTeam on vsTeam.gamesid=teamsforgames.gamesId and vsTeam.teamsId=teamsforgames.homeId
+      where playersforteams.playersId=players.playersId and isGoalie=1 and players.playersId=? and
+      teamsforgames.gamesid=games.gamesId and teamsforgames.homeId=playersforteams.teamsId and uploaded=1
+      and playersforteams.isGoalie=1
+      group by games.gamesId) s1
+      union
+      select * from (
+      select games.gamesId,playersforteams.teamsId,players.playersId,name,
+      count(distinct(goalieTeam.goalsId)) as vsGoals,count(distinct(vsTeam.goalsId)) as forGoals
+      from playersforteams,players,games,teamsforgames 
+      left join goals goalieTeam on goalieTeam.gamesid=teamsforgames.gamesId and goalieTeam.teamsId=teamsforgames.homeId
+      left join goals vsTeam on vsTeam.gamesid=teamsforgames.gamesId and vsTeam.teamsId=teamsforgames.awayId
+      where playersforteams.playersId=players.playersId and isGoalie=1 and players.playersId=? and
+      teamsforgames.gamesid=games.gamesId and teamsforgames.awayId=playersforteams.teamsId and uploaded=1
+      and playersforteams.isGoalie=1
+      group by games.gamesId) s2
+      ) t1 group by gamesId
+      order by teamsId,gamesId      
+    `;
+
+    connection.query(sql, [playersId, playersId], function (err, rows) {
+      if (err) throw {err};
+    
+      res.send(rows);
+    });
+  });
+
   router.post('/points', function(req, res, next) {
     const playersId = req.body.playersId;
 

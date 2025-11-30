@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice, combineReducers } from '@reduxjs/toolkit';
-import { getSeasonsData, getGamesData, getPointsData, getPenaltiesData } from '../api/playersApi';
+import { getSeasonsData, getGamesData, getPointsData, getPenaltiesData, getGoaliesData } from '../api/playersApi';
 
 const initialState = {
     playerSeasons: [], playerSeasonsLoading: false,
     playerGames: [], playerGamesLoading: false,
     playerPoints: [], playerPointsLoading: false,
     playerPenalties: [], playerPenaltiesLoading: false,
+    playerGoalies: [], playerGoaliesLoading: false
 };
 
 export const playerSeasonsData = createAsyncThunk('seasons', async(params) => {
@@ -28,6 +29,10 @@ export const playerPenaltiesData = createAsyncThunk('penalties', async(params) =
     return response;
 });
 
+export const playerGoaliesData = createAsyncThunk('goalies', async(params) => {
+    const response = await getGoaliesData(params.playerId);
+    return response;
+})
 
 export const players = createSlice({
     name: 'players',
@@ -42,6 +47,8 @@ export const players = createSlice({
         .addCase(playerPointsData.fulfilled, (state, action) => { state.playerPointsLoading = false; state.playerPoints = [...action.payload]; })
         .addCase(playerPenaltiesData.pending, (state) => { state.playerPenaltiesLoading = true;})
         .addCase(playerPenaltiesData.fulfilled, (state, action) => { state.playerPenaltiesLoading = false; state.playerPenalties = [...action.payload]; })
+        .addCase(playerGoaliesData.pending, (state) => { state.playerGoaliesLoading = true;})
+        .addCase(playerGoaliesData.fulfilled, (state, action) => { state.playerGoaliesLoading = false; state.playerGoalies = [...action.payload]; })
     }
 })
 
