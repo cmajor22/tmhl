@@ -12,7 +12,38 @@ module.exports = (express, connection) => {
     });
   });
 
-  router.post('/goalies/all', function(req, res, next) {
+  router.post('/goalieStats', function(req, res, next) {
+    const isPlayoffs = req.body.isPlayoffs;
+    const season = req.body.season;
+    const isFinals = req.body.isFinals;
+
+    const sql = `select games.gamesId,date,games.time,teamsforgames.homeId as 'home',teamsforgames.awayId as 'away', 
+      count(distinct homeGoals.goalsId) as 'homeGoals',count(distinct awayGoals.goalsId) as 'awayGoals', 
+      ifNull(homePenalties.minutes,0) as 'homePIM', ifNull(awayPenalties.minutes,0) as 'awayPIM', uploaded as 'isUploaded',
+      seasons.leaguesId,isPlayoffs,isOvertime, home.name as 'homeTeam',away.name as 'awayTeam', homeGoalie.name as 'homeGoalie',
+      awayGoalie.name as 'awayGoalie', homeGoalie.playersId as 'homeId', awayGoalie.playersId as 'awayId'
+      from seasons,teams home,teams away,games,teamsforgames 
+      left join goals homeGoals on homeGoals.teamsId=teamsforgames.homeId and homeGoals.gamesId=teamsforgames.gamesId 
+      left join goals awayGoals on awayGoals.teamsId=teamsforgames.awayId and awayGoals.gamesId=teamsforgames.gamesId 
+      left join (select gamesId,teamsId,sum(minutes) as 'minutes' from penalties group by gamesId,teamsId) homePenalties
+        on homePenalties.teamsId=teamsforgames.homeId and homePenalties.gamesId=teamsforgames.gamesId 
+      left join (select gamesId,teamsId,sum(minutes) as 'minutes' from penalties group by gamesId,teamsId) awayPenalties
+        on awayPenalties.teamsId=teamsforgames.awayId and awayPenalties.gamesId=teamsforgames.gamesId 
+      left join (select teamsId,players.playersId,name from playersforteams,players where playersforteams.playersId=players.playersId and
+        isGoalie=1) homeGoalie on homeGoalie.teamsId=teamsforgames.homeId 
+      left join (select teamsId,players.playersId,name from playersforteams,players where playersforteams.playersId=players.playersId and
+        isGoalie=1) awayGoalie on awayGoalie.teamsId=teamsforgames.awayId
+      where games.seasonsId=seasons.seasonsid and games.gamesId=teamsforgames.gamesId and home.teamsId=teamsforgames.homeId and
+      away.teamsId=teamsforgames.awayId and isPlayoffs=? and uploaded=1 and seasons.seasonsId=? and isFinals=?
+      group by games.gamesId`;
+
+    connection.query(sql, [isPlayoffs, season, isFinals], function (err, rows) {
+      if (err) throw {err};
+      res.send(rows);
+    });
+  });
+
+  router.post('/allGoalies', function(req, res, next) {
     const league = req.body.league;
 
     const sql = `select players.name,teams.name as team from playersforteams,teams,players,seasons 
@@ -25,7 +56,7 @@ module.exports = (express, connection) => {
     });
   });
 
-  router.post('/goalieStats/all', function(req, res, next) {
+  router.post('/allGoalieStats', function(req, res, next) {
     const league = req.body.league;
 
     const sql = `select games.gamesId,date,games.time,teamsforgames.homeId as 'home',teamsforgames.awayId as 'away', 
@@ -87,37 +118,6 @@ module.exports = (express, connection) => {
     const sql = `select teams.name from seasons,teams where seasons.seasonsId=teams.seasonsId and seasons.seasonsId=?`;
 
     connection.query(sql, [season], function (err, rows) {
-      if (err) throw {err};
-      res.send(rows);
-    });
-  });
-
-  router.post('/goalieStats', function(req, res, next) {
-    const isPlayoffs = req.body.isPlayoffs;
-    const season = req.body.season;
-    const isFinals = req.body.isFinals;
-
-    const sql = `select games.gamesId,date,games.time,teamsforgames.homeId as 'home',teamsforgames.awayId as 'away', 
-      count(distinct homeGoals.goalsId) as 'homeGoals',count(distinct awayGoals.goalsId) as 'awayGoals', 
-      ifNull(homePenalties.minutes,0) as 'homePIM', ifNull(awayPenalties.minutes,0) as 'awayPIM', uploaded as 'isUploaded',
-      seasons.leaguesId,isPlayoffs,isOvertime, home.name as 'homeTeam',away.name as 'awayTeam', homeGoalie.name as 'homeGoalie',
-      awayGoalie.name as 'awayGoalie', homeGoalie.playersId as 'homeId', awayGoalie.playersId as 'awayId'
-      from seasons,teams home,teams away,games,teamsforgames 
-      left join goals homeGoals on homeGoals.teamsId=teamsforgames.homeId and homeGoals.gamesId=teamsforgames.gamesId 
-      left join goals awayGoals on awayGoals.teamsId=teamsforgames.awayId and awayGoals.gamesId=teamsforgames.gamesId 
-      left join (select gamesId,teamsId,sum(minutes) as 'minutes' from penalties group by gamesId,teamsId) homePenalties
-        on homePenalties.teamsId=teamsforgames.homeId and homePenalties.gamesId=teamsforgames.gamesId 
-      left join (select gamesId,teamsId,sum(minutes) as 'minutes' from penalties group by gamesId,teamsId) awayPenalties
-        on awayPenalties.teamsId=teamsforgames.awayId and awayPenalties.gamesId=teamsforgames.gamesId 
-      left join (select teamsId,players.playersId,name from playersforteams,players where playersforteams.playersId=players.playersId and
-        isGoalie=1) homeGoalie on homeGoalie.teamsId=teamsforgames.homeId 
-      left join (select teamsId,players.playersId,name from playersforteams,players where playersforteams.playersId=players.playersId and
-        isGoalie=1) awayGoalie on awayGoalie.teamsId=teamsforgames.awayId
-      where games.seasonsId=seasons.seasonsid and games.gamesId=teamsforgames.gamesId and home.teamsId=teamsforgames.homeId and
-      away.teamsId=teamsforgames.awayId and isPlayoffs=? and uploaded=1 and seasons.seasonsId=? and isFinals=?
-      group by games.gamesId`;
-
-    connection.query(sql, [isPlayoffs, season, isFinals], function (err, rows) {
       if (err) throw {err};
       res.send(rows);
     });

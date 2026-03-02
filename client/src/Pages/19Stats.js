@@ -11,7 +11,7 @@ function Stats19(props) {
     const dispatch = useDispatch();
     const seasons = useSelector(seasonsValue);
     const stats = useSelector(statsValue);
-    const [season, setSeason] = React.useState('1');
+    const [season, setSeason] = React.useState(null);
     const [type, setType] = React.useState(0);
     const [goaliesStats, setGoaliesStats] = React.useState([]);
     const [goalsStats, setGoalsStats] = React.useState([]);
@@ -68,12 +68,10 @@ function Stats19(props) {
   
     const handleSeasonChange = (event) => {
         setSeason(event.target.value);
-        getData(event.target.value, type);
     };
     
     const handleTypeChange = (event) => {
         setType(event.target.value);
-        getData(event.target.value, type);
     }
     
     useEffect(() => {
@@ -85,7 +83,11 @@ function Stats19(props) {
             setSeason(seasons.seasons[0]);
             handleSeasonChange({target: {value: seasons.seasons[0].seasonsid}});
         }
-    }, [seasons, type]);// eslint-disable-line react-hooks/exhaustive-deps
+    }, [seasons]);// eslint-disable-line react-hooks/exhaustive-deps
+
+    useEffect(() => {
+        getData(season, type);
+    }, [season, type]);// eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
         let teams = stats.statsTeams.map((item, i) => {
@@ -104,6 +106,7 @@ function Stats19(props) {
                 goalieNumber: 0
             };
         });
+        
         for(let item of stats.statsGoalies) {
             for(let team of teams) {
                 team.gamesPlayed += addGP(item, team.name);
@@ -191,12 +194,12 @@ function Stats19(props) {
 
     const getData = (s, t) => {
         let [isPlayoffs, isFinals] = [0, 0];
-        if(t==='2') {
+        if(t==='2' || t===2) {
             isFinals = 1;
-        }else if(t==='1'){
+        }else if(t==='1' || t===1) {
             isPlayoffs = 1;
         }
-        dispatch(statsTeams({season: s}));
+        dispatch(statsTeams({isPlayoffs: isPlayoffs, season: s, isFinals: isFinals}));
         dispatch(statsGoalies({isPlayoffs: isPlayoffs, season: s, isFinals: isFinals}));
         dispatch(statsPlayers({isPlayoffs: isPlayoffs, season: s, isFinals: isFinals}));
     }

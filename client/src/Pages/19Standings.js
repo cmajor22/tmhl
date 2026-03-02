@@ -202,33 +202,70 @@ function Standings19(props) {
             }
         }
 
-        ts.sort((a, b) => {
-            if(a.points>b.points) {
-                return -1;
-            }else if(a.points<b.points) {
-                return 1;
-            }else if(a.wins>b.wins){
-                return -1;
-            }else if(a.wins<b.wins){
-                return 1;
-            }
-            
-            for(let item of standings.standingsVs) {
-                if(item.team===a.name && item.vs===b.name) {
-                    if(item.h2h>0) {
-                        return -1;
-                    }else if(item.h2h<0) {
-                        return 1;
+        if(type==='Regular Season') {
+            ts.sort((a, b) => {
+                if(a.points>b.points) {
+                    return -1;
+                }else if(a.points<b.points) {
+                    return 1;
+                }else if(a.wins>b.wins){
+                    return -1;
+                }else if(a.wins<b.wins){
+                    return 1;
+                }
+                
+                for(let item of standings.standingsVs) {
+                    if(item.team===a.name && item.vs===b.name) {
+                        if(item.h2h>0) {
+                            return -1;
+                        }else if(item.h2h<0) {
+                            return 1;
+                        }
                     }
                 }
-            }
-            
-            if(a.goalsFor-a.goalsAgainst>b.goalsFor-b.goalsAgainst){
-                return -1;
-            }else{
-                return 1;
-            }
-        });
+                
+                if(a.goalsFor-a.goalsAgainst>b.goalsFor-b.goalsAgainst){
+                    return -1;
+                }else{
+                    return 1;
+                }
+            });
+        } else {
+            ts.sort((a, b) => {
+                if(a.points>b.points) {
+                    return -1;
+                }else if(a.points<b.points) {
+                    return 1;
+                }
+                
+                for(let item of standings.standingsVs) {
+                    if(item.team===a.name && item.vs===b.name) {
+                        if(item.h2h>0) {
+                            return -1;
+                        }else if(item.h2h<0) {
+                            return 1;
+                        }
+                    }
+                }
+                if(a.goalsAgainst<b.goalsAgainst){
+                    return -1;
+                }else if(a.goalsAgainst>b.goalsAgainst){
+                    return 1;
+                }
+                
+                if(a.goalsFor>b.goalsFor){
+                    return -1;
+                }else if(a.goalsFor<b.goalsFor){
+                    return 1;
+                }
+                
+                if(a.goalsFor-a.goalsAgainst>b.goalsFor-b.goalsAgainst){
+                    return -1;
+                }else{
+                    return 1;
+                }
+            });
+        }
 
         let i = 0;
         ts.forEach((team) => {

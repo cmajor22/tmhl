@@ -86,7 +86,14 @@ function Rules(props) {
             <PageTitle title="TMHL Rules" variant="h2"/>
         </Box>
         <br />
-        <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
+        <iframe
+            src="http://tottenhammensleague.com/wp-content/uploads/2024/03/TMHL-Rules-1.pdf"
+            width="100%"
+            height="600px"
+            title="PDF Viewer"
+        />
+        <br />
+        {/* <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
             <PageTitle title="General" variant="h4" />
             {regRules.map((item) => {
                 return <Box sx={classes.ruleItem}>
@@ -120,7 +127,7 @@ function Rules(props) {
                     </Typography>
                 </Box>
             })}
-        </Box>
+        </Box> */}
     </Container>
 }
 
