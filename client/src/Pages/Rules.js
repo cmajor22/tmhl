@@ -87,7 +87,7 @@ function Rules(props) {
         </Box>
         <br />
         <iframe
-            src="http://tottenhammensleague.com/wp-content/uploads/2024/03/TMHL-Rules-1.pdf"
+            src="https://tottenhammensleague.com/wp-content/uploads/2024/03/TMHL-Rules-1.pdf"
             width="100%"
             height="600px"
             title="PDF Viewer"

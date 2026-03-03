@@ -12,7 +12,7 @@ function Stats19(props) {
     const seasons = useSelector(seasonsValue);
     const stats = useSelector(statsValue);
     const [season, setSeason] = React.useState(null);
-    const [type, setType] = React.useState(0);
+    const [type, setType] = React.useState(null);
     const [goaliesStats, setGoaliesStats] = React.useState([]);
     const [goalsStats, setGoalsStats] = React.useState([]);
     const [assistsStats, setAssistsStats] = React.useState([]);
@@ -81,12 +81,21 @@ function Stats19(props) {
     useEffect(() => {
         if(seasons.seasons.length>0) {
             setSeason(seasons.seasons[0]);
+            if(seasons.seasons[0].defaultView===1) {
+                setType('Playoffs');
+            }else if(seasons.seasons[0].defaultView===2) {
+                setType('Finals');
+            }else{
+                setType('Regular Season');
+            }
             handleSeasonChange({target: {value: seasons.seasons[0].seasonsid}});
         }
     }, [seasons]);// eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
-        getData(season, type);
+        if(season && type) {
+            getData(season, type);
+        }
     }, [season, type]);// eslint-disable-line react-hooks/exhaustive-deps
 
     useEffect(() => {
@@ -194,9 +203,9 @@ function Stats19(props) {
 
     const getData = (s, t) => {
         let [isPlayoffs, isFinals] = [0, 0];
-        if(t==='2' || t===2) {
+        if(t==='Finals') {
             isFinals = 1;
-        }else if(t==='1' || t===1) {
+        }else if(t==='Playoffs') {
             isPlayoffs = 1;
         }
         dispatch(statsTeams({isPlayoffs: isPlayoffs, season: s, isFinals: isFinals}));
@@ -261,9 +270,9 @@ function Stats19(props) {
                                 label="Type"
                                 onChange={handleTypeChange}
                             >
-                                <MenuItem value="0">Regular Season</MenuItem>
-                                <MenuItem value="1">Playoffs</MenuItem>
-                                <MenuItem value="2">Finals</MenuItem>
+                                <MenuItem value="Regular Season">Regular Season</MenuItem>
+                                <MenuItem value="Playoffs">Playoffs</MenuItem>
+                                <MenuItem value="Finals">Finals</MenuItem>
                             </Select>
                         </FormControl>
                     </Grid>

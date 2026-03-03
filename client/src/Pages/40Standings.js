@@ -34,8 +34,8 @@ function Standings40(props) {
     const dispatch = useDispatch();
     const seasons = useSelector(seasonsValue);
     const standings = useSelector(standingsValue);
-    const [season, setSeason] = React.useState('1');
-    const [type, setType] = React.useState('Regular Season');
+    const [season, setSeason] = React.useState(null);
+    const [type, setType] = React.useState(null);
     const [filteredGames, setFilteredGames] = React.useState([]);
     const isMobile = window.innerWidth < 600;
     let hiddenColumnsStandings = {};
@@ -55,7 +55,7 @@ function Standings40(props) {
         { field: 'goalsAgainst',  headerName: 'GA', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
         { field: 'plusMinus',  headerName: '+/-', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
         { field: 'penalties',  headerName: 'PIM', type: 'number', sortable: false, width: fixedWidthSmall, headerAlign: 'center', align: 'center' },
-        { field: 'streak',  headerName: streakTitle, type: 'number', sortable: false, headerAlign: 'center', align: 'center' },
+        { field: 'streak',  headerName: streakTitle, type: 'number', sortable: false, headerAlign: 'center', align: 'center', minWidth: 100 },
       ];
     let teamsColumnsPlayoffs = [
         { field: 'name', headerName: 'Team', sortable: false, flex: 1, minWidth: 100 },
@@ -99,13 +99,17 @@ function Standings40(props) {
   
     const handleSeasonChange = (event) => {
         setSeason(event.target.value);
-        getData(event.target.value, type);
     };
     
     const handleTypeChange = (event) => {
         setType(event.target.value);
-        getData(season, event.target.value);
     };
+
+    useEffect(() => {
+        if(season && type) {
+            getData(season, type);
+        }
+    }, [season, type]);// eslint-disable-line react-hooks/exhaustive-deps
     
     useEffect(() => {
         dispatch(seasonsList({league: 2}));     
@@ -114,6 +118,13 @@ function Standings40(props) {
     useEffect(() => {
         if(seasons.seasons.length>0) {
             setSeason(seasons.seasons[0]);
+            if(seasons.seasons[0].defaultView===1) {
+                setType('Playoffs');
+            }else if(seasons.seasons[0].defaultView===2) {
+                setType('Finals');
+            }else{
+                setType('Regular Season');
+            }
             handleSeasonChange({target: {value: seasons.seasons[0].seasonsid}});
         }
     }, [seasons]);// eslint-disable-line react-hooks/exhaustive-deps
