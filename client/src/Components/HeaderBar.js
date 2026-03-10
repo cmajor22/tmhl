@@ -108,7 +108,9 @@ function HeaderBar(props) {
                     <Box sx={classes.logoContainerMobileStyle} onClick={() => goPage('/')}>
                         <img src={Logo} style={classes.logoStyle} alt="TMHL logo"/>
                     </Box>
-                    <IconButton sx={{backgroundColor: 'rgba(255,255,255,.05)'}}><MenuIcon onClick={() => {dispatch(toggleMenu())}} sx={{cursor: 'pointer', fontSize: '44px'}} color="white"/></IconButton>
+                    <IconButton sx={{backgroundColor: 'rgba(255,255,255,.05)'}} onClick={() => {dispatch(toggleMenu())}}>
+                        <MenuIcon color="white" sx={{cursor: 'pointer', fontSize: '44px'}}/>
+                    </IconButton>
                 </Box>
             }
 
@@ -123,7 +125,7 @@ function HeaderBar(props) {
             <Navigation style={{zIndex: 1000}}/>
             <Grid container>
                 {(innerWidth>=600 || !(scrollPosition > 50 && innerWidth<600)) && [
-                    <Grid item xs={6} sm={5}>
+                    <Grid key={0} item xs={6} sm={5}>
                         <Box sx={{display: 'flex', justifyContent: 'flex-end', paddingLeft: '10px', paddingRight: '10px'}}>
                             <Box sx={{width: '100%', marginTop: '5px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', maxWidth: '380px'}}>
                                 <Typography variant="h5" sx={{width: '100%', marginBottom: '3px'}}>
@@ -134,8 +136,8 @@ function HeaderBar(props) {
                             </Box>
                         </Box>
                     </Grid>,
-                    <Grid item xs={0} sm={2} />,
-                    <Grid item xs={6} sm={5}>
+                    <Grid key={1} item xs={0} sm={2} />,
+                    <Grid key={2} item xs={6} sm={5}>
                         <Box sx={{display: 'flex', justifyContent: 'flex-start', paddingLeft: '10px', paddingRight: '10px'}}>
                             <Box sx={{width: '100%', marginTop: '5px', display: 'flex', flexDirection: 'row', justifyContent: 'space-between', maxWidth: '380px'}}>
                                 <Typography variant="h5" sx={{width: '100%', marginBottom: '3px'}}>
