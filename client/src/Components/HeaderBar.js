@@ -157,8 +157,8 @@ function HeaderBar(props) {
                                     {upcomingGames.filter(game => game.league===2)?.map((game, i) => {
                                         return <Grid item xs={12} sm={6} key={i} sx={classes.listItemLeft} onClick={() => goPage(`/game/${game.gamesid}`)}>
                                             <GameCard key={i}
-                                                homeTeam={game.homeShortForm} homeScore={game.homeScore??0}
-                                                awayTeam={game.awayShortForm} awayScore={game.awayScore??0} 
+                                                homeTeam={game.homeShortForm} homeScore={Number(game.homeScore)??0}
+                                                awayTeam={game.awayShortForm} awayScore={Number(game.awayScore)??0} 
                                                 date={moment(game.date).format('MMM DD')} time={game.time}
                                                 homeColour={game.homePrimary} awayColour={game.awayPrimary}
                                                 />
@@ -178,8 +178,8 @@ function HeaderBar(props) {
                                     {upcomingGames.filter(game => game.league===1).map((game, i) => {
                                         return <Grid item xs={12} sm={6} key={i} sx={classes.listItemRight} onClick={() => goPage(`/game/${game.gamesid}`)}>
                                             <GameCard key={i}
-                                                homeTeam={game.homeShortForm} homeScore={game.homeScore??0} 
-                                                awayTeam={game.awayShortForm} awayScore={game.awayScore??0}
+                                                homeTeam={game.homeShortForm} homeScore={Number(game.homeScore)??0} 
+                                                awayTeam={game.awayShortForm} awayScore={Number(game.awayScore)??0}
                                                 date={moment(game.date).format('MMM DD')} time={game.time}
                                                 homeColour={game.homePrimary} awayColour={game.awayPrimary}
                                             />

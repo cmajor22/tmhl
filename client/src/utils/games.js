@@ -35,9 +35,9 @@ function addTie(r,team) {
 
 function addGF(r,team) {
     if(r.homeTeam===team) {
-        return r.homeGoals;
+        return Number(r.homeGoals);
     }else if(r.awayTeam===team) {
-        return r.awayGoals;
+        return Number(r.awayGoals);
     }else{
         return 0;
     }
@@ -45,9 +45,9 @@ function addGF(r,team) {
 
 function addGA(r,team) {
     if(r.homeTeam===team) {
-        return r.awayGoals;
+        return Number(r.awayGoals);
     }else if(r.awayTeam===team) {
-        return r.homeGoals;
+        return Number(r.homeGoals);
     }else{
         return 0;
     }
@@ -55,9 +55,9 @@ function addGA(r,team) {
 
 function addPIM(r,team) {
     if(r.homeTeam===team) {
-        return r.homePIM;
+        return Number(r.homePIM);
     }else if(r.awayTeam===team) {
-        return r.awayPIM;
+        return Number(r.awayPIM);
     }else{
         return 0;
     }
@@ -65,11 +65,11 @@ function addPIM(r,team) {
 
 function addStreak(r,team) {
     if(r.homeTeam===team) {
-        return r.homeStreak;
+        return Number(r.homeStreak);
     }else if(r.awayTeam===team) {
-        return r.awayStreak;
+        return Number(r.awayStreak);
     }else{
-        return "";
+        return 0;
     }
 }
 

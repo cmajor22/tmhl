@@ -2,13 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { Grid, Box, Container, Typography, Skeleton } from '@mui/material';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router';
-import { gameAway, gameGoals, gameHome, gamePenalties, gamesValue } from '../redux/gamesSlice';
+import { gameAway, gameGoals, gameHome, gamePenalties, gameById } from '../redux/gamesSlice';
 import TmhlTable from '../Components/TmhlTable';
 
 function Game(props) {
-    const { gameId } = useParams();
+    let { gameId } = useParams();
+    if(!gameId) {
+        gameId = props.gameId;
+    }
     const dispatch = useDispatch();
-    const game = useSelector(gamesValue);
+    const game = useSelector(gameById(gameId));
     const [ summaryRows, setSummaryRows] = useState([]);
     const [ homeRows, setHomeRows] = useState([]);
     const [ awayRows, setAwayRows] = useState([]);
@@ -94,10 +97,6 @@ function Game(props) {
             </Box>
         }
     }
-    
-    useEffect(() => {
-        fetchData();
-    }, []);// eslint-disable-line react-hooks/exhaustive-deps
     
     useEffect(() => {
         fetchData();

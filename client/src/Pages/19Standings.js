@@ -8,6 +8,7 @@ import { addGA, addGF, addGP, addLoss, addLossPlayoffs, addOTLossPlayoffs, addOT
     addPIM, addTie, addWin, addWinPlayoffs } from '../utils/games';
 import TmhlTable from '../Components/TmhlTable';
 import PageTitle from '../Components/PageTitle';
+import Game from './Game';
 
 const styles = {
     finalGameBox: {
@@ -430,20 +431,27 @@ function Standings19(props) {
                 <Grid item xs={12}>
                     <Box sx={{backgroundColor: 'rgba(0, 0, 0, 0.75)', backdropFilter: 'blur(5px)', padding: '5px'}}>
                         {[...filteredGames].sort(finalGameOrder).map((game, index) => {
-                            return <Paper elevation={3} sx={classes.finalGameBox}>
-                                <Box sx={classes.finalGameHeader}>
-                                    {index===0 && <PageTitle title="Championship" variant="h3"/>}
-                                    {index===1 && <PageTitle title="3RD Place" variant="h3"/>}
-                                    {index===2 && <PageTitle title="5TH Place" variant="h3"/>}
-                                    {index===3 && <PageTitle title="7TH Place" variant="h3"/>}
-                                </Box>
-                                <Box sx={classes.finalGameContent}>
-                                    <Typography variant="h6">
-                                        {game.homeGoals > game.awayGoals && `${game.homeTeam} (${game.homeGoals}) over ${game.awayTeam} (${game.awayGoals})`}
-                                        {game.homeGoals < game.awayGoals && `${game.awayTeam} (${game.awayGoals}) over ${game.homeTeam} (${game.homeGoals})`}
-                                    </Typography>
-                                </Box>
-                            </Paper>
+                            return <React.Fragment key={game.gamesId}>
+                                <Paper elevation={3} sx={classes.finalGameBox}>
+                                    <Box sx={classes.finalGameHeader}>
+                                        {index===0 && <PageTitle title="Championship" variant="h3"/>}
+                                        
+                                        {console.log(game)}
+                                        {index===1 && <PageTitle title="3RD Place" variant="h3"/>}
+                                        {index===2 && <PageTitle title="5TH Place" variant="h3"/>}
+                                        {index===3 && <PageTitle title="7TH Place" variant="h3"/>}
+                                    </Box>
+                                    <Box sx={classes.finalGameContent}>
+                                        <Typography variant="h6">
+                                            {game.homeGoals > game.awayGoals && `${game.homeTeam} (${game.homeGoals}) over ${game.awayTeam} (${game.awayGoals})`}
+                                            {game.homeGoals < game.awayGoals && `${game.awayTeam} (${game.awayGoals}) over ${game.homeTeam} (${game.homeGoals})`}
+                                        </Typography>
+                                    </Box>
+                                </Paper>
+                                <Paper elevation={3}>
+                                    <Game gameId={game.gamesId} />
+                                </Paper>
+                            </React.Fragment>
                         })}
                     </Box>
                 </Grid>

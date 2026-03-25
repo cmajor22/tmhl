@@ -3,7 +3,7 @@ module.exports = (express, connection) => {
 
   router.post('/games', function(req, res, next) {
     const league = req.body.league;
-    const isPlayoffs = req.body.isPlayoffs;
+    const isPlayoffs = req.body.isFinals === 1 ? 1 :req.body.isPlayoffs;
     const isFinals = req.body.isFinals;
     const season = req.body.season;
 
