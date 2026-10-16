@@ -139,7 +139,7 @@ function Player(props) {
             medals.totalGoals+=g.goals;
             medals.totalAssists+=g.assists;
             medals.totalPoints+=g.points;
-            medals.totalPims+=g.pims;
+            medals.totalPims+=Number(g.pims);
             if(g.goals>=5) {
                 medals.goals5++;
             } else if(g.goals===4) {

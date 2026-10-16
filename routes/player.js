@@ -113,7 +113,7 @@ module.exports = (express, connection) => {
   router.post('/penalties', function(req, res, next) {
     const playersId = req.body.playersId;
 
-    const sql = `select * from penalties where playersId=9`;
+    const sql = `select * from penalties where playersId=?`;
 
     connection.query(sql, [playersId], function (err, rows) {
       if (err) throw {err};
